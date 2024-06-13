@@ -26,6 +26,11 @@ public class GettingStartedApplication {
         return "index";
     }
 
+    @GetMapping("/viewdashboard")
+    public String viewdashboard(){
+        return "dashboard";
+    }
+
     @GetMapping("/database")
     String database(Map<String, Object> model) {
         try (Connection connection = dataSource.getConnection()) {
