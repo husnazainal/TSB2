@@ -1,4 +1,4 @@
-package com.heroku.java;
+package com.heroku.java.controller;
 
 // kalau visitor yang input kan still have to do controller ke?
 

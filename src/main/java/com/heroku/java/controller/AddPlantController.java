@@ -1,4 +1,4 @@
-package plant.controller;
+package com.heroku.java.controller;
 
 /*
  * Author: FES 
