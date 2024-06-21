@@ -1,5 +1,5 @@
 package com.heroku.java.model;
 
-public class staff {
+public class plant {
     
 }

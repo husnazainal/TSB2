@@ -1,44 +1,34 @@
 package com.heroku.java.controller;
 
-// kalau visitor yang input kan still have to do controller ke?
-
-
-/*
- * Author: FES 
- * March 2024
- */
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import connection.ConnectionManager;
+import tsb.connection.ConnectionManager;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Servlet implementation class AddFeedbackServlet
+ * Servlet implementation class DeletePlantController
  */
-public class AddFeedbackController extends HttpServlet {
+public class DeletePlantController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Connection con = null;
 	static PreparedStatement ps = null;
 	static Statement stmt = null;
-	int feedbackID;
-	String comments,timeCreate;
-	Date dateCreate;
-	int star;
+	int id;
+	String plantSciname, plantComname, plantType, plantHabitat, plantSpecies,plantDesc ;
+	
 	
     /**
-     * @see HttpServlet#HttpSerstarvlet()
+     * @see HttpServlet#HttpServlet()
      */
-    public AddFeedbackController() {
+    public DeletePlantController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -49,35 +39,18 @@ public class AddFeedbackController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
-		//retrieve input from HTML
-		timeCreate = request.getParameter("timeCreate");
-		dateCreate = request.getParameter("dateCreate");
-		star = request.getParameter("star");
-		comments = request.getParameter("comments");
-	
-
+		//get id from input parameter
+		id = Integer.parseInt(request.getParameter("id"));
 		
 		try {			
 			//call getConnection() method
 			con = ConnectionManager.getConnection();
 
 			//3. create statement
-			String sql = "INSERT INTO feedback ( timeCreate, dateCreate, star, comments;)VALUES(?,?,?,?)";
+			String sql = "DELETE FROM plant WHERE id=?";
 			ps = con.prepareStatement(sql);
 			
-			ps.setString(1, timeCreate);
-			ps.setDate(2, dateCreate);
-			ps.setInt(3, star);
-			ps.setString(4, comments);
-		
+			ps.setInt(1, id);
 			
 			//4. execute query
 			ps.executeUpdate();
@@ -94,6 +67,15 @@ public class AddFeedbackController extends HttpServlet {
 		
 		//Dispatch the request to another resource using forward() methods of the RequestDispatcher
 		req.forward(request, response);
+			
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		
 	}
+
 }
