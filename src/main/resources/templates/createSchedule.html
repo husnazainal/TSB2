@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Schedule</title>
+    <link rel="stylesheet" href="createplantstyle.css">
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">TSB</a>
+        <nav class="nav-items">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Feedback</a> |
+			<a href="ViewScheduleController">Staff Schedule</a><br><br>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h1>Staff Schedule</h1>
+            <form action="AddScheduleController" method="post" id="taskForm">
+                <div class="form-group">
+                    <h3>Date:</h3>
+                    <input type="date" name="scheduleDate" required />
+                </div>
+                <div class="form-group">
+                    <h3>Time:</h3>
+                    <input type="time" name="scheduleTime" required />
+                </div>
+                <div class="form-group">
+                    <h3>Task:</h3>
+                    <input type="text" name="scheduleTask" size="50" required />
+                </div>
+                <div class="form-group">
+                    <h3>Plant ID:</h3>
+                    <input type="text" name="plantId" size="25" required />
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="Submit" />
+                    <input type="reset" value="Reset" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
