@@ -2,7 +2,7 @@ package com.heroku.java.model;
 
 
 public class feedback {
-	private int id;
+	private int feedbackId;
 	private String name;
 	private String email;
 	private String phone;
@@ -11,19 +11,19 @@ public class feedback {
 	    	
 	    	public feedback() {
 	    	}
-	    	public int getId() {
-	    		return id;
-	    	}
-	    	public void setId(int id) {
-	    		this.id = id;
-	    	}
-	    	public static String getName() {
+			public void setFeedbackId(int feedbackId) {
+				this.feedbackId = feedbackId;
+			}
+			public int getFeedbackId() {
+				return feedbackId;
+			}
+	    	public String getName() {
 	    		return name;
 	    	}
 	    	public void setName(String name) {
 	    		this.name = name;
 	    	}
-	    	public static String getEmail() {
+	    	public String getEmail() {
 	    		return email;
 	    	}
 	    	public void setEmail(String email) {
@@ -47,9 +47,6 @@ public class feedback {
 	    	public void setComments(String comments) {
 	    		this.comments = comments;
 	    	}
-            public void setFeedbackId(int feedbackId) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'setFeedbackId'");
-            }
+          
 	    	
-	    }
+}
