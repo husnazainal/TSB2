@@ -151,7 +151,9 @@
   <div class="container">
   <div class="form-container">
     <h1>Create Plant Information</h1>
-    <form id="plantForm" action="/addPlant" method="post">
+    /*<form id="plantForm" action="/addPlant" method="post">*/
+    <form th:action="@{/addPlant}" modelAttribute="addPlant" th:objects = "${addPlant}" method="post">
+
       <div class="form-group">
         <h3>Plant Scientific Name:</h3>
         <input type="text" name="plantSciname" size="40"/>
