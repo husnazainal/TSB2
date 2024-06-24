@@ -41,8 +41,8 @@ public String addPlant(
 	@RequestParam(required = false) String soilType,
 	@RequestParam String plantHabitat,
 	@RequestParam String plantSpecies,
-	@RequestParam String plantDesc) {
-
+	@RequestParam String plantDesc) 
+{
 try (Connection connection = dataSource.getConnection()) {
 	String sql = "INSERT INTO public.plants (scientific_name, common_name, type, light_requirements, " +
                          "humidity_preferences, watering_frequency, sunlight_exposure, wind_resistance, " +
@@ -65,8 +65,8 @@ try (Connection connection = dataSource.getConnection()) {
 
 	statement.executeUpdate();
 	connection.close();
-}
- } catch (Exception e) {
+
+} catch (Exception e) {
 e.printStackTrace();
 //return "redirect:/error";
 } 
@@ -79,7 +79,7 @@ public String plantList(Model model) {
 	List<plant> plants = new ArrayList<>();
 
 	try (Connection connection = dataSource.getConnection()) {
-		String sql = "SELECT plantid, scientific_name, common_name, type, habitat, species, description FROM plants ORDER BY plantid";
+		String sql = "SELECT plantid, scientific_name, common_name, type, lightRequirements habitat, humidityPreferences, wateringFrequency, sunlightExposure, windResistance, soilType, species, description FROM plants ORDER BY plantid";
 		final var statement = connection.prepareStatement(sql);
 		final var resultSet = statement.executeQuery();
 
@@ -88,6 +88,12 @@ public String plantList(Model model) {
 			String plantSciname = resultSet.getString("scientific_name");
 			String plantComname = resultSet.getString("common_name");
 			String plantType = resultSet.getString("type");
+			String lightRequirements = resultSet.getString("lightRequirements");
+			String humidityPreferences = resultSet.getString("humidityPreferences");
+			String wateringFrequency = resultSet.getString("wateringFrequency");
+			String sunlightExposure = resultSet.getString("sunlightExposure");
+			String windResistance = resultSet.getString("windResistance");
+			String soilType = resultSet.getString("soilType");
 			String plantHabitat = resultSet.getString("habitat");
 			String plantSpecies = resultSet.getString("species");
 			String plantDesc = resultSet.getString("description");
@@ -97,6 +103,12 @@ public String plantList(Model model) {
                 plant.setPlantSciname(plantSciname);
                 plant.setPlantComname(plantComname);
                 plant.setPlantType(plantType);
+                plant.setLightRequirements(lightRequirements);
+                plant.setHumidityPreferences(humidityPreferences);
+                plant.setWateringFrequency(wateringFrequency);
+                plant.setSunlightExposure(sunlightExposure);
+                plant.setWindResistance(windResistance);
+                plant.setSoilType(soilType);
                 plant.setPlantHabitat(plantHabitat);
                 plant.setPlantSpecies(plantSpecies);
                 plant.setPlantDesc(plantDesc);
@@ -129,6 +141,12 @@ public String updatePlant(@RequestParam("plantId") int plantId, Model model) {
 			String plantSciname = resultSet.getString("scientific_name");
                 String plantComname = resultSet.getString("common_name");
                 String plantType = resultSet.getString("type");
+                String lightRequirements = resultSet.getString("lightRequirements");
+                String humidityPreferences = resultSet.getString("humidityPreferences");
+                String wateringFrequency = resultSet.getString("wateringFrequency");
+                String sunlightExposure = resultSet.getString("sunlightExposure");
+                String windResistance = resultSet.getString("windResistance");
+                String soilType = resultSet.getString("soilType");
                 String plantHabitat = resultSet.getString("habitat");
                 String plantSpecies = resultSet.getString("species");
                 String plantDesc = resultSet.getString("description");
@@ -138,6 +156,12 @@ public String updatePlant(@RequestParam("plantId") int plantId, Model model) {
                 plant.setPlantSciname(plantSciname);
                 plant.setPlantComname(plantComname);
                 plant.setPlantType(plantType);
+                plant.setLightRequirements(lightRequirements);
+                plant.setHumidityPreferences(humidityPreferences);
+                plant.setWateringFrequency(wateringFrequency);
+                plant.setSunlightExposure(sunlightExposure);
+                plant.setWindResistance(windResistance);
+                plant.setSoilType(soilType);
                 plant.setPlantHabitat(plantHabitat);
                 plant.setPlantSpecies(plantSpecies);
                 plant.setPlantDesc(plantDesc);
@@ -158,16 +182,22 @@ public String updatePlant(@ModelAttribute("plant") plant plant) {
  
     try {
         Connection connection = dataSource.getConnection();
-		String sql = "UPDATE plants SET scientific_name = ?, common_name = ?, type = ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
+		String sql = "UPDATE plants SET scientific_name = ?, common_name = ?, type = ?,lightRequirements = ?, humidityPreferences= ?, wateringFrequency= ?, sunlightExposure= ?, windResistance=?, soilType= ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
         final var statement=connection.prepareStatement(sql);
 
         statement.setString(1, plant.getPlantSciname());
         statement.setString(2, plant.getPlantComname());
         statement.setString(3, plant.getPlantType());
-        statement.setString(4, plant.getPlantHabitat());
-        statement.setString(5, plant.getPlantSpecies());
-        statement.setString(6, plant.getPlantDesc());
-        statement.setInt(7, plant.getPlantId());
+        statement.setString(4, plant.getLightRequirements());
+        statement.setString(5, plant.getHumidityPreferences());
+        statement.setString(6, plant.getWateringFrequency());
+        statement.setString(7, plant.getSunlightExposure());
+        statement.setString(8, plant.getWindResistance());
+        statement.setString(9, plant.getSoilType());
+        statement.setString(10, plant.getPlantHabitat());
+        statement.setString(11, plant.getPlantSpecies());
+        statement.setString(12, plant.getPlantDesc());
+        statement.setInt(13, plant.getPlantId());
 
         statement.executeUpdate();
 
