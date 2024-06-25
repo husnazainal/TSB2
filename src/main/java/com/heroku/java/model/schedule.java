@@ -3,7 +3,7 @@ package com.heroku.java.model;
 import java.sql.Date;
 import java.sql.Time;
 
-public class Schedule {
+public class schedule {
     private int id;
     private Date date;
     private Time time;

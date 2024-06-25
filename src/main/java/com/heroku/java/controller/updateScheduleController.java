@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.heroku.java.model.Schedule;
+import com.heroku.java.model.schedule;
 
 @Controller
-public class ScheduleController {
+public class updateScheduleController {
     private final DataSource dataSource;
 
     @Autowired
-    public ScheduleController(DataSource dataSource) {
+    public updateScheduleController(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @GetMapping("/updateSchedule")
     public String showUpdateScheduleForm(@RequestParam("scheduleid") int scheduleId, Model model) {
-        Schedule schedule = new Schedule();
+        schedule schedule = new schedule();
 
         try (Connection con = dataSource.getConnection()) {
             String query = "SELECT * FROM schedule WHERE scheduleid = ?";
@@ -55,7 +55,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/updateSchedule")
-    public String updateSchedule(@ModelAttribute("schedule") Schedule schedule) {
+    public String updateSchedule(@ModelAttribute("schedule") schedule schedule) {
         try (Connection con = dataSource.getConnection()) {
             String query = "UPDATE schedule SET scheduleDate = ?, scheduleTask = ?, scheduleTime = ?, plantId = ? WHERE scheduleid = ?";
             try (PreparedStatement ps = con.prepareStatement(query)) {
