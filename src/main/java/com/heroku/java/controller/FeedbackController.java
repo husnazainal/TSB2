@@ -1,7 +1,6 @@
 package com.heroku.java.controller;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.heroku.java.model.feedback;
 
 @Controller
@@ -29,13 +26,13 @@ public class FeedbackController {
 
 
 @PostMapping("/addFeedback")
-{
+public String addFeedback(@ModelAttribute("addFeedback") feedback feedback) {
 try (Connection connection = dataSource.getConnection()) {
 	String sql = "INSERT INTO public.feedback(name,email) VALUES(?,?)";
 	final var statement = connection.prepareStatement(sql);
 
 	
-		final String name = feedback.getName();
+		String name = feedback.getName();
 		String email = feedback.getEmail();
 
 		statement.setString(1, name);
@@ -43,11 +40,16 @@ try (Connection connection = dataSource.getConnection()) {
 
 		statement.executeUpdate();
 		connection.close();
-	}
-} catch (Exception e) {
+
+}catch (Exception e) {
 	e.printStackTrace();
-	//return "redirect:/error";
+	//return "error";
+  }
+  return "redirect:/homepage";
+
 }
+
+
 
 
 @GetMapping("/FeedbackList")
@@ -79,7 +81,7 @@ try (Connection connection = dataSource.getConnection()) {
             return "error";
         }
 
-        return "Feedback/";
+        return "homepage/";
     }
 
 }
