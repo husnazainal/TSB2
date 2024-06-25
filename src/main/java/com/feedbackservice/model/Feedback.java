@@ -18,13 +18,17 @@ public class Feedback {
     private int star;
     private String comments;
 
+    // Default constructor
+    public Feedback() {
+    }
+
+    // Constructor with parameters
     public Feedback(String name, String email) {
         this.name = name;
         this.email = email;
     }
-    
-    // Getters and setters (accessors and mutators)
 
+    // Getters and setters (accessors and mutators)
     public Long getId() {
         return id;
     }
@@ -72,5 +76,4 @@ public class Feedback {
     public void setComments(String comments) {
         this.comments = comments;
     }
-}
 }
