@@ -1,0 +1,34 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Schedule</title>
+</head>
+<body>
+    <h1>Update Schedule</h1>
+    <form action="UpdateScheduleController" method="post">
+        <input type="hidden" name="scheduleid" value="${schedule.id}" />
+        <div class="form-group">
+            <label for="scheduleDate">Date:</label>
+            <input type="date" name="scheduleDate" value="${schedule.date}" required />
+        </div>
+        <div class="form-group">
+            <label for="scheduleTime">Time:</label>
+            <input type="time" name="scheduleTime" value="${schedule.time}" required />
+        </div>
+        <div class="form-group">
+            <label for="scheduleTask">Task:</label>
+            <input type="text" name="scheduleTask" value="${schedule.task}" required />
+        </div>
+        <div class="form-group">
+            <label for="plantId">Plant ID:</label>
+            <input type="text" name="plantId" value="${schedule.plantId}" required />
+        </div>
+        <div class="form-actions">
+            <input type="submit" value="Update" />
+        </div>
+    </form>
+    <a href="ViewScheduleController">Back to Schedules</a>
+</body>
+</html>
