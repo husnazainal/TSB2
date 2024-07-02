@@ -88,7 +88,7 @@ try (Connection connection = dataSource.getConnection()) {
  */
 
 
- package com.heroku.java.controller;
+package com.heroku.java.controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
