@@ -104,7 +104,7 @@ try (Connection connection = dataSource.getConnection()) {
  import org.springframework.web.bind.annotation.ModelAttribute;
  import org.springframework.web.bind.annotation.PostMapping;
  
- import com.heroku.java.model.Feedback;
+ import com.heroku.java.model.feedback;
  
  @Controller
  public class FeedbackController {
@@ -116,7 +116,7 @@ try (Connection connection = dataSource.getConnection()) {
      }
  
      @PostMapping("/addFeedback")
-     public String addFeedback(@ModelAttribute("addFeedback") Feedback feedback) {
+     public String addFeedback(@ModelAttribute("addFeedback") feedback feedback) {
          try (Connection connection = dataSource.getConnection()) {
              String sql = "INSERT INTO public.feedback(name, email) VALUES(?, ?)";
              final var statement = connection.prepareStatement(sql);
@@ -134,7 +134,7 @@ try (Connection connection = dataSource.getConnection()) {
  
      @GetMapping("/FeedbackList")
      public String FeedbackList(Model model) {
-         List<Feedback> feedbacks = new ArrayList<>();
+         List<feedback> feedbacks = new ArrayList<>();
  
          try (Connection connection = dataSource.getConnection()) {
              String sql = "SELECT feedbackid, name, email FROM public.feedback ORDER BY feedbackid";
@@ -142,7 +142,7 @@ try (Connection connection = dataSource.getConnection()) {
              final var resultSet = statement.executeQuery();
  
              while (resultSet.next()) {
-                 Feedback feedback = new Feedback();
+                 feedback feedback = new feedback();
                  feedback.setFeedbackId(resultSet.getLong("feedbackid"));
                  feedback.setName(resultSet.getString("name"));
                  feedback.setEmail(resultSet.getString("email"));
