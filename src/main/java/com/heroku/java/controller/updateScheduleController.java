@@ -23,11 +23,11 @@ public class updateScheduleController {
     private final DataSource dataSource;
 
     @Autowired
-    public updateScheduleController(DataSource dataSource) {
+    public UpdateScheduleController(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    @GetMapping("/updateSchedule")
+    @GetMapping("/UpdateSchedule")
     public String showUpdateScheduleForm(@RequestParam("scheduleid") int scheduleId, Model model) {
         schedule schedule = new schedule();
 
@@ -54,7 +54,7 @@ public class updateScheduleController {
         return "updateSchedule";
     }
 
-    @PostMapping("/updateSchedule")
+    @PostMapping("/UpdateSchedule")
     public String updateSchedule(@ModelAttribute("schedule") schedule schedule) {
         try (Connection con = dataSource.getConnection()) {
             String query = "UPDATE schedule SET scheduleDate = ?, scheduleTask = ?, scheduleTime = ?, plantId = ? WHERE scheduleid = ?";
