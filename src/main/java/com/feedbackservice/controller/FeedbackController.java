@@ -1,4 +1,4 @@
-/*package com.feedbackservice.controller;
+package com.feedbackservice.controller;
 
 
 import com.feedbackservice.model.Feedback;
@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
+/* 
 @RestController
 @RequestMapping("/Feedback")
 //public class ProductController {
@@ -41,7 +41,7 @@ public class FeedbackController {
 }
 */
 
-package com.feedbackservice.controller;
+/*package com.feedbackservice.controller;
 
 import com.feedbackservice.model.Feedback;
 import com.feedbackservice.repository.FeedbackRepository;
@@ -49,7 +49,7 @@ import com.feedbackservice.repository.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.List; */
 
 @RestController
 @RequestMapping("/feedback")
