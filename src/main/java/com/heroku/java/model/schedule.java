@@ -1,4 +1,4 @@
-package com.heroku.java.model;
+/*package com.heroku.java.model;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -41,6 +41,51 @@ public class schedule {
 
     public void setTask(String task) {
         this.task = task;
+    }
+
+    public String getPlantId() {
+        return plantId;
+    }
+
+    public void setPlantId(String plantId) {
+        this.plantId = plantId;
+    }
+} */
+
+package com.heroku.java.model;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class Schedule {
+    private LocalDate scheduleDate;
+    private LocalTime scheduleTime;
+    private String scheduleTask;
+    private String plantId;
+
+    // Getters and setters
+    public LocalDate getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(LocalDate scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
+
+    public LocalTime getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(LocalTime scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+
+    public String getScheduleTask() {
+        return scheduleTask;
+    }
+
+    public void setScheduleTask(String scheduleTask) {
+        this.scheduleTask = scheduleTask;
     }
 
     public String getPlantId() {
