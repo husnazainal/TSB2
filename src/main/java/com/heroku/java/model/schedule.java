@@ -58,7 +58,7 @@ package com.heroku.java.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Schedule {
+public class schedule {
     private int id;
     private LocalDate scheduleDate;
     private LocalTime scheduleTime;

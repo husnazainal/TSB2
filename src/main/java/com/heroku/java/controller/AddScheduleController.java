@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.heroku.java.model.Schedule;
+import com.heroku.java.model.schedule;
 
 @Controller
 public class AddScheduleController {
@@ -23,7 +23,7 @@ public class AddScheduleController {
     }
 
     @PostMapping("/addschedule")
-    public String addSchedule(@ModelAttribute("schedule") Schedule schedule) {
+    public String addSchedule(@ModelAttribute("schedule") schedule schedule) {
         try (Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO public.schedule(date, time, task, plant_id) VALUES (?, ?, ?, ?)";
             final var statement = connection.prepareStatement(sql);
