@@ -106,5 +106,3 @@ public class Schedule {
         this.plantId = plantId;
     }
 }
-
-
