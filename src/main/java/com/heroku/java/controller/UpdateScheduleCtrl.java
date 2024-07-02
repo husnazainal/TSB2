@@ -94,7 +94,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.heroku.java.model.schedule;
+import com.heroku.java.model.Schedule;
 
 @Controller
 public class UpdateScheduleCtrl {
@@ -107,7 +107,7 @@ public class UpdateScheduleCtrl {
 
     @GetMapping("/updateSchedule")
     public String showUpdateScheduleForm(@RequestParam("scheduleid") int scheduleId, Model model) {
-        schedule schedule = new schedule();
+        Schedule schedule = new Schedule();
 
         try (Connection con = dataSource.getConnection()) {
             String query = "SELECT * FROM schedule WHERE scheduleid = ?";
@@ -133,7 +133,7 @@ public class UpdateScheduleCtrl {
     }
 
     @PostMapping("/updateSchedule")
-    public String updateSchedule(@ModelAttribute("schedule") schedule schedule) {
+    public String updateSchedule(@ModelAttribute("schedule") Schedule schedule) {
         try (Connection con = dataSource.getConnection()) {
             String query = "UPDATE schedule SET scheduledate = ?, scheduletask = ?, scheduletime = ?, plantid = ? WHERE scheduleid = ?";
             try (PreparedStatement ps = con.prepareStatement(query)) {
