@@ -97,11 +97,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.heroku.java.model.Schedule;
 
 @Controller
-public class UpdateScheduleController {
+public class UpdateScheduleCtrl {
     private final DataSource dataSource;
 
     @Autowired
-    public UpdateScheduleController(DataSource dataSource) {
+    public UpdateScheduleCtrl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
