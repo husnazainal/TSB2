@@ -91,7 +91,7 @@ public class PlantController {
         }
     }
 
-
+   
     @GetMapping("/plantList")
     public String plantList(Model model) {
         List<Plant> plants = new ArrayList<>();
