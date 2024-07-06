@@ -77,7 +77,7 @@ public class PlantController {
         }
 
         return "redirect:/plantlist";
-    }
+    }    
 
     private int generatePlantID(Connection connection) throws Exception {
         String query = "SELECT COALESCE(MAX(plantid), 0) + 1 FROM plant";
@@ -92,7 +92,7 @@ public class PlantController {
     }
 
    
-    @GetMapping("/plantList")
+    @GetMapping("/plantlist")
     public String plantList(Model model) {
         List<Plant> plants = new ArrayList<>();
 
