@@ -1,4 +1,5 @@
 package com.heroku.java.controller;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,17 +22,17 @@ import com.heroku.java.model.IndoorPlant;
 import com.heroku.java.model.OutdoorPlant;
 import com.heroku.java.model.Plant;
 
-
 @Controller
 public class PlantController {
+
     private final DataSource dataSource;
 
     @Autowired
     public PlantController(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-	
-@PostMapping("/addPlant")
+
+    @PostMapping("/addPlant")
     @Transactional
     public String addPlant(@ModelAttribute("plant") Plant plant) {
         try (Connection connection = dataSource.getConnection()) {
@@ -56,28 +57,29 @@ public class PlantController {
                 sql = "INSERT INTO indoor_plant(plantid, lightr, humidp, waterf) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
-                    statement.setString(2, ((IndoorPlant)plant).getLightR());
-                    statement.setString(3, ((IndoorPlant)plant).getHumidP());
-                    statement.setString(4, ((IndoorPlant)plant).getWaterF());
+                    statement.setString(2, ((IndoorPlant) plant).getLightR());
+                    statement.setString(3, ((IndoorPlant) plant).getHumidP());
+                    statement.setString(4, ((IndoorPlant) plant).getWaterF());
                     statement.executeUpdate();
                 }
             } else if ("Outdoor".equals(plant.getType())) {
                 sql = "INSERT INTO outdoor_plant(plantid, sune, windr, soilt) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
-                    statement.setString(2, ((OutdoorPlant)plant).getSunE());
-                    statement.setString(3, ((OutdoorPlant)plant).getWindR());
-                    statement.setString(4, ((OutdoorPlant)plant).getSoilT());
+                    statement.setString(2, ((OutdoorPlant) plant).getSunE());
+                    statement.setString(3, ((OutdoorPlant) plant).getWindR());
+                    statement.setString(4, ((OutdoorPlant) plant).getSoilT());
                     statement.executeUpdate();
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/error";
         }
 
         return "redirect:/plantList";
-    }    
+    }
 
     private int generatePlantID(Connection connection) throws Exception {
         String query = "SELECT COALESCE(MAX(plantid), 0) + 1 FROM plant";
@@ -91,12 +93,11 @@ public class PlantController {
         }
     }
 
-   
-    @GetMapping("/plantlist")
+    @GetMapping("/plantList")
     public String plantList(Model model) {
         List<Plant> plants = new ArrayList<>();
 
-        String sql = "SELECT p.plantid, p.scientific_name, p.common_name, p.type, p.habitat, p.species, p.description, " +
+        String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, " +
                      "i.lightr, i.humidp, i.waterf, " +
                      "o.sune, o.windr, o.soilt " +
                      "FROM plant p " +
@@ -127,8 +128,8 @@ public class PlantController {
                 }
 
                 plant.setPlantId(resultSet.getInt("plantid"));
-                plant.setSciName(resultSet.getString("scientific_name"));
-                plant.setComName(resultSet.getString("common_name"));
+                plant.setSciName(resultSet.getString("sciname"));
+                plant.setComName(resultSet.getString("comname"));
                 plant.setType(type);
                 plant.setHabitat(resultSet.getString("habitat"));
                 plant.setSpecies(resultSet.getString("species"));
@@ -140,25 +141,23 @@ public class PlantController {
         } catch (SQLException e) {
             e.printStackTrace();
             return "error";
-        } 
+        }
 
         model.addAttribute("plants", plants);
         return "plantList";
     }
 
-
-
-    @GetMapping("/updatePlants")
+    @GetMapping("/updatePlant")
     public String showUpdatePlantForm(@RequestParam("plantId") int plantId, Model model) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT p.plantid, p.scientific_name, p.common_name, p.type, p.habitat, p.species, p.description, " +
+            String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, " +
                          "i.lightr, i.humidp, i.waterf, " +
                          "o.sune, o.windr, o.soilt " +
                          "FROM plant p " +
                          "LEFT JOIN indoor_plant i ON p.plantid = i.plantid " +
                          "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid " +
                          "WHERE p.plantid = ?";
-            
+
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, plantId);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -183,8 +182,8 @@ public class PlantController {
                         }
 
                         plant.setPlantId(plantId);
-                        plant.setSciName(resultSet.getString("scientific_name"));
-                        plant.setComName(resultSet.getString("common_name"));
+                        plant.setSciName(resultSet.getString("sciname"));
+                        plant.setComName(resultSet.getString("comname"));
                         plant.setType(type);
                         plant.setHabitat(resultSet.getString("habitat"));
                         plant.setSpecies(resultSet.getString("species"));
@@ -198,16 +197,16 @@ public class PlantController {
             e.printStackTrace();
             return "error";
         }
-        return "Plant/updatePlant";
+        return "updatePlant";
     }
 
-    @PostMapping("/updatePlants")
+    @PostMapping("/updatePlant")
     public String updatePlant(@ModelAttribute("plant") Plant plant) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 // Update main plant table
-                String sql = "UPDATE plant SET scientific_name = ?, common_name = ?, type = ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
+                String sql = "UPDATE plant SET sciname = ?, comname = ?, type = ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setString(1, plant.getSciName());
                     statement.setString(2, plant.getComName());

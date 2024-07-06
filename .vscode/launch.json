@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "GettingStartedApplication",
+            "request": "launch",
+            "mainClass": "com.heroku.java.GettingStartedApplication",
+            "projectName": "java-getting-started"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Open createPlant2.html",

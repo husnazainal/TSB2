@@ -1,263 +1,235 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Plant Information</title>
+    <title>Update Plant</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #b7d7d2;
-        }
+.nav-items {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
 
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            padding: 0.8rem;
-        }
+.nav-items a {
+    font-family: sans-serif;
+    text-decoration: none;
+    color: #333;
+    background-color: #dfe2c2; /* Light sage green */
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 10px #dfe2c2, -4px -4px 10px #dfe2c2;
+}
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f5f5f5;
-            padding: 10px 30px;
-        }
+.nav-items a:hover {
+    background-color: #c3c6a5; /* Darker sage green on hover */
+}
+.logo {
+    font-size: 25px;
+    color: #000;
+    text-decoration: none;
+}
 
-        .header .logo {
-            font-size: 25px;
-            color: #000;
-            text-decoration: none;
-            margin-left: 20px;
-        }
 
-        .nav-items {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background-color: #f5f5f5;
-            margin-right: 20px;
-        }
+h1 {
+font-weight: bold;
+text-align: center;
+margin-top: 5px;
+margin-bottom: 30px;
+}
 
-        .nav-items a {
-            font-family: sans-serif;
-            text-decoration: none;
-            color: #000;
-            padding: 15px 20px;
-        }
+.form-container {
+background-color: #fff;
+border: 1px solid #ddd;
+padding: 40px;
+border-radius: 20px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+width: 90%;
+max-width: 600px;
+margin: 20px auto;
+}
 
-        .form-container {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            margin: 20px auto;
-        }
+.form-group {
+margin-bottom: 20px;
+}
 
-        h1 {
-            font-weight: bold;
-            text-align: center;
-            margin-top: 5px;
-            margin-bottom: 30px;
-        }
+.form-group h3 {
+margin: 0;
+margin-bottom: 10px;
+font-weight: normal;
+}
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+.form-group input[type="text"],
+.form-group textarea {
+width: calc(100% - 24px);
+padding: 12px;
+border: 1px solid #ddd;
+border-radius: 5px;
+background-color: #dfe2c2; /* Light sage green for input background */
+box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+transition: box-shadow 0.3s ease;
+margin-top: 8px;
+}
 
-        .form-group h3 {
-            margin: 0;
-            margin-bottom: 10px;
-            font-weight: normal;
-        }
+.form-actions {
+text-align: center;
+margin-top: 20px;
+}
+.form-group input[type="radio"] {
+margin-right: 10px;
+}
 
-        .form-group input[type="text"],
-        .form-group select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: inherit;
-            font-family: inherit;
-            font-size: 16px;
-            line-height: 1.5;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
+.form-group label {
+margin-right: 20px;
+}
 
-        .form-group input[type="radio"] {
-            margin-right: 10px;
-        }
+.form-actions input[type="submit"],
+.form-actions input[type="reset"] {
+padding: 12px 20px;
+border: none;
+border-radius: 20px;
+background-color: #546a41; /* Forest green button */
+color: #fff;
+font-size: 16px;
+cursor: pointer;
+margin: 0 10px;
+transition: background-color 0.3s ease;
+}
 
-        .hidden-fields {
-            display: none;
-            margin-top: 20px;
-        }
+.form-actions input[type="reset"] {
+background-color: #d9534f; /* Red button */
+}
 
-        .hidden-fields h3 {
-            font-weight: normal;
-        }
+.form-actions input[type="submit"]:hover,
+.form-actions input[type="reset"]:hover {
+opacity: 0.9;
+}
 
-        .hidden-fields select {
-            margin-top: 5px;
-            padding: 10px;
-            width: calc(100% - 20px);
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: inherit;
-            font-family: inherit;
-            font-size: 16px;
-            line-height: 1.5;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
+@media screen and (max-width: 768px) {
+.form-container {
+    width: 80%;
+}
+}
 
-        .form-actions {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .form-actions input[type="submit"],
-        .form-actions input[type="reset"] {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 20px;
-            background-color: green;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 0 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-actions input[type="reset"] {
-            background-color: #d9534f;
-        }
-
-        .form-actions input[type="submit"]:hover,
-        .form-actions input[type="reset"]:hover {
-            background-color: #4CAF50;
-        }
-    </style>
-</head>
-
-<body>
-    <header class="header">
-        <a href="#" class="logo">TSB</a>
-        <nav class="nav-items">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-            <a href="#">Feedback</a>
-        </nav>
-    </header>
-
-    <div class="form-container">
-        <h1>Update Plant Information</h1>
-        <form action="/updatePlant" method="post" id="plantForm">
-            <div class="form-group">
-                <h3>Plant Scientific Name:</h3>
-                <input type="text" name="plantSciname" value="${plant.plantSciname}" size="40" required />
-            </div>
-            <div class="form-group">
-                <h3>Plant Common Name:</h3>
-                <input type="text" name="plantComname" value="${plant.plantComname}" size="25" required />
-            </div>
-            <div class="form-group">
-                <h3>Plant Type:</h3>
-                <input type="radio" name="plantType" value="Indoor" onclick="showIndoorFields()" ${plant.plantType == 'Indoor' ? 'checked' : ''} /> Indoor
-                <input type="radio" name="plantType" value="Outdoor" onclick="showOutdoorFields()" ${plant.plantType == 'Outdoor' ? 'checked' : ''} /> Outdoor
-            </div>
-            <div id="indoorFields" class="${plant.plantType == 'Indoor' ? '' : 'hidden-fields'}">
-                <h3>Light Requirements:</h3>
-                <select name="lightRequirements">
-                    <option value="Select">Select</option>
-                    <option value="Low" ${plant.lightRequirements == 'Low' ? 'selected' : ''}>Low</option>
-                    <option value="Medium" ${plant.lightRequirements == 'Medium' ? 'selected' : ''}>Medium</option>
-                    <option value="High" ${plant.lightRequirements == 'High' ? 'selected' : ''}>High</option>
-                </select>
-                <h3>Humidity Preferences:</h3>
-                <select name="humidityPreferences">
-                    <option value="Select">Select</option>
-                    <option value="Low" ${plant.humidityPreferences == 'Low' ? 'selected' : ''}>Low</option>
-                    <option value="Medium" ${plant.humidityPreferences == 'Medium' ? 'selected' : ''}>Medium</option>
-                    <option value="High" ${plant.humidityPreferences == 'High' ? 'selected' : ''}>High</option>
-                </select>
-                <h3>Watering Frequency:</h3>
-                <select name="wateringFrequency">
-                    <option value="Select">Select</option>
-                    <option value="Low" ${plant.wateringFrequency == 'Low' ? 'selected' : ''}>Low</option>
-                    <option value="Medium" ${plant.wateringFrequency == 'Medium' ? 'selected' : ''}>Medium</option>
-                    <option value="High" ${plant.wateringFrequency == 'High' ? 'selected' : ''}>High</option>
-                </select>
-            </div>
-            <div id="outdoorFields" class="${plant.plantType == 'Outdoor' ? '' : 'hidden-fields'}">
-                <h3>Sunlight Exposure:</h3>
-                <select name="sunlightExposure">
-                    <option value="Select">Select</option>
-                    <option value="Low" ${plant.sunlightExposure == 'Low' ? 'selected' : ''}>Low</option>
-                    <option value="Medium" ${plant.sunlightExposure == 'Medium' ? 'selected' : ''}>Medium</option>
-                    <option value="High" ${plant.sunlightExposure == 'High' ? 'selected' : ''}>High</option>
-                </select>
-                <h3>Wind Resistance:</h3>
-                <select name="windResistance">
-                    <option value="Select">Select</option>
-                    <option value="Low" ${plant.windResistance == 'Low' ? 'selected' : ''}>Low</option>
-                    <option value="Medium" ${plant.windResistance == 'Medium' ? 'selected' : ''}>Medium</option>
-                    <option value="High" ${plant.windResistance == 'High' ? 'selected' : ''}>High</option>
-                </select>
-                <h3>Soil Type:</h3>
-                <select name="soilType">
-                    <option value="Select">Select</option>
-                    <option value="1" ${plant.soilType == '1' ? 'selected' : ''}>1</option>
-      
-                    <option value="2" ${plant.soilType == '2' ? 'selected' : ''}>2</option>
-                    <option value="3" ${plant.soilType == '3' ? 'selected' : ''}>3</</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <h3>Plant Habitat:</h3>
-                <input type="text" name="plantHabitat" value="${plant.plantHabitat}" size="25" required />
-            </div>
-            <div class="form-group">
-                <h3>Plant Species:</h3>
-                <input type="text" name="plantSpecies" value="${plant.plantSpecies}" size="25" required />
-            </div>
-            <div class="form-group">
-                <h3>Plant Description:</h3>
-                <input type="text" name="plantDesc" value="${plant.plantDesc}" size="50" required />
-            </div>
-            <div class="form-actions">
-                <input type="submit" value="Update" />
-                <input type="reset" value="Reset" />
-            </div>
-        </form>
-    </div>
-
+@media screen and (max-width: 600px) {
+.form-container {
+    width: 90%;
+    padding: 20px;
+}
+}
+</style>    
     <script>
-        // Validation Script
-        document.getElementById("plantForm").addEventListener("submit", function(event) {
-            var plantType = document.querySelector('input[name="plantType"]:checked');
-            if (!plantType) {
-                alert("Please select plant type");
-                event.preventDefault();
-            }
-        });
-
         function showIndoorFields() {
-            document.getElementById("indoorFields").classList.remove("hidden-fields");
-            document.getElementById("outdoorFields").classList.add("hidden-fields");
+            document.getElementById("indoorFields").style.display = "block";
+            document.getElementById("outdoorFields").style.display = "none";
         }
 
         function showOutdoorFields() {
-            document.getElementById("outdoorFields").classList.remove("hidden-fields");
-            document.getElementById("indoorFields").classList.add("hidden-fields");
+            document.getElementById("indoorFields").style.display = "none";
+            document.getElementById("outdoorFields").style.display = "block";
         }
     </script>
-                    
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">TSB</a>
+        <nav class="nav-items">
+            <a href="/dashboard">Home</a>
+            <a href="/plantList">Plant</a>
+            <a href="/listSchedule">Schedule</a>
+            <a href="/viewFeedback">Feedback</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <form th:action="@{/updatePlant}" th:object="${plant}" method="post">
+                <h1>Update Plant</h1>
+                <input type="hidden" th:field="*{plantId}" />
+                <div class="form-group">
+                    <h3>Plant Scientific Name:</h3>
+                    <input type="text" th:field="*{sciName}" size="40"/>
+                </div>
+                <div class="form-group">
+                    <h3>Plant Common Name:</h3>
+                    <input type="text" th:field="*{comName}" size="25" />
+                </div>
+                <div class="form-group">
+                    <h3>Plant Type:</h3>
+                    <input type="radio" th:field="*{type}" value="Indoor" onclick="showIndoorFields()" /> Indoor
+                    <input type="radio" th:field="*{type}" value="Outdoor" onclick="showOutdoorFields()" /> Outdoor
+                </div>
+                <div id="indoorFields" class="hidden-fields" th:if="${plant.type == 'Indoor'}">
+                    <h3>Light Requirements:</h3>
+                    <select th:field="*{lightR}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <h3>Humidity Preferences:</h3>
+                    <select th:field="*{humidP}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <h3>Watering Frequency:</h3>
+                    <select th:field="*{waterF}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+                <div id="outdoorFields" class="hidden-fields" th:if="${plant.type == 'Outdoor'}">
+                    <h3>Sunlight Exposure:</h3>
+                    <select th:field="*{sunE}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <h3>Wind Resistance:</h3>
+                    <select th:field="*{windR}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <h3>Soil Type:</h3>
+                    <select th:field="*{soilT}">
+                        <option value="Select">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <h3>Plant Habitat:</h3>
+                    <input type="text" th:field="*{habitat}" size="25" />
+                </div>
+                <div class="form-group">
+                    <h3>Plant Species:</h3>
+                    <input type="text" th:field="*{species}" size="25" />
+                </div>
+                <div class="form-group">
+                    <h3>Plant Description:</h3>
+                    <input type="text" th:field="*{description}" size="50" />
+                </div>
+                <div class="form-actions">
+                    <input type="submit" value="Submit" />
+                    <input type="reset" value="Reset" />
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
