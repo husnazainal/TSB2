@@ -1,24 +1,22 @@
 package com.heroku.java.model;
 
-public class indoor extends plant {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "indoor_plant")
+@PrimaryKeyJoinColumn(name = "plantId")
+public class IndoorPlant extends Plant {
+
     private String lightR;
     private String humidP;
     private String waterF;
 
-    public indoor() {
+    // Default constructor
+    public IndoorPlant() {
         super();
     }
 
-    public indoor(int plantId, String plantSciname, String plantComname, String plantType, String lightRequirements,
-            String humidityPreferences, String wateringFrequency, String sunlightExposure, String windResistance,
-            String soilType, String plantHabitat, String plantSpecies, String plantDesc,
-            String lightR, String humidP, String waterF) {
-        super();
-        this.lightR = lightR;
-        this.humidP = humidP;
-        this.waterF = waterF;
-    }
-
+    // Getters and setters
     public String getLightR() {
         return lightR;
     }

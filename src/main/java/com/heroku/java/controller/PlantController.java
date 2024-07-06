@@ -1,6 +1,7 @@
 package com.heroku.java.controller;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +10,16 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.heroku.java.model.plant;
+import com.heroku.java.model.IndoorPlant;
+import com.heroku.java.model.OutdoorPlant;
+import com.heroku.java.model.Plant;
 
 
 @Controller
@@ -27,205 +31,264 @@ public class PlantController {
         this.dataSource = dataSource;
     }
 	
-@PostMapping("/addPlant") 
+@PostMapping("/addPlant")
+    @Transactional
+    public String addPlant(@ModelAttribute("plant") Plant plant) {
+        try (Connection connection = dataSource.getConnection()) {
+            int newPlantId = generatePlantID(connection);
+            plant.setPlantId(newPlantId);
 
-public String addPlant(
-	@RequestParam String plantSciname,
-	@RequestParam String plantComname,
-	@RequestParam String plantType,
-	@RequestParam(required = false) String lightRequirements,
-	@RequestParam(required = false) String humidityPreferences,
-	@RequestParam(required = false) String wateringFrequency,
-	@RequestParam(required = false) String sunlightExposure,
-	@RequestParam(required = false) String windResistance,
-	@RequestParam(required = false) String soilType,
-	@RequestParam String plantHabitat,
-	@RequestParam String plantSpecies,
-	@RequestParam String plantDesc) 
-{
-try (Connection connection = dataSource.getConnection()) {
-	String sql = "INSERT INTO public.plants (scientific_name, common_name, type, light_requirements, " +
-                         "humidity_preferences, watering_frequency, sunlight_exposure, wind_resistance, " +
-                         "soil_type, habitat, species, description) " +
-                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	final var statement = connection.prepareStatement(sql);
+            // Insert into main plant table
+            String sql = "INSERT INTO plant(plantid, sciname, comname, type, habitat, species, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, plant.getPlantId());
+                statement.setString(2, plant.getSciName());
+                statement.setString(3, plant.getComName());
+                statement.setString(4, plant.getType());
+                statement.setString(5, plant.getHabitat());
+                statement.setString(6, plant.getSpecies());
+                statement.setString(7, plant.getDescription());
+                statement.executeUpdate();
+            }
 
-	statement.setString(1, plantSciname);
-	statement.setString(2, plantComname);
-	statement.setString(3, plantType);
-	statement.setString(4, lightRequirements);
-	statement.setString(5, humidityPreferences);
-	statement.setString(6, wateringFrequency);
-	statement.setString(7, sunlightExposure);
-	statement.setString(8, windResistance);
-	statement.setString(9, soilType);
-	statement.setString(10, plantHabitat);
-	statement.setString(11, plantSpecies);
-	statement.setString(12, plantDesc);
+            // Insert into subclass table based on plant type
+            if ("Indoor".equals(plant.getType())) {
+                sql = "INSERT INTO indoor_plant(plantid, lightr, humidp, waterf) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setInt(1, plant.getPlantId());
+                    statement.setString(2, ((IndoorPlant)plant).getLightR());
+                    statement.setString(3, ((IndoorPlant)plant).getHumidP());
+                    statement.setString(4, ((IndoorPlant)plant).getWaterF());
+                    statement.executeUpdate();
+                }
+            } else if ("Outdoor".equals(plant.getType())) {
+                sql = "INSERT INTO outdoor_plant(plantid, sune, windr, soilt) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setInt(1, plant.getPlantId());
+                    statement.setString(2, ((OutdoorPlant)plant).getSunE());
+                    statement.setString(3, ((OutdoorPlant)plant).getWindR());
+                    statement.setString(4, ((OutdoorPlant)plant).getSoilT());
+                    statement.executeUpdate();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/error";
+        }
 
-	statement.executeUpdate();
-	connection.close();
+        return "redirect:/plantlist";
+    }
 
-} catch (Exception e) {
-e.printStackTrace();
-//return "redirect:/error";
-} 
-
-return "redirect:/index";
-}
-
-@GetMapping("/plantList")
-public String plantList(Model model) {
-	List<plant> plants = new ArrayList<>();
-
-	try (Connection connection = dataSource.getConnection()) {
-		String sql = "SELECT plantid, scientific_name, common_name, type, lightRequirements habitat, humidityPreferences, wateringFrequency, sunlightExposure, windResistance, soilType, species, description FROM plants ORDER BY plantid";
-		final var statement = connection.prepareStatement(sql);
-		final var resultSet = statement.executeQuery();
-
-		while (resultSet.next()) {
-			int plantId = resultSet.getInt("plantid");
-			String plantSciname = resultSet.getString("scientific_name");
-			String plantComname = resultSet.getString("common_name");
-			String plantType = resultSet.getString("type");
-			String lightRequirements = resultSet.getString("lightRequirements");
-			String humidityPreferences = resultSet.getString("humidityPreferences");
-			String wateringFrequency = resultSet.getString("wateringFrequency");
-			String sunlightExposure = resultSet.getString("sunlightExposure");
-			String windResistance = resultSet.getString("windResistance");
-			String soilType = resultSet.getString("soilType");
-			String plantHabitat = resultSet.getString("habitat");
-			String plantSpecies = resultSet.getString("species");
-			String plantDesc = resultSet.getString("description");
-
-			plant plant = new plant();
-                plant.setPlantId(plantId);
-                plant.setPlantSciname(plantSciname);
-                plant.setPlantComname(plantComname);
-                plant.setPlantType(plantType);
-                plant.setLightRequirements(lightRequirements);
-                plant.setHumidityPreferences(humidityPreferences);
-                plant.setWateringFrequency(wateringFrequency);
-                plant.setSunlightExposure(sunlightExposure);
-                plant.setWindResistance(windResistance);
-                plant.setSoilType(soilType);
-                plant.setPlantHabitat(plantHabitat);
-                plant.setPlantSpecies(plantSpecies);
-                plant.setPlantDesc(plantDesc);
-
-			    plants.add(plant);
-		}
-
-		model.addAttribute("plants", plants);
-
-	} catch (SQLException e) {
-		e.printStackTrace();
-		return "error";
-	} 
-
-	return "PlantList";
-}
-
-@GetMapping("/updatePlants")
-public String updatePlant(@RequestParam("plantId") int plantId, Model model) {
-
-    try {
-        Connection connection = dataSource.getConnection();
-		String sql = "SELECT plantid, scientific_name, common_name, type, habitat, species, description FROM plants WHERE plantid = ?";
-        final var statement= connection.prepareStatement(sql);
-		statement.setInt(1, plantId);
-        final var resultSet = statement.executeQuery();
-
-        if (resultSet.next()){
-            
-			String plantSciname = resultSet.getString("scientific_name");
-                String plantComname = resultSet.getString("common_name");
-                String plantType = resultSet.getString("type");
-                String lightRequirements = resultSet.getString("lightRequirements");
-                String humidityPreferences = resultSet.getString("humidityPreferences");
-                String wateringFrequency = resultSet.getString("wateringFrequency");
-                String sunlightExposure = resultSet.getString("sunlightExposure");
-                String windResistance = resultSet.getString("windResistance");
-                String soilType = resultSet.getString("soilType");
-                String plantHabitat = resultSet.getString("habitat");
-                String plantSpecies = resultSet.getString("species");
-                String plantDesc = resultSet.getString("description");
-
-			    plant plant = new plant();
-                plant.setPlantId(plantId);
-                plant.setPlantSciname(plantSciname);
-                plant.setPlantComname(plantComname);
-                plant.setPlantType(plantType);
-                plant.setLightRequirements(lightRequirements);
-                plant.setHumidityPreferences(humidityPreferences);
-                plant.setWateringFrequency(wateringFrequency);
-                plant.setSunlightExposure(sunlightExposure);
-                plant.setWindResistance(windResistance);
-                plant.setSoilType(soilType);
-                plant.setPlantHabitat(plantHabitat);
-                plant.setPlantSpecies(plantSpecies);
-                plant.setPlantDesc(plantDesc);
-
-                model.addAttribute("plant", plant);
-
-            connection.close();
+    private int generatePlantID(Connection connection) throws Exception {
+        String query = "SELECT COALESCE(MAX(plantid), 0) + 1 FROM plant";
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                return 1; // Start with 1 if no records found
+            }
         }
     }
-    catch(Exception e){
-        e.printStackTrace();
+
+
+    @GetMapping("/plantList")
+    public String plantList(Model model) {
+        List<Plant> plants = new ArrayList<>();
+
+        String sql = "SELECT p.plantid, p.scientific_name, p.common_name, p.type, p.habitat, p.species, p.description, " +
+                     "i.lightr, i.humidp, i.waterf, " +
+                     "o.sune, o.windr, o.soilt " +
+                     "FROM plant p " +
+                     "LEFT JOIN indoor_plant i ON p.plantid = i.plantid " +
+                     "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid " +
+                     "ORDER BY p.plantid";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Plant plant;
+                String type = resultSet.getString("type");
+
+                if ("Indoor".equals(type)) {
+                    plant = new IndoorPlant();
+                    ((IndoorPlant) plant).setLightR(resultSet.getString("lightr"));
+                    ((IndoorPlant) plant).setHumidP(resultSet.getString("humidp"));
+                    ((IndoorPlant) plant).setWaterF(resultSet.getString("waterf"));
+                } else if ("Outdoor".equals(type)) {
+                    plant = new OutdoorPlant();
+                    ((OutdoorPlant) plant).setSunE(resultSet.getString("sune"));
+                    ((OutdoorPlant) plant).setWindR(resultSet.getString("windr"));
+                    ((OutdoorPlant) plant).setSoilT(resultSet.getString("soilt"));
+                } else {
+                    plant = new Plant();
+                }
+
+                plant.setPlantId(resultSet.getInt("plantid"));
+                plant.setSciName(resultSet.getString("scientific_name"));
+                plant.setComName(resultSet.getString("common_name"));
+                plant.setType(type);
+                plant.setHabitat(resultSet.getString("habitat"));
+                plant.setSpecies(resultSet.getString("species"));
+                plant.setDescription(resultSet.getString("description"));
+
+                plants.add(plant);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        } 
+
+        model.addAttribute("plants", plants);
+        return "plantList";
     }
-    return "Plant/updatePlant";
-}
 
-@PostMapping("/updatePlants")
-public String updatePlant(@ModelAttribute("plant") plant plant) {
- 
-    try {
-        Connection connection = dataSource.getConnection();
-		String sql = "UPDATE plants SET scientific_name = ?, common_name = ?, type = ?,lightRequirements = ?, humidityPreferences= ?, wateringFrequency= ?, sunlightExposure= ?, windResistance=?, soilType= ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
-        final var statement=connection.prepareStatement(sql);
 
-        statement.setString(1, plant.getPlantSciname());
-        statement.setString(2, plant.getPlantComname());
-        statement.setString(3, plant.getPlantType());
-        statement.setString(4, plant.getLightRequirements());
-        statement.setString(5, plant.getHumidityPreferences());
-        statement.setString(6, plant.getWateringFrequency());
-        statement.setString(7, plant.getSunlightExposure());
-        statement.setString(8, plant.getWindResistance());
-        statement.setString(9, plant.getSoilType());
-        statement.setString(10, plant.getPlantHabitat());
-        statement.setString(11, plant.getPlantSpecies());
-        statement.setString(12, plant.getPlantDesc());
-        statement.setInt(13, plant.getPlantId());
 
-        statement.executeUpdate();
+    @GetMapping("/updatePlants")
+    public String showUpdatePlantForm(@RequestParam("plantId") int plantId, Model model) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT p.plantid, p.scientific_name, p.common_name, p.type, p.habitat, p.species, p.description, " +
+                         "i.lightr, i.humidp, i.waterf, " +
+                         "o.sune, o.windr, o.soilt " +
+                         "FROM plant p " +
+                         "LEFT JOIN indoor_plant i ON p.plantid = i.plantid " +
+                         "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid " +
+                         "WHERE p.plantid = ?";
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, plantId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        Plant plant;
+                        String type = resultSet.getString("type");
 
-        connection.close();
-        
+                        if ("Indoor".equals(type)) {
+                            IndoorPlant indoorPlant = new IndoorPlant();
+                            indoorPlant.setLightR(resultSet.getString("lightr"));
+                            indoorPlant.setHumidP(resultSet.getString("humidp"));
+                            indoorPlant.setWaterF(resultSet.getString("waterf"));
+                            plant = indoorPlant;
+                        } else if ("Outdoor".equals(type)) {
+                            OutdoorPlant outdoorPlant = new OutdoorPlant();
+                            outdoorPlant.setSunE(resultSet.getString("sune"));
+                            outdoorPlant.setWindR(resultSet.getString("windr"));
+                            outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                            plant = outdoorPlant;
+                        } else {
+                            plant = new Plant();
+                        }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        return "redirect:/error";
+                        plant.setPlantId(plantId);
+                        plant.setSciName(resultSet.getString("scientific_name"));
+                        plant.setComName(resultSet.getString("common_name"));
+                        plant.setType(type);
+                        plant.setHabitat(resultSet.getString("habitat"));
+                        plant.setSpecies(resultSet.getString("species"));
+                        plant.setDescription(resultSet.getString("description"));
+
+                        model.addAttribute("plant", plant);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        }
+        return "Plant/updatePlant";
     }
-    return "redirect:/plantList";
-}
 
-@PostMapping("/deletePlant")
-public String deletePlant(@RequestParam("plantId") int plantId){
-    try {
-        Connection connection = dataSource.getConnection();
-		String sql = "DELETE FROM plants WHERE plantid = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setLong(1,plantId);
-        statement.executeUpdate();
+    @PostMapping("/updatePlants")
+    public String updatePlant(@ModelAttribute("plant") Plant plant) {
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                // Update main plant table
+                String sql = "UPDATE plant SET scientific_name = ?, common_name = ?, type = ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setString(1, plant.getSciName());
+                    statement.setString(2, plant.getComName());
+                    statement.setString(3, plant.getType());
+                    statement.setString(4, plant.getHabitat());
+                    statement.setString(5, plant.getSpecies());
+                    statement.setString(6, plant.getDescription());
+                    statement.setInt(7, plant.getPlantId());
+                    statement.executeUpdate();
+                }
 
-        connection.close();
+                // Update subclass table based on plant type
+                if (plant instanceof IndoorPlant) {
+                    IndoorPlant indoorPlant = (IndoorPlant) plant;
+                    sql = "UPDATE indoor_plant SET lightr = ?, humidp = ?, waterf = ? WHERE plantid = ?";
+                    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                        statement.setString(1, indoorPlant.getLightR());
+                        statement.setString(2, indoorPlant.getHumidP());
+                        statement.setString(3, indoorPlant.getWaterF());
+                        statement.setInt(4, plant.getPlantId());
+                        statement.executeUpdate();
+                    }
+                } else if (plant instanceof OutdoorPlant) {
+                    OutdoorPlant outdoorPlant = (OutdoorPlant) plant;
+                    sql = "UPDATE outdoor_plant SET sune = ?, windr = ?, soilt = ? WHERE plantid = ?";
+                    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                        statement.setString(1, outdoorPlant.getSunE());
+                        statement.setString(2, outdoorPlant.getWindR());
+                        statement.setString(3, outdoorPlant.getSoilT());
+                        statement.setInt(4, plant.getPlantId());
+                        statement.executeUpdate();
+                    }
+                }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        return "redirect:/errorDelete";
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+        return "redirect:/plantList";
     }
-    return "redirect:/plantList";
-}
+
+    @PostMapping("/deletePlant")
+    public String deletePlant(@RequestParam("plantId") int plantId) {
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                // Delete from indoor_plant table
+                String sql = "DELETE FROM indoor_plant WHERE plantid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setInt(1, plantId);
+                    statement.executeUpdate();
+                }
+
+                // Delete from outdoor_plant table
+                sql = "DELETE FROM outdoor_plant WHERE plantid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setInt(1, plantId);
+                    statement.executeUpdate();
+                }
+
+                // Delete from main plant table
+                sql = "DELETE FROM plant WHERE plantid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setInt(1, plantId);
+                    statement.executeUpdate();
+                }
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+        return "redirect:/plantList";
+    }
 }
