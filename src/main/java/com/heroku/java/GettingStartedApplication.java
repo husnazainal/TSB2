@@ -26,10 +26,10 @@ public class GettingStartedApplication {
         return "loginStaff";
     }
 
-    @GetMapping("/viewdashboard")
-    public String viewdashboard(){
-        return "dashboard";
-    }
+    // @GetMapping("/addplant")
+    // public String viewdashboard(){
+    //     return "addplant";
+    // }
 
     @GetMapping("/database")
     String database(Map<String, Object> model) {

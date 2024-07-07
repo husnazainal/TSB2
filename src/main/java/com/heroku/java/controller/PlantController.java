@@ -32,7 +32,16 @@ public class PlantController {
         this.dataSource = dataSource;
     }
 
-    @PostMapping("/addPlant")
+    @GetMapping("/addplant")
+    public String showAddPlantForm(Model model) {
+        model.addAttribute("plant", new Plant());
+        model.addAttribute("indoorPlant", new IndoorPlant());
+        model.addAttribute("outdoorPlant", new OutdoorPlant());
+        return "addplant";
+    }
+
+
+    @PostMapping("/addplant")
     @Transactional
     public String addPlant(@ModelAttribute("plant") Plant plant) {
         try (Connection connection = dataSource.getConnection()) {
