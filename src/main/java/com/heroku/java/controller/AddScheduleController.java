@@ -1,7 +1,6 @@
 package com.heroku.java.controller;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;

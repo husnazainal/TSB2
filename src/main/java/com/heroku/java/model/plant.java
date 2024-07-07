@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "plant")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Plant {
+public class plant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class Plant {
     private String description;
 
     // Default constructor
-    public Plant() {}
+    public plant() {}
 
     // Getters and setters
     public int getPlantId() {

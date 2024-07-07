@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.heroku.java.model.IndoorPlant;
 import com.heroku.java.model.OutdoorPlant;
-import com.heroku.java.model.Plant;
+import com.heroku.java.model.plant;
 
 @Controller
 public class PlantController {
@@ -34,7 +34,7 @@ public class PlantController {
 
     @GetMapping("/addplant")
     public String showAddPlantForm(Model model) {
-        model.addAttribute("plant", new Plant());
+        model.addAttribute("plant", new plant());
         model.addAttribute("indoorPlant", new IndoorPlant());
         model.addAttribute("outdoorPlant", new OutdoorPlant());
         return "addplant";
@@ -43,7 +43,7 @@ public class PlantController {
 
     @PostMapping("/addplant")
     @Transactional
-    public String addPlant(@ModelAttribute("plant") Plant plant) {
+    public String addPlant(@ModelAttribute("plant") plant plant) {
         try (Connection connection = dataSource.getConnection()) {
             int newPlantId = generatePlantID(connection);
             plant.setPlantId(newPlantId);
@@ -104,7 +104,7 @@ public class PlantController {
 
     @GetMapping("/plantList")
     public String plantList(Model model) {
-        List<Plant> plants = new ArrayList<>();
+        List<plant> plants = new ArrayList<>();
 
         String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, " +
                      "i.lightr, i.humidp, i.waterf, " +
@@ -119,7 +119,7 @@ public class PlantController {
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                Plant plant;
+                plant plant;
                 String type = resultSet.getString("type");
 
                 if ("Indoor".equals(type)) {
@@ -133,7 +133,7 @@ public class PlantController {
                     ((OutdoorPlant) plant).setWindR(resultSet.getString("windr"));
                     ((OutdoorPlant) plant).setSoilT(resultSet.getString("soilt"));
                 } else {
-                    plant = new Plant();
+                    plant = new plant();
                 }
 
                 plant.setPlantId(resultSet.getInt("plantid"));
@@ -171,7 +171,7 @@ public class PlantController {
                 statement.setInt(1, plantId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        Plant plant;
+                        plant plant;
                         String type = resultSet.getString("type");
 
                         if ("Indoor".equals(type)) {
@@ -187,7 +187,7 @@ public class PlantController {
                             outdoorPlant.setSoilT(resultSet.getString("soilt"));
                             plant = outdoorPlant;
                         } else {
-                            plant = new Plant();
+                            plant = new plant();
                         }
 
                         plant.setPlantId(plantId);
@@ -210,7 +210,7 @@ public class PlantController {
     }
 
     @PostMapping("/updatePlant")
-    public String updatePlant(@ModelAttribute("plant") Plant plant) {
+    public String updatePlant(@ModelAttribute("plant") plant plant) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {

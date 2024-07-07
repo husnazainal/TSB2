@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "indoor_plant")
 @PrimaryKeyJoinColumn(name = "plantId")
-public class IndoorPlant extends Plant {
+public class IndoorPlant extends plant {
 
     private String lightR;
     private String humidP;
