@@ -26,6 +26,11 @@ public class GettingStartedApplication {
         return "index";
     }
 
+    @GetMapping("/plantlist")
+    public String plantlist() {
+        return "plantlist";
+    }
+
     // @GetMapping("/addplant")
     // public String viewdashboard(){
     //     return "addplant";
