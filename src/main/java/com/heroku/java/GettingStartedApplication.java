@@ -31,13 +31,7 @@ public class GettingStartedApplication {
     public String plantlist() {
         return "plantlist";
     }
-
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";
-    }
     
-
     // @GetMapping("/register")
     // public String register() {
     //     return "register";
@@ -57,7 +51,7 @@ public class GettingStartedApplication {
             statement.executeUpdate("INSERT INTO ticks VALUES (now())");
 
             final var resultSet = statement.executeQuery("SELECT tick FROM ticks");
-            final var output = new ArrayList<>();
+            final ArrayList<Object> output = new ArrayList<>();
             while (resultSet.next()) {
                 output.add("Read from DB: " + resultSet.getTimestamp("tick"));
             }
@@ -70,6 +64,7 @@ public class GettingStartedApplication {
             return "error";
         }
     }
+
 
     public static void main(String[] args) {
         SpringApplication.run(GettingStartedApplication.class, args);
