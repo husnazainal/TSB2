@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Map;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = { "com.heroku" })
 @Controller
 public class GettingStartedApplication {
     private final DataSource dataSource;
