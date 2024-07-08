@@ -143,6 +143,9 @@
     <header>
         <h1>Staff Dashboard</h1>
         <div id="welcome-message"></div>
+        <div class="user-details">
+            <h2>Welcome, <span th:text="${loggedInUser.staffName}">Staff Name</span></h2>
+        </div>
         <nav>
             <ul>
                 <li><a href="dashboard.html">Home</a></li>
@@ -178,20 +181,5 @@
     <footer>
         &copy; 2024 Staff Dashboard. All rights reserved.
     </footer>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const staffName = "Taman Seribu Bunga";  // This should be dynamically set after login
-            const welcomeMessage = document.getElementById("welcome-message");
-            welcomeMessage.textContent = Welcome, $;{staffusername};
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const staffName = /* Insert code to get the logged-in user's name */;
-            const welcomeMessage = document.getElementById("welcome-message");
-            welcomeMessage.textContent = `Welcome, ${staffName}`;
-        });
-    </script>
-    
 </body>
 </html>
