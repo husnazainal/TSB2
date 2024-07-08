@@ -12,9 +12,9 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Map;
 
-@SpringBootApplication
-@EntityScan(basePackages = "com.heroku.java.model")
-@EnableJpaRepositories(basePackages = "com.heroku.java.repository")
+@SpringBootApplication(scanBasePackages = {"com.heroku.java"})
+@EntityScan("com.heroku.java.model")
+@EnableJpaRepositories("com.heroku.java.repository")
 @Controller
 public class GettingStartedApplication {
     private final DataSource dataSource;
