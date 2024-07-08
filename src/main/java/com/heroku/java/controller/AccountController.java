@@ -41,8 +41,8 @@ public class AccountController {
     private void saveStaffToDatabase(StaffModel staffModel) {
         String sql = "INSERT INTO staff (staffname, staffemail, staffpassword) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql,
-                            staffModel.getStaffName(),
-                            staffModel.getStaffEmail(),
-                            staffModel.getStaffPassword());
+                staffModel.getStaffName(),
+                staffModel.getStaffEmail(),
+                staffModel.getStaffPassword());
     }
 }
