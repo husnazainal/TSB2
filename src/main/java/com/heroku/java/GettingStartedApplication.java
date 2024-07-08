@@ -1,6 +1,5 @@
 package com.heroku.java;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import java.util.Map;
 public class GettingStartedApplication {
     private final DataSource dataSource;
 
-    @Autowired
     public GettingStartedApplication(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -31,10 +29,10 @@ public class GettingStartedApplication {
         return "plantlist";
     }
 
-    // @GetMapping("/addplant")
-    // public String viewdashboard(){
-    //     return "addplant";
-    // }
+    @GetMapping("/addplant")
+    public String addplant(){
+        return "addplant";
+    }
 
     @GetMapping("/database")
     String database(Map<String, Object> model) {

@@ -1,38 +1,45 @@
 package com.heroku.java.model;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "staff")
 public class Staff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "staffid")
+    private Long staffId;
 
+    @Column(name = "staffname")
     private String staffName;
+
+    @Column(name = "staffemail")
     private String staffEmail;
+
+    @Column(name = "staffpassword")
     private String staffPassword;
 
-    // Constructors, getters, and setters
-    public Staff() {
-    }
+    private String phoneNum;
 
-    public Staff(String staffName, String staffEmail, String staffPassword) {
+    // Constructors, getters, and setters
+
+    public Staff() {}
+
+    public Staff(String staffName, String staffEmail, String staffPassword, String phoneNum) {
         this.staffName = staffName;
         this.staffEmail = staffEmail;
         this.staffPassword = staffPassword;
+        this.phoneNum = phoneNum;
     }
 
-    public Long getId() {
-        return id;
+    // Getters and setters for all fields
+    public Long getStaffId() {
+        return staffId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
 
     public String getStaffName() {
@@ -59,13 +66,11 @@ public class Staff {
         this.staffPassword = staffPassword;
     }
 
-    @Override
-    public String toString() {
-        return "Staff{" +
-                "id=" + id +
-                ", staffName='" + staffName + '\'' +
-                ", staffEmail='" + staffEmail + '\'' +
-                ", staffPassword='" + staffPassword + '\'' +
-                '}';
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }
