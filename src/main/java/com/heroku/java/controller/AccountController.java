@@ -53,7 +53,7 @@ public class AccountController {
             loggedInUser.setStaffName(staffModel.getStaffName());
             loggedInUser.setStaffEmail(staffModel.getStaffEmail());
             // Don't set the password in the session
-            return "redirect:/dashboard";
+            return "redirect:/dashboard"; // Ensure this matches your actual mapping
         } catch (Exception e) {
             logger.error("Error registering staff", e);
             redirectAttributes.addFlashAttribute("error", "Registration failed. Error: " + e.getMessage());
@@ -63,8 +63,7 @@ public class AccountController {
 
     @GetMapping("/dashboard")
     public String showDashboard(@ModelAttribute("loggedInUser") StaffModel loggedInUser, Model model) {
-        logger.debug("Showing dashboard for staff: {}", loggedInUser.getStaffName());
-        model.addAttribute("loggedInUser", loggedInUser);
-        return "dashboard";
+        model.addAttribute("staffName", loggedInUser.getStaffName());
+        return "dashboard"; // Ensure this matches the name of your HTML file without the .html extension
     }
 }
