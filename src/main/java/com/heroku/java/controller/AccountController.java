@@ -33,7 +33,7 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, 
+    public String registerStaft(@ModelAttribute("staffModel") StaffModel staffModel, 
                                 HttpServletRequest request,
                                 RedirectAttributes redirectAttributes) {
         logger.debug("Registering staff: {}", staffModel);
@@ -44,7 +44,7 @@ public class AccountController {
             return "redirect:/staff/dashboard";
         } catch (Exception e) {
             logger.error("Error registering staff", e);
-            redirectAttributes.addFlashAttribute("error", "Registration failed. Please try again.");
+            redirectAttributes.addFlashAttribute("error", "Registration failed. Error: " + e.getMessage());
             return "redirect:/register?error";
         }
     }
