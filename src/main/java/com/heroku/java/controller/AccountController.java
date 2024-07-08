@@ -1,7 +1,5 @@
 package com.heroku.java.controller;
 
-import com.heroku.java.model.StaffModel;
-import com.heroku.java.repository.StaffRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
+import com.heroku.java.model.StaffModel;
+import com.heroku.java.repository.StaffRepository;
 
 @Controller
+@SessionAttributes("loggedInUser")
 public class AccountController {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
@@ -25,22 +26,33 @@ public class AccountController {
         this.staffRepository = staffRepository;
     }
 
+    @ModelAttribute("loggedInUser")
+    public StaffModel loggedInUser() {
+        return new StaffModel();
+    }
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         logger.debug("Showing registration form");
-        model.addAttribute("staffModel", new StaffModel());
+        if (!model.containsAttribute("staffModel")) {
+            model.addAttribute("staffModel", new StaffModel());
+        }
         return "register";
     }
 
     @PostMapping("/register")
     public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, 
-                                HttpSession session,
+                                @ModelAttribute("loggedInUser") StaffModel loggedInUser,
                                 RedirectAttributes redirectAttributes) {
         logger.debug("Registering staff: {}", staffModel);
         try {
             staffRepository.saveStaff(staffModel);
             logger.debug("Staff saved successfully");
-            session.setAttribute("loggedInUser", staffModel);
+            // Update the session attribute
+            loggedInUser.setStaffId(staffModel.getStaffId());
+            loggedInUser.setStaffName(staffModel.getStaffName());
+            loggedInUser.setStaffEmail(staffModel.getStaffEmail());
+            // Don't set the password in the session
             return "redirect:/staff/dashboard";
         } catch (Exception e) {
             logger.error("Error registering staff", e);
