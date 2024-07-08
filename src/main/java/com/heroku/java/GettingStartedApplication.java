@@ -31,10 +31,10 @@ public class GettingStartedApplication {
         return "plantlist";
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
+    // @GetMapping("/register")
+    // public String register() {
+    //     return "register";
+    // }
 
     
     // @GetMapping("/addplant")
