@@ -88,76 +88,76 @@ try (Connection connection = dataSource.getConnection()) {
  */
 
 
-//  package com.heroku.java.controller;
+ package com.heroku.java.controller;
 
-//  import java.sql.Connection;
-//  import java.sql.SQLException;
-//  import java.util.ArrayList;
-//  import java.util.List;
+ import java.sql.Connection;
+ import java.sql.SQLException;
+ import java.util.ArrayList;
+ import java.util.List;
  
-//  import javax.sql.DataSource;
+ import javax.sql.DataSource;
  
-//  import org.springframework.beans.factory.annotation.Autowired;
-//  import org.springframework.stereotype.Controller;
-//  import org.springframework.ui.Model;
-//  import org.springframework.web.bind.annotation.GetMapping;
-//  import org.springframework.web.bind.annotation.ModelAttribute;
-//  import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.ModelAttribute;
+ import org.springframework.web.bind.annotation.PostMapping;
  
-//  import com.heroku.java.model.feedback;
+ import com.heroku.java.model.feedback;
  
-//  @Controller
-//  public class FeedbackController {
-//      private final DataSource dataSource;
+ @Controller
+ public class FeedbackController {
+     private final DataSource dataSource;
  
-//      @Autowired
-//      public FeedbackController(DataSource dataSource) {
-//          this.dataSource = dataSource;
-//      }
+     @Autowired
+     public FeedbackController(DataSource dataSource) {
+         this.dataSource = dataSource;
+     }
  
-//      @PostMapping("/addFeedback")
-//      public String addFeedback(@ModelAttribute("addFeedback") feedback feedback) {
-//          try (Connection connection = dataSource.getConnection()) {
-//              String sql = "INSERT INTO public.feedback(name, email) VALUES(?, ?)";
-//              final var statement = connection.prepareStatement(sql);
+     @PostMapping("/addFeedback")
+     public String addFeedback(@ModelAttribute("addFeedback") feedback feedback) {
+         try (Connection connection = dataSource.getConnection()) {
+             String sql = "INSERT INTO public.feedback(name, email) VALUES(?, ?)";
+             final var statement = connection.prepareStatement(sql);
  
-//              statement.setString(1, feedback.getName());
-//              statement.setString(2, feedback.getEmail());
+             statement.setString(1, feedback.getName());
+             statement.setString(2, feedback.getEmail());
  
-//              statement.executeUpdate();
-//          } catch (Exception e) {
-//              e.printStackTrace();
-//              return "error";
-//          }
-//          return "redirect:/homepage";
-//      }
+             statement.executeUpdate();
+         } catch (Exception e) {
+             e.printStackTrace();
+             return "error";
+         }
+         return "redirect:/homepage";
+     }
  
-//      @GetMapping("/FeedbackList")
-//      public String FeedbackList(Model model) {
-//          List<feedback> feedbacks = new ArrayList<>();
+     @GetMapping("/FeedbackList")
+     public String FeedbackList(Model model) {
+         List<feedback> feedbacks = new ArrayList<>();
  
-//          try (Connection connection = dataSource.getConnection()) {
-//              String sql = "SELECT feedbackid, name, email FROM public.feedback ORDER BY feedbackid";
-//              final var statement = connection.prepareStatement(sql);
-//              final var resultSet = statement.executeQuery();
+         try (Connection connection = dataSource.getConnection()) {
+             String sql = "SELECT feedbackid, name, email FROM public.feedback ORDER BY feedbackid";
+             final var statement = connection.prepareStatement(sql);
+             final var resultSet = statement.executeQuery();
  
-//              while (resultSet.next()) {
-//                  feedback feedback = new feedback();
-//                  feedback.setFeedbackId(resultSet.getLong("feedbackid"));
-//                  feedback.setName(resultSet.getString("name"));
-//                  feedback.setEmail(resultSet.getString("email"));
+             while (resultSet.next()) {
+                 feedback feedback = new feedback();
+                 feedback.setFeedbackId(resultSet.getLong("feedbackid"));
+                 feedback.setName(resultSet.getString("name"));
+                 feedback.setEmail(resultSet.getString("email"));
  
-//                  feedbacks.add(feedback);
-//              }
+                 feedbacks.add(feedback);
+             }
  
-//              model.addAttribute("feedbacks", feedbacks);
+             model.addAttribute("feedbacks", feedbacks);
  
-//          } catch (SQLException e) {
-//              e.printStackTrace();
-//              return "error";
-//          }
+         } catch (SQLException e) {
+             e.printStackTrace();
+             return "error";
+         }
  
-//          return "feedbackList";
-//      }
-//  }
+         return "feedbackList";
+     }
+ }
  

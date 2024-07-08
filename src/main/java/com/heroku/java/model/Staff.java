@@ -1,45 +1,38 @@
 package com.heroku.java.model;
 
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "staff")
 public class Staff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staffid")
-    private Long staffId;
+    private Long id;
 
-    @Column(name = "staffname")
     private String staffName;
-
-    @Column(name = "staffemail")
     private String staffEmail;
-
-    @Column(name = "staffpassword")
     private String staffPassword;
 
-    private String phoneNum;
-
     // Constructors, getters, and setters
+    public Staff() {
+    }
 
-    public Staff() {}
-
-    public Staff(String staffName, String staffEmail, String staffPassword, String phoneNum) {
+    public Staff(String staffName, String staffEmail, String staffPassword) {
         this.staffName = staffName;
         this.staffEmail = staffEmail;
         this.staffPassword = staffPassword;
-        this.phoneNum = phoneNum;
     }
 
-    // Getters and setters for all fields
-    public Long getStaffId() {
-        return staffId;
+    public Long getId() {
+        return id;
     }
 
-    public void setStaffId(Long staffId) {
-        this.staffId = staffId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStaffName() {
@@ -66,11 +59,13 @@ public class Staff {
         this.staffPassword = staffPassword;
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "id=" + id +
+                ", staffName='" + staffName + '\'' +
+                ", staffEmail='" + staffEmail + '\'' +
+                ", staffPassword='" + staffPassword + '\'' +
+                '}';
     }
 }
