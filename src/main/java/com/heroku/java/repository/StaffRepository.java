@@ -1,10 +1,12 @@
 package com.heroku.java.repository;
 
-import com.heroku.java.model.StaffModel;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.heroku.java.model.StaffModel;
 
 @Repository
 public class StaffRepository {
@@ -25,7 +27,7 @@ public class StaffRepository {
                 staffModel.getStaffEmail(),
                 staffModel.getStaffPassword());
             logger.debug("Staff saved successfully");
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
             logger.error("Error saving staff to database", e);
             throw new RuntimeException("Failed to save staff: " + e.getMessage(), e);
         }
