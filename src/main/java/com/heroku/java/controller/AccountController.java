@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AccountController {
@@ -33,13 +33,14 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, HttpSession session,
-            RedirectAttributes redirectAttributes) {
+    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, 
+                                HttpServletRequest request,
+                                RedirectAttributes redirectAttributes) {
         logger.debug("Registering staff: {}", staffModel);
         try {
             staffRepository.saveStaff(staffModel);
             logger.debug("Staff saved successfully");
-            session.setAttribute("loggedInUser", staffModel);
+            request.getSession().setAttribute("loggedInUser", staffModel);
             return "redirect:/staff/dashboard";
         } catch (Exception e) {
             logger.error("Error registering staff", e);
