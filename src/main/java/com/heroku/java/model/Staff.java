@@ -20,17 +20,14 @@ public class Staff {
     @Column(name = "staffpassword")
     private String staffPassword;
 
-    private String phoneNum;
-
     // Constructors, getters, and setters
 
     public Staff() {}
 
-    public Staff(String staffName, String staffEmail, String staffPassword, String phoneNum) {
+    public Staff(String staffName, String staffEmail, String staffPassword) {
         this.staffName = staffName;
         this.staffEmail = staffEmail;
         this.staffPassword = staffPassword;
-        this.phoneNum = phoneNum;
     }
 
     // Getters and setters for all fields
@@ -64,13 +61,5 @@ public class Staff {
 
     public void setStaffPassword(String staffPassword) {
         this.staffPassword = staffPassword;
-    }
-
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
     }
 }

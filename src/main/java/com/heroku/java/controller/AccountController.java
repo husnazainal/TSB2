@@ -2,7 +2,6 @@ package com.heroku.java.controller;
 
 import com.heroku.java.model.Staff;
 import com.heroku.java.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AccountController {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+
+    public AccountController(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     @GetMapping("/signup")
     public String showSignupForm() {
@@ -23,7 +25,6 @@ public class AccountController {
     @PostMapping("/loginStaff")
     public String registerStaff(@RequestParam String username,
                                 @RequestParam String email,
-                                @RequestParam String phoneNum,
                                 @RequestParam String password,
                                 Model model) {
         // Check if email already exists
@@ -33,7 +34,7 @@ public class AccountController {
         }
 
         // Create new staff
-        Staff newStaff = new Staff(username, email, password, phoneNum);
+        Staff newStaff = new Staff(username, email, password);
         accountRepository.save(newStaff);
 
         return "redirect:/loginStaff";
