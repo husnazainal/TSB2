@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,12 +33,18 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, HttpSession session) {
+    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, HttpSession session,
+            RedirectAttributes redirectAttributes) {
         logger.debug("Registering staff: {}", staffModel);
-        staffRepository.saveStaff(staffModel);
-
-        session.setAttribute("loggedInUser", staffModel);
-
-        return "redirect:/staff/dashboard";
+        try {
+            staffRepository.saveStaff(staffModel);
+            logger.debug("Staff saved successfully");
+            session.setAttribute("loggedInUser", staffModel);
+            return "redirect:/staff/dashboard";
+        } catch (Exception e) {
+            logger.error("Error registering staff", e);
+            redirectAttributes.addFlashAttribute("error", "Registration failed. Please try again.");
+            return "redirect:/register?error";
+        }
     }
 }
