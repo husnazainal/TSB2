@@ -148,21 +148,21 @@
             </div>
             <h2>Register New Account</h2>
             <p>Taman Seribu Bunga Staff Management</p>
-            <form action="/registerStaff" method="post">
+            <form th:action="@{/registerStaff}" th:object="${staffModel}" method="post">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" name="staffName" placeholder="Username" required>
+                    <input type="text" th:field="*{staffName}" placeholder="Username" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="text" name="staffEmail" placeholder="Email" required>
+                    <input type="email" th:field="*{staffEmail}" placeholder="Email" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" name="staffPassword" placeholder="Password" required>
+                    <input type="password" th:field="*{staffPassword}" placeholder="Password" required>
                 </div>
                 <button type="submit" class="login-button">Register</button>
-                <p class="register-link">Already have an account? <a href="loginStaff.html">Log in</a> here.</p>
+                <p class="register-link">Already have an account? <a th:href="@{/loginStaff}">Log in</a> here.</p>
             </form>
         </div>
     </div>

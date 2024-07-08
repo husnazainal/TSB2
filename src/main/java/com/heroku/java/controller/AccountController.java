@@ -21,17 +21,17 @@ public class AccountController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @GetMapping("/signup")
-    public ModelAndView signup() {
-        ModelAndView modelAndView = new ModelAndView("signup");
+    @GetMapping("/registerStaff")
+    public ModelAndView showRegistrationForm() {
+        ModelAndView modelAndView = new ModelAndView("register");
         modelAndView.addObject("staffModel", new StaffModel());
         return modelAndView;
     }
 
-    @PostMapping("/signup")
-    public String processSignupForm(@ModelAttribute("staffModel") StaffModel staffModel, HttpSession session) {
+    @PostMapping("/registerStaff")
+    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, HttpSession session) {
         saveStaffToDatabase(staffModel);
-        
+
         // Set loggedInUser session attribute after signup
         session.setAttribute("loggedInUser", staffModel);
 
