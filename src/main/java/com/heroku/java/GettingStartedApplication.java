@@ -31,6 +31,12 @@ public class GettingStartedApplication {
         return "plantlist";
     }
 
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    
     // @GetMapping("/addplant")
     // public String viewdashboard(){
     //     return "addplant";
