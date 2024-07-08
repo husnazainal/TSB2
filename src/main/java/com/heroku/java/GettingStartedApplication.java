@@ -31,6 +31,11 @@ public class GettingStartedApplication {
     public String plantlist() {
         return "plantlist";
     }
+
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";
+    }
     
 
     // @GetMapping("/register")
