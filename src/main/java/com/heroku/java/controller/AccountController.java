@@ -53,11 +53,18 @@ public class AccountController {
             loggedInUser.setStaffName(staffModel.getStaffName());
             loggedInUser.setStaffEmail(staffModel.getStaffEmail());
             // Don't set the password in the session
-            return "redirect:/dashboard"; // Ensure this matches your actual mapping
+            return "redirect:/dashboard";
         } catch (Exception e) {
             logger.error("Error registering staff", e);
             redirectAttributes.addFlashAttribute("error", "Registration failed. Error: " + e.getMessage());
             return "redirect:/register?error";
         }
+    }
+
+    @GetMapping("/dashboard")
+    public String showDashboard(@ModelAttribute("loggedInUser") StaffModel loggedInUser, Model model) {
+        logger.debug("Showing dashboard for staff: {}", loggedInUser.getStaffName());
+        model.addAttribute("loggedInUser", loggedInUser);
+        return "dashboard";
     }
 }

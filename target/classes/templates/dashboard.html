@@ -142,20 +142,18 @@
 <body>
     <header>
         <h1>Staff Dashboard</h1>
-        <div id="welcome-message"></div>
         <div class="user-details">
             <h2>Welcome, <span th:text="${loggedInUser.staffName}">Staff Name</span></h2>
         </div>
         <nav>
             <ul>
-                <li><a href="dashboard.html">Home</a></li>
-            <li><a href="listStaffController">Staff</a></li>
-            <li><a href="plantlist.jsp">Plant</a></li>
-            <li><a href="ViewFeedback.jsp">Feedback</a></li>
-            <li><a href="listScheduleController">Schedule</a></li>
-         </ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/listStaffController">Staff</a></li>
+                <li><a href="/plantlist">Plant</a></li>
+                <li><a href="/ViewFeedback">Feedback</a></li>
+                <li><a href="/listScheduleController">Schedule</a></li>
+            </ul>
         </nav>
-    </header>
     <main>
         <section id="staff">
             <h2>Staff Account Page</h2>
