@@ -148,7 +148,7 @@
             </div>
             <h2>Register New Account</h2>
             <p>Taman Seribu Bunga Staff Management</p>
-            <form th:action="@{/registerStaff}" th:object="${staffModel}" method="post">
+            <form th:action="@{/register}" th:object="${staffModel}" method="post">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
                     <input type="text" th:field="*{staffName}" placeholder="Username" required>
