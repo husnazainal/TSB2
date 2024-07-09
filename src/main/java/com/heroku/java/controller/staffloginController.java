@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.heroku.java.model.Staff;
+import com.heroku.java.model.StaffModel;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,29 +28,31 @@ public class staffloginController {
 
     @GetMapping("/loginStaff")
     public String loginForm(Model model) {
-        System.out.println("Login form requested");
-        if (!model.containsAttribute("staff")) {
-            model.addAttribute("staff", new Staff());
+        if (!model.containsAttribute("staffModel")) {
+            model.addAttribute("staffModel", new StaffModel());
         }
         return "loginStaff";
     }
 
     @PostMapping("/loginStaff")
-public String login(HttpSession session, @ModelAttribute Staff staff, Model model) {
-    try {
-        Staff loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staff.getStaffEmail());
-        if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staff.getStaffPassword())) {
-            model.addAttribute("error", "Invalid email or password. Please try again.");
+    public String login(@ModelAttribute("staffModel") StaffModel staffModel, 
+                        HttpSession session,
+                        RedirectAttributes redirectAttributes,
+                        Model model) {
+        try {
+            StaffModel loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staffModel.getStaffEmail());
+            if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staffModel.getStaffPassword())) {
+                model.addAttribute("error", "Invalid email or password. Please try again.");
+                return "loginStaff";
+            }
+            session.setAttribute(SESSION_STAFF_ID, loggedInStaff.getStaffId());
+            session.setAttribute(SESSION_STAFF_EMAIL, loggedInStaff.getStaffEmail());
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", "An unexpected error occurred. Please try again.");
             return "loginStaff";
         }
-        session.setAttribute(SESSION_STAFF_ID, loggedInStaff.getId());
-        session.setAttribute(SESSION_STAFF_EMAIL, loggedInStaff.getStaffEmail());
-        return "redirect:/dashboard";
-    } catch (Exception e) {
-        model.addAttribute("error", "An unexpected error occurred. Please try again.");
-        return "loginStaff";
     }
-}
 
     @GetMapping("/logoutStaff")
     public String logoutStaff(HttpSession session) {

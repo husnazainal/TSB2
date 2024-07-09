@@ -147,24 +147,25 @@
             </div>
             <h2>Welcome Back!</h2>
             <p>TSB Staff Management</p>
-            <form th:action="@{/loginStaff}" th:object="${staff}" method="post">
+            <form th:action="@{/loginStaff}" th:object="${staffModel}" method="post">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" name="staffemail" placeholder="Email" required>
+                    <input type="text" th:field="*{staffEmail}" placeholder="Email" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" name="staffpassword" placeholder="Password" required>
+                    <input type="password" th:field="*{staffPassword}" placeholder="Password" required>
                 </div>
                 <div class="options">
                     <label>
                         <input type="checkbox" name="remember"> Remember me
                     </label>
-                    <a th:href="@{/#}" class="forgot-password">Forgot password?</a>
+                    <a th:href="@{/forgot-password}" class="forgot-password">Forgot password?</a>
                 </div>
                 <button type="submit" class="login-button">Log In</button>
-                <p class="register-link">Don't have an account? <a th:href="@{/register.html}">Register</a> here.</p>
+                <p class="register-link">Don't have an account? <a th:href="@{/register}">Register</a> here.</p>
             </form>
+            <div th:if="${error}" class="error-message" th:text="${error}"></div>
         </div>
     </div>
 </body>

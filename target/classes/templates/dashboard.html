@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -147,33 +147,34 @@
         </div>
         <nav>
             <ul>
-                <a th:href="@{/}">Home</a>
-                <li><a href="/listStaffController">Staff</a></li>
-                <li><a href="/plantlist">Plant</a></li>
-                <li><a href="/ViewFeedback">Feedback</a></li>
-                <li><a href="/listScheduleController">Schedule</a></li>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/listStaffController}">Staff</a></li>
+                <li><a th:href="@{/plantlist}">Plant</a></li>
+                <li><a th:href="@{/ViewFeedback}">Feedback</a></li>
+                <li><a th:href="@{/listScheduleController}">Schedule</a></li>
             </ul>
         </nav>
+    </header>
     <main>
         <section id="staff">
             <h2>Staff Account Page</h2>
             <p>Create your staff account here</p>
-            <a href="register.html" class="link-button">Create Account </a>
+            <a th:href="@{/register.html}" class="link-button">Create Account</a>
         </section>
         <section id="plants">
             <h2>Plant Page</h2>
             <p>Create your plant here</p>
-            <a href="AddPlant.html" class="link-button">Create Plant </a>
+            <a th:href="@{/AddPlant.html}" class="link-button">Create Plant</a>
         </section>
         <section id="schedule">
             <h2>Schedule Page</h2>
             <p>Create your schedule here</p>
-            <a href="addSchedule.jsp" class="link-button">Create Schedule </a>
+            <a th:href="@{/addSchedule.jsp}" class="link-button">Create Schedule</a>
         </section>
         <section id="feedback">
             <h2>Feedback Page</h2>
             <p>View feedback from visitors here</p>
-            <a href="ViewFeedback.jsp" class="link-button">Feedback </a>
+            <a th:href="@{/ViewFeedback.jsp}" class="link-button">Feedback</a>
         </section>
     </main>
     <footer>
