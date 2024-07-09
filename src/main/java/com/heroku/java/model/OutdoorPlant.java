@@ -1,15 +1,17 @@
 package com.heroku.java.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "outdoor_plant")
 @PrimaryKeyJoinColumn(name = "plantId")
 public class OutdoorPlant extends plant {
 
-    private String sunE;
-    private String windR;
-    private String soilT;
+    private String sune;
+    private String windr;
+    private String soilt;
 
     // Default constructor
     public OutdoorPlant() {
@@ -18,26 +20,26 @@ public class OutdoorPlant extends plant {
 
     // Getters and setters
     public String getSunE() {
-        return sunE;
+        return sune;
     }
 
-    public void setSunE(String sunE) {
-        this.sunE = sunE;
+    public void setSunE(String sune) {
+        this.sune = sune;
     }
 
     public String getWindR() {
-        return windR;
+        return windr;
     }
 
-    public void setWindR(String windR) {
-        this.windR = windR;
+    public void setWindR(String windr) {
+        this.windr = windr;
     }
 
     public String getSoilT() {
-        return soilT;
+        return soilt;
     }
 
-    public void setSoilT(String soilT) {
-        this.soilT = soilT;
+    public void setSoilT(String soilt) {
+        this.soilt = soilt;
     }
 }

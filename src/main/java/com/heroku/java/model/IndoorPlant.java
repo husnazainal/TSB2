@@ -1,15 +1,17 @@
 package com.heroku.java.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "indoor_plant")
 @PrimaryKeyJoinColumn(name = "plantId")
 public class IndoorPlant extends plant {
 
-    private String lightR;
-    private String humidP;
-    private String waterF;
+    private String lightr;
+    private String humidp;
+    private String waterf;
 
     // Default constructor
     public IndoorPlant() {
@@ -18,26 +20,26 @@ public class IndoorPlant extends plant {
 
     // Getters and setters
     public String getLightR() {
-        return lightR;
+        return lightr;
     }
 
-    public void setLightR(String lightR) {
-        this.lightR = lightR;
+    public void setLightR(String lightr) {
+        this.lightr = lightr;
     }
 
     public String getHumidP() {
-        return humidP;
+        return humidp;
     }
 
-    public void setHumidP(String humidP) {
-        this.humidP = humidP;
+    public void setHumidP(String humidp) {
+        this.humidp = humidp;
     }
 
     public String getWaterF() {
-        return waterF;
+        return waterf;
     }
 
-    public void setWaterF(String waterF) {
-        this.waterF = waterF;
+    public void setWaterF(String waterf) {
+        this.waterf = waterf;
     }
 }
