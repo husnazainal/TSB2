@@ -61,9 +61,9 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/dashboard")
-    public String showDashboard(@ModelAttribute("loggedInUser") StaffModel loggedInUser, Model model) {
-        model.addAttribute("staffEmail", loggedInUser.getStaffEmail());
-        return "dashboard"; // Ensure this matches the name of your HTML file without the .html extension
-    }
+    // @GetMapping("/dashboard")
+    // public String showDashboard(@ModelAttribute("loggedInUser") StaffModel loggedInUser, Model model) {
+    //     model.addAttribute("staffEmail", loggedInUser.getStaffEmail());
+    //     return "dashboard"; // Ensure this matches the name of your HTML file without the .html extension
+    // }
 }
