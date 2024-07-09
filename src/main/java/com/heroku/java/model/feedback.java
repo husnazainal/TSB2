@@ -3,16 +3,16 @@ package com.heroku.java.model;
 import java.sql.Date;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Column;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Feedback {
+public class feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Feedback {
     @Column(name = "visitorId")
     private int visitorId;
 
-    public Feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, int visitorId) {
+    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, int visitorId) {
         this.feedbackId = feedbackId;
         this.plantId = plantId;
         this.message = message;
@@ -43,7 +43,7 @@ public class Feedback {
         this.visitorId = visitorId;
     }
 
-    public Feedback() {}
+    public feedback() {}
 
 	public int getFeedbackId() {
     	return feedbackId;
@@ -109,7 +109,7 @@ public class Feedback {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Feedback feedback = (Feedback) o;
+        feedback feedback = (feedback) o;
         return feedbackId == feedback.feedbackId &&
                plantId == feedback.plantId &&
                visitorId == feedback.visitorId &&
