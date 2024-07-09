@@ -40,7 +40,6 @@ public class PlantController {
         return "addplant";
     }
 
-
     @PostMapping("/addplant")
     @Transactional
     public String addPlant(@ModelAttribute("plant") plant plant) {
@@ -48,7 +47,6 @@ public class PlantController {
             int newPlantId = generatePlantID(connection);
             plant.setPlantId(newPlantId);
 
-            // Insert into main plant table
             String sql = "INSERT INTO plant(plantid, sciname, comname, type, habitat, species, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, plant.getPlantId());
@@ -61,28 +59,28 @@ public class PlantController {
                 statement.executeUpdate();
             }
 
-            // Insert into subclass table based on plant type
             if ("Indoor".equals(plant.getType())) {
+                IndoorPlant indoorPlant = (IndoorPlant) plant;
                 sql = "INSERT INTO indoor_plant(plantid, lightr, humidp, waterf) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
-                    statement.setString(2, ((IndoorPlant) plant).getLightR());
-                    statement.setString(3, ((IndoorPlant) plant).getHumidP());
-                    statement.setString(4, ((IndoorPlant) plant).getWaterF());
+                    statement.setString(2, indoorPlant.getLightR());
+                    statement.setString(3, indoorPlant.getHumidP());
+                    statement.setString(4, indoorPlant.getWaterF());
                     statement.executeUpdate();
                 }
             } else if ("Outdoor".equals(plant.getType())) {
+                OutdoorPlant outdoorPlant = (OutdoorPlant) plant;
                 sql = "INSERT INTO outdoor_plant(plantid, sune, windr, soilt) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
-                    statement.setString(2, ((OutdoorPlant) plant).getSunE());
-                    statement.setString(3, ((OutdoorPlant) plant).getWindR());
-                    statement.setString(4, ((OutdoorPlant) plant).getSoilT());
+                    statement.setString(2, outdoorPlant.getSunE());
+                    statement.setString(3, outdoorPlant.getWindR());
+                    statement.setString(4, outdoorPlant.getSoilT());
                     statement.executeUpdate();
                 }
             }
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return "redirect:/error";
         }
@@ -90,14 +88,14 @@ public class PlantController {
         return "redirect:/plantlist";
     }
 
-    private int generatePlantID(Connection connection) throws Exception {
+    private int generatePlantID(Connection connection) throws SQLException {
         String query = "SELECT COALESCE(MAX(plantid), 0) + 1 FROM plant";
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
-                return 1; // Start with 1 if no records found
+                return 1;
             }
         }
     }
@@ -112,7 +110,9 @@ public class PlantController {
                 + "LEFT JOIN indoor_plant i ON p.plantid = i.plantid "
                 + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
                 + "ORDER BY p.plantid";
-        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
@@ -203,11 +203,11 @@ public class PlantController {
     }
 
     @PostMapping("/updatePlant")
+    @Transactional
     public String updatePlant(@ModelAttribute("plant") plant plant) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                // Update main plant table
                 String sql = "UPDATE plant SET sciname = ?, comname = ?, type = ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setString(1, plant.getSciName());
@@ -220,7 +220,6 @@ public class PlantController {
                     statement.executeUpdate();
                 }
 
-                // Update subclass table based on plant type
                 if (plant instanceof IndoorPlant) {
                     IndoorPlant indoorPlant = (IndoorPlant) plant;
                     sql = "UPDATE indoor_plant SET lightr = ?, humidp = ?, waterf = ? WHERE plantid = ?";
@@ -256,25 +255,23 @@ public class PlantController {
     }
 
     @PostMapping("/deletePlant")
+    @Transactional
     public String deletePlant(@RequestParam("plantId") int plantId) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                // Delete from indoor_plant table
                 String sql = "DELETE FROM indoor_plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
                     statement.executeUpdate();
                 }
 
-                // Delete from outdoor_plant table
                 sql = "DELETE FROM outdoor_plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
                     statement.executeUpdate();
                 }
 
-                // Delete from main plant table
                 sql = "DELETE FROM plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);

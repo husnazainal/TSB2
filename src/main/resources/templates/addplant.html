@@ -168,82 +168,58 @@ h1 {
             <form th:action="@{/addplant}" th:object="${plant}" method="post" id="plantForm">
                 <div class="form-group">
                     <h3>Plant Scientific Name:</h3>
-                    <input type="text" th:field="*{sciName}" size="40"/>
+                    <input type="text" th:field="*{sciName}" required/>
                 </div>
                 <div class="form-group">
                     <h3>Plant Common Name:</h3>
-                    <input type="text" th:field="*{comName}" size="25" />
+                    <input type="text" th:field="*{comName}" required/>
                 </div>
                 <div class="form-group">
                     <h3>Plant Type:</h3>
-                    <input type="radio" th:field="*{type}" value="Indoor" onclick="showIndoorFields()" /> Indoor
-                    <input type="radio" th:field="*{type}" value="Outdoor" onclick="showOutdoorFields()" /> Outdoor
+                    <input type="radio" th:field="*{type}" value="Indoor" onclick="showFields('indoor')" required/> Indoor
+                    <input type="radio" th:field="*{type}" value="Outdoor" onclick="showFields('outdoor')" required/> Outdoor
                 </div>
-                <div id="indoorFields" class="hidden-fields" th:object="${indoorPlant}">
+                <div id="indoorFields" class="hidden-fields">
                     <h3>Light Requirements:</h3>
-<<<<<<< HEAD
-                    <select th:field="*{indoorPlant.lightr}">
-=======
                     <select th:field="*{lightR}">
->>>>>>> parent of 060742c (fix addplant)
-                        <option value="Select">Select</option>
+                        <option value="">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                     <h3>Humidity Preferences:</h3>
-<<<<<<< HEAD
-                    <select th:field="*{indoorPlant.humidp}">
-=======
                     <select th:field="*{humidP}">
->>>>>>> parent of 060742c (fix addplant)
-                        <option value="Select">Select</option>
+                        <option value="">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                     <h3>Watering Frequency:</h3>
-<<<<<<< HEAD
-                    <select th:field="*{indoorPlant.waterf}">
-=======
                     <select th:field="*{waterF}">
->>>>>>> parent of 060742c (fix addplant)
-                        <option value="Select">Select</option>
+                        <option value="">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                 </div>
-                <div id="outdoorFields" class="hidden-fields" th:object="${outdoorPlant}">
+                <div id="outdoorFields" class="hidden-fields">
                     <h3>Sunlight Exposure:</h3>
-<<<<<<< HEAD
-                    <select th:field="*{outdoorPlant.sune}">
-=======
                     <select th:field="*{sunE}">
->>>>>>> parent of 060742c (fix addplant)
-                        <option value="Select">Select</option>
+                        <option value="">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                     <h3>Wind Resistance:</h3>
-<<<<<<< HEAD
-                    <select th:field="*{outdoorPlant.windr}">
-=======
                     <select th:field="*{windR}">
->>>>>>> parent of 060742c (fix addplant)
-                        <option value="Select">Select</option>
+                        <option value="">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                     <h3>Soil Type:</h3>
-<<<<<<< HEAD
-                    <select th:field="*{outdoorPlant.soilt}">
-=======
                     <select th:field="*{soilT}">
->>>>>>> parent of 060742c (fix addplant)
-                        <option value="Select">Select</option>
+                        <option value="">Select</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -251,15 +227,15 @@ h1 {
                 </div>
                 <div class="form-group">
                     <h3>Plant Habitat:</h3>
-                    <input type="text" th:field="*{habitat}" size="25" />
+                    <input type="text" th:field="*{habitat}" required/>
                 </div>
                 <div class="form-group">
                     <h3>Plant Species:</h3>
-                    <input type="text" th:field="*{species}" size="25" />
+                    <input type="text" th:field="*{species}" required/>
                 </div>
                 <div class="form-group">
                     <h3>Plant Description:</h3>
-                    <input type="text" th:field="*{description}" size="50" />
+                    <textarea th:field="*{description}" rows="4" required></textarea>
                 </div>
                 <div class="form-actions">
                     <input type="submit" value="Submit" />
@@ -269,25 +245,26 @@ h1 {
         </div>
     </div>
     <script th:inline="javascript">
-        function showIndoorFields() {
-            document.getElementById('indoorFields').style.display = 'block';
-            document.getElementById('outdoorFields').style.display = 'none';
+        function showFields(type) {
+            document.getElementById('indoorFields').style.display = type === 'indoor' ? 'block' : 'none';
+            document.getElementById('outdoorFields').style.display = type === 'outdoor' ? 'block' : 'none';
         }
 
-        function showOutdoorFields() {
-            document.getElementById('indoorFields').style.display = 'none';
-            document.getElementById('outdoorFields').style.display = 'block';
-        }
-
-        // Validation Script
         document.getElementById("plantForm").addEventListener("submit", function(event) {
-            var sciName = document.querySelector("[name='sciName']").value;
-            var comName = document.querySelector("[name='comName']").value;
             var type = document.querySelector("[name='type']:checked");
-
-            if (!sciName || !comName || !type) {
-                alert("Please fill out all required fields and select a plant type.");
+            if (!type) {
+                alert("Please select a plant type.");
                 event.preventDefault();
+            } else {
+                var fields = type.value === 'Indoor' ? 'indoorFields' : 'outdoorFields';
+                var selects = document.getElementById(fields).getElementsByTagName('select');
+                for (var i = 0; i < selects.length; i++) {
+                    if (selects[i].value === "") {
+                        alert("Please fill out all fields for the selected plant type.");
+                        event.preventDefault();
+                        return;
+                    }
+                }
             }
         });
     </script>
