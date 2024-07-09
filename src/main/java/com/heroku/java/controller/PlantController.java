@@ -100,7 +100,7 @@ public class PlantController {
         }
     }
 
-    @GetMapping("/plantList")
+    @GetMapping("/plantlist")
     public String plantList(Model model) {
         List<plant> plants = new ArrayList<>();
 
@@ -149,7 +149,7 @@ public class PlantController {
         }
 
         model.addAttribute("plants", plants);
-        return "plantList";
+        return "plantlist";
     }
 
     @GetMapping("/updatePlant")
