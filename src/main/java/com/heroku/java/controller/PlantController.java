@@ -276,7 +276,7 @@ public class PlantController {
             e.printStackTrace();
             return "redirect:/error";
         }
-        return "redirect:/plantList";
+        return "redirect:/plantlist";
     }
 
     @PostMapping("/deletePlant")
