@@ -238,7 +238,7 @@
               </tr>
               <tr class="details" th:id="'details_' + ${plant?.plantId}" style="display: none">
                   <td colspan="4">
-                      <div class="indoor-details" th:if="${plant instanceof T(com.example.demo.IndoorPlant)}">
+                      <div class="indoor-details" th:if="${plant instanceof IndoorPlant}">
                           <strong>Light Requirements:</strong>
                           <span th:text="${plant?.lightR}"></span><br />
                           <strong>Humidity Preferences:</strong>
@@ -246,7 +246,7 @@
                           <strong>Watering Frequency:</strong>
                           <span th:text="${plant?.waterF}"></span><br />
                       </div>
-                      <div class="outdoor-details" th:if="${plant instanceof T(com.example.demo.OutdoorPlant)}">
+                      <div class="outdoor-details" th:if="${plant instanceof OutdoorPlant}">
                           <strong>Sunlight Exposure:</strong>
                           <span th:text="${plant?.sunE}"></span><br />
                           <strong>Wind Resistance:</strong>
