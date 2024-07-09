@@ -151,82 +151,96 @@
             <form th:action="@{/updatePlant}" th:object="${plant}" method="post">
                 <h1>Update Plant</h1>
                 <input type="hidden" th:field="*{plantId}" />
+
                 <div class="form-group">
                     <h3>Plant Scientific Name:</h3>
                     <input type="text" th:field="*{sciName}" size="40" />
                 </div>
+
                 <div class="form-group">
                     <h3>Plant Common Name:</h3>
                     <input type="text" th:field="*{comName}" size="25" />
                 </div>
+
                 <div class="form-group">
                     <h3>Plant Type:</h3>
                     <input type="radio" th:field="*{type}" value="Indoor" onclick="showIndoorFields()" />Indoor
                     <input type="radio" th:field="*{type}" value="Outdoor" onclick="showOutdoorFields()" />Outdoor
                 </div>
-                <div id="indoorFields" class="form-group" th:object="${IndoorPlant}">
+
+                <div id="indoorFields" class="form-group" th:if="${plant.type == 'Indoor'}">
                     <h3>Light Requirements:</h3>
-                    <select th:field="*{lightR}">
+                    <select th:field="*{IndoorPlant.lightR}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
+
                     <h3>Humidity Preferences:</h3>
-                    <select th:field="*{humidP}">
+                    <select th:field="*{IndoorPlant.humidP}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
+
                     <h3>Watering Frequency:</h3>
-                    <select th:field="*{waterF}">
+                    <select th:field="*{IndoorPlant.waterF}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
                 </div>
-                <div id="outdoorFields" class="form-group" th:object="${OutdoorPlant}">
+
+                <div id="outdoorFields" class="form-group" th:if="${plant.type == 'Outdoor'}">
                     <h3>Sunlight Exposure:</h3>
-                    <select th:field="*{sunE}">
+                    <select th:field="*{OutdoorPlant.sunE}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
+
                     <h3>Wind Resistance:</h3>
-                    <select th:field="*{windR}">
+                    <select th:field="*{OutdoorPlant.windR}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
                     </select>
+
                     <h3>Soil Type:</h3>
-                    <select th:field="*{soilT}">
+                    <select th:field="*{OutdoorPlant.soilT}">
                         <option value="Select">Select</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <h3>Plant Habitat:</h3>
                     <input type="text" th:field="*{habitat}" size="40" />
                 </div>
+
                 <div class="form-group">
                     <h3>Plant Species:</h3>
                     <input type="text" th:field="*{species}" size="25" />
                 </div>
+
                 <div class="form-group">
                     <h3>Plant Description:</h3>
                     <textarea th:field="*{description}" rows="4" cols="50"></textarea>
                 </div>
+
                 <div class="form-actions">
                     <input type="submit" value="Update Plant" />
                     <input type="reset" value="Reset" />
                 </div>
             </form>
+
         </div>
     </main>
 </body>
