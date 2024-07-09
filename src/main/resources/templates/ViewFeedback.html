@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback | TSB</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedback List</h1>
+
+        <p th:if="${error}" style="color: red;" th:text="'Error: ' + ${error}"></p>
+
+        <table th:unless="${error}">
+            <tr>
+                <th>Feedback ID</th>
+                <th>Plant ID</th>
+                <th>Visitor ID</th>
+                <th>Visitor Name</th>
+                <th>Message</th>
+                <th>Date Created</th>
+            </tr>
+            <tr th:each="feedback : ${feedbacks}">
+                <td th:text="${feedback.feedbackId}"></td>
+                <td th:text="${feedback.plantId}"></td>
+                <td th:text="${feedback.visitorId}"></td>
+                <td th:text="${feedback.visitorName}"></td>
+                <td th:text="${feedback.message}"></td>
+                <td th:text="${feedback.dateCreated}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
