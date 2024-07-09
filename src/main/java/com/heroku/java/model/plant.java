@@ -86,4 +86,20 @@ public class plant {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public IndoorPlant getIndoorPlant() {
+        return IndoorPlant;
+    }
+
+    public void setIndoorPlant(IndoorPlant IndoorPlant) {
+        this.IndoorPlant = IndoorPlant;
+    }
+
+    public OutdoorPlant getOutdoorPlant() {
+        return OutdoorPlant;
+    }
+
+    public void setOutdoorPlant(OutdoorPlant OutdoorPlant) {
+        this.OutdoorPlant = OutdoorPlant;
+    }
 }
