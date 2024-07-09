@@ -103,7 +103,6 @@ public class PlantController {
     @GetMapping("/plantlist")
     public String plantList(Model model) {
         List<plant> plants = new ArrayList<>();
-
         String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, "
                 + "i.lightr, i.humidp, i.waterf, "
                 + "o.sune, o.windr, o.soilt "
@@ -111,27 +110,25 @@ public class PlantController {
                 + "LEFT JOIN indoor_plant i ON p.plantid = i.plantid "
                 + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
                 + "ORDER BY p.plantid";
-
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
-
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
-
                 if ("Indoor".equals(type)) {
-                    plant = new IndoorPlant();
-                    ((IndoorPlant) plant).setLightR(resultSet.getString("lightr"));
-                    ((IndoorPlant) plant).setHumidP(resultSet.getString("humidp"));
-                    ((IndoorPlant) plant).setWaterF(resultSet.getString("waterf"));
+                    IndoorPlant indoorPlant = new IndoorPlant();
+                    indoorPlant.setLightR(resultSet.getString("lightr"));
+                    indoorPlant.setHumidP(resultSet.getString("humidp"));
+                    indoorPlant.setWaterF(resultSet.getString("waterf"));
+                    plant = indoorPlant;
                 } else if ("Outdoor".equals(type)) {
-                    plant = new OutdoorPlant();
-                    ((OutdoorPlant) plant).setSunE(resultSet.getString("sune"));
-                    ((OutdoorPlant) plant).setWindR(resultSet.getString("windr"));
-                    ((OutdoorPlant) plant).setSoilT(resultSet.getString("soilt"));
+                    OutdoorPlant outdoorPlant = new OutdoorPlant();
+                    outdoorPlant.setSunE(resultSet.getString("sune"));
+                    outdoorPlant.setWindR(resultSet.getString("windr"));
+                    outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                    plant = outdoorPlant;
                 } else {
                     plant = new plant();
                 }
-
                 plant.setPlantId(resultSet.getInt("plantid"));
                 plant.setSciName(resultSet.getString("sciname"));
                 plant.setComName(resultSet.getString("comname"));
@@ -139,15 +136,13 @@ public class PlantController {
                 plant.setHabitat(resultSet.getString("habitat"));
                 plant.setSpecies(resultSet.getString("species"));
                 plant.setDescription(resultSet.getString("description"));
-
                 plants.add(plant);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
+            model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
-
         model.addAttribute("plants", plants);
         return "plantlist";
     }
