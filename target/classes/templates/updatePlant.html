@@ -164,21 +164,51 @@
                     <input type="radio" th:field="*{type}" value="Indoor" onclick="showIndoorFields()" />Indoor
                     <input type="radio" th:field="*{type}" value="Outdoor" onclick="showOutdoorFields()" />Outdoor
                 </div>
-                <div id="indoorFields" class="form-group" th:if="${plant.type} == 'Indoor'">
+                <div id="indoorFields" class="form-group" th:object="${IndoorPlant}">
                     <h3>Light Requirements:</h3>
-                    <input type="text" th:field="*{IndoorPlant.lightR}" size="25" />
+                    <select th:field="*{lightR}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
                     <h3>Humidity Preferences:</h3>
-                    <input type="text" th:field="*{IndoorPlant.humidP}" size="25" />
-                    <h3>Water Frequency:</h3>
-                    <input type="text" th:field="*{IndoorPlant.waterF}" size="25" />
+                    <select th:field="*{humidP}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <h3>Watering Frequency:</h3>
+                    <select th:field="*{waterF}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
                 </div>
-                <div id="outdoorFields" class="form-group" th:if="${plant.type} == 'Outdoor'">
-                    <h3>Sun Exposure:</h3>
-                    <input type="text" th:field="*{OutdoorPlant.sunE}" size="25" />
+                <div id="outdoorFields" class="hidden-fields" th:object="${OutdoorPlant}">
+                    <h3>Sunlight Exposure:</h3>
+                    <select th:field="*{sunE}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
                     <h3>Wind Resistance:</h3>
-                    <input type="text" th:field="*{OutdoorPlant.windR}" size="25" />
+                    <select th:field="*{windR}">
+                        <option value="Select">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
                     <h3>Soil Type:</h3>
-                    <input type="text" th:field="*{OutdoorPlant.soilT}" size="25" />
+                    <select th:field="*{soilT}">
+                        <option value="Select">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <h3>Plant Habitat:</h3>
