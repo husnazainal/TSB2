@@ -35,14 +35,16 @@ public class PlantController {
     @GetMapping("/addplant")
     public String showAddPlantForm(Model model) {
         model.addAttribute("plant", new plant());
-        model.addAttribute("indoorPlant", new IndoorPlant());
-        model.addAttribute("outdoorPlant", new OutdoorPlant());
+        model.addAttribute("IndoorPlant", new IndoorPlant());
+        model.addAttribute("OutdoorPlant", new OutdoorPlant());
         return "addplant";
     }
 
     @PostMapping("/addplant")
     @Transactional
-    public String addPlant(@ModelAttribute("plant") plant plant) {
+    public String addPlant(@ModelAttribute("plant") plant plant,
+            @ModelAttribute("IndoorPlant") IndoorPlant indoorPlant,
+            @ModelAttribute("OutdoorPlant") OutdoorPlant outdoorPlant) {
         try (Connection connection = dataSource.getConnection()) {
             int newPlantId = generatePlantID(connection);
             plant.setPlantId(newPlantId);
@@ -60,7 +62,7 @@ public class PlantController {
             }
 
             if ("Indoor".equals(plant.getType())) {
-                IndoorPlant indoorPlant = (IndoorPlant) plant;
+                indoorPlant.setPlantId(newPlantId);
                 sql = "INSERT INTO indoor_plant(plantid, lightr, humidp, waterf) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
@@ -70,7 +72,7 @@ public class PlantController {
                     statement.executeUpdate();
                 }
             } else if ("Outdoor".equals(plant.getType())) {
-                OutdoorPlant outdoorPlant = (OutdoorPlant) plant;
+                outdoorPlant.setPlantId(newPlantId);
                 sql = "INSERT INTO outdoor_plant(plantid, sune, windr, soilt) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
@@ -90,8 +92,7 @@ public class PlantController {
 
     private int generatePlantID(Connection connection) throws SQLException {
         String query = "SELECT COALESCE(MAX(plantid), 0) + 1 FROM plant";
-        try (PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(query); ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
@@ -110,9 +111,7 @@ public class PlantController {
                 + "LEFT JOIN indoor_plant i ON p.plantid = i.plantid "
                 + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
                 + "ORDER BY p.plantid";
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
@@ -152,13 +151,13 @@ public class PlantController {
     @GetMapping("/updatePlant")
     public String showUpdatePlantForm(@RequestParam("plantId") int plantId, Model model) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, " +
-                         "i.lightr, i.humidp, i.waterf, " +
-                         "o.sune, o.windr, o.soilt " +
-                         "FROM plant p " +
-                         "LEFT JOIN indoor_plant i ON p.plantid = i.plantid " +
-                         "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid " +
-                         "WHERE p.plantid = ?";
+            String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, "
+                    + "i.lightr, i.humidp, i.waterf, "
+                    + "o.sune, o.windr, o.soilt "
+                    + "FROM plant p "
+                    + "LEFT JOIN indoor_plant i ON p.plantid = i.plantid "
+                    + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
+                    + "WHERE p.plantid = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, plantId);
