@@ -179,7 +179,7 @@ h1 {
                     <input type="radio" th:field="*{type}" value="Indoor" onclick="showIndoorFields()" /> Indoor
                     <input type="radio" th:field="*{type}" value="Outdoor" onclick="showOutdoorFields()" /> Outdoor
                 </div>
-                <div id="indoorFields" class="hidden-fields" th:object="${indoorPlant}">
+                <div id="indoorFields" class="hidden-fields" th:object="${IndoorPlant}">
                     <h3>Light Requirements:</h3>
                     <select th:field="*{IndoorPlant.lightr}">
                         <option value="Select">Select</option>
@@ -202,7 +202,7 @@ h1 {
                         <option value="High">High</option>
                     </select>
                 </div>
-                <div id="outdoorFields" class="hidden-fields" th:object="${outdoorPlant}">
+                <div id="outdoorFields" class="hidden-fields" th:object="${OutdoorPlant}">
                     <h3>Sunlight Exposure:</h3>
                     <select th:field="*{OutdoorPlant.sune}">
                         <option value="Select">Select</option>
