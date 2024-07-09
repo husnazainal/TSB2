@@ -231,9 +231,11 @@
               onclick="toggleDetails(this)">View</button>
             <a class="btn" th:if="${plant != null}" th:href="@{/updatePlant/{plantid}(plantid=${plant.plantId})}"
               th:disabled="${plant == null}">Update</a>
-            <a class="btn" th:if="${plant != null}" th:href="@{/deletePlant/{plantid}(plantid=${plant.plantId})}"
-              onclick="return confirm('Are you sure you want to delete this plant?')"
-              th:disabled="${plant == null}">Delete</a>
+            <form th:action="@{/deletePlant/{plantid}(plantid=${plant.plantId})}" method="post"
+              style="display: inline;">
+              <button type="submit" class="btn" onclick="return confirm('Are you sure you want to delete this plant?')"
+                th:disabled="${plant == null}">Delete</button>
+            </form>
           </td>
         </tr>
         <tr class="details" th:id="'details_' + ${plant?.plantId}" style="display: none">

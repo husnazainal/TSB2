@@ -279,24 +279,27 @@ public class PlantController {
         return "redirect:/plantlist";
     }
 
-    @PostMapping("/deletePlant")
+    @PostMapping("/deletePlant/{plantId}")
     @Transactional
-    public String deletePlant(@RequestParam("plantId") int plantId) {
+    public String deletePlant(@PathVariable("plantId") int plantId) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {
+                // Delete from indoor_plant
                 String sql = "DELETE FROM indoor_plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
                     statement.executeUpdate();
                 }
 
+                // Delete from outdoor_plant
                 sql = "DELETE FROM outdoor_plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
                     statement.executeUpdate();
                 }
 
+                // Delete from plant
                 sql = "DELETE FROM plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
