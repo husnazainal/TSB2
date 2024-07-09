@@ -32,10 +32,10 @@ public class GettingStartedApplication {
     //     return "dashboard";
     // }
 
-    @GetMapping("/plantlist")
-    public String plantlist() {
-        return "plantlist";
-    }
+    // @GetMapping("/plantlist")
+    // public String plantlist() {
+    //     return "plantlist";
+    // }
     
     // @GetMapping("/register")
     // public String register() {
