@@ -4,6 +4,45 @@
     <meta charset="UTF-8">
     <title>Feedback | TSB</title>
     <style>
+        header {
+            background-color: #a8bfa5; /* Sage green header */
+            color: #333;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            font-size: 25px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-items a {
+            font-family: sans-serif;
+            text-decoration: none;
+            color: #333;
+            background-color: #dfe2c2; /* Light sage green */
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 4px 4px 10px #dfe2c2, -4px -4px 10px #dfe2c2;
+        }
+
+        .nav-items a:hover {
+            background-color: #c3c6a5; /* Darker sage green on hover */
+        }
+        
         table {
             border-collapse: collapse;
             width: 100%;
@@ -19,6 +58,16 @@
     </style>
 </head>
 <body>
+    <header>
+        <a href="#" class="logo">TSB</a>
+        <nav class="nav-items">
+            <a th:href="@{/dashboard}">Home</a>
+            <a th:href="@{/plantlist}">Plant</a>
+            <a th:href="@{/listScheduleController}">Schedule</a>
+            <a th:href="@{/ViewFeedback}">Feedback</a>
+        </nav>
+    </header>
+
     <div class="container">
         <h1>Feedback List</h1>
 
