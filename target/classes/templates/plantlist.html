@@ -237,23 +237,23 @@
                 onclick="return confirm('Are you sure you want to delete this plant?')">Delete</a>
             </td>
           </tr>
-          <tr class="details" th:id="'details_' + ${plant.plantId}" th:each="plant : ${plants}" style="display: none">
+          <tr class="details" th:id="'details_' + ${plant.plantId}" style="display: none">
             <td colspan="4">
-              <div class="indoor-details" th:if="${plant.type == 'Indoor'}">
+              <div class="indoor-details" th:if="${plant instanceof T(com.example.demo.IndoorPlant)}">
                 <strong>Light Requirements:</strong>
-                <span th:text="${IndoorPlant.lightR}"></span><br />
+                <span th:text="${plant.lightR}"></span><br />
                 <strong>Humidity Preferences:</strong>
-                <span th:text="${IndoorPlant.humidP}"></span><br />
+                <span th:text="${plant.humidP}"></span><br />
                 <strong>Watering Frequency:</strong>
-                <span th:text="${IndoorPlant.waterF}"></span><br />
+                <span th:text="${plant.waterF}"></span><br />
               </div>
-              <div class="outdoor-details" th:if="${plant.type == 'Outdoor'}">
+              <div class="outdoor-details" th:if="${plant instanceof T(com.example.demo.OutdoorPlant)}">
                 <strong>Sunlight Exposure:</strong>
-                <span th:text="${OutdoorPlant.sunE}"></span><br />
+                <span th:text="${plant.sunE}"></span><br />
                 <strong>Wind Resistance:</strong>
-                <span th:text="${OutdoorPlant.windR}"></span><br />
+                <span th:text="${plant.windR}"></span><br />
                 <strong>Soil Type:</strong>
-                <span th:text="${OutdoorPlant.soilT}"></span><br />
+                <span th:text="${plant.soilT}"></span><br />
               </div>
               <strong>Habitat:</strong>
               <span th:text="${plant.habitat}"></span><br />
@@ -265,6 +265,7 @@
           </tr>
         </tbody>
       </table>
+
     </div>
   </main>
 
@@ -294,14 +295,14 @@
 
     function toggleDetails(button) {
       var plantId = button.getAttribute('data-plant-id');
-      var type = button.getAttribute('data-plant-type');
-      var details = document.getElementById("details_" + plantId);
-      if (details.style.display === "table-row") {
-        details.style.display = "none";
+      var details = document.getElementById('details_' + plantId);
+      if (details.style.display === 'table-row') {
+        details.style.display = 'none';
       } else {
-        details.style.display = "table-row";
+        details.style.display = 'table-row';
       }
     }
+
   </script>
 </body>
 

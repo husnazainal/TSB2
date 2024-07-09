@@ -112,6 +112,7 @@ public class PlantController {
                 + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
                 + "ORDER BY p.plantid";
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
