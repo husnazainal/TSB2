@@ -105,7 +105,6 @@ public class PlantController {
     @GetMapping("/plantlist")
     public String plantList(Model model) {
         List<plant> plants = new ArrayList<>();
-<<<<<<< HEAD
         String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, "
                 + "i.lightr, i.humidp, i.waterf, "
                 + "o.sune, o.windr, o.soilt "
@@ -114,21 +113,6 @@ public class PlantController {
                 + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
                 + "ORDER BY p.plantid";
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
-=======
-
-        String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, " +
-                     "i.lightr, i.humidp, i.waterf, " +
-                     "o.sune, o.windr, o.soilt " +
-                     "FROM plant p " +
-                     "LEFT JOIN indoor_plant i ON p.plantid = i.plantid " +
-                     "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid " +
-                     "ORDER BY p.plantid";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
->>>>>>> parent of 060742c (fix addplant)
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
