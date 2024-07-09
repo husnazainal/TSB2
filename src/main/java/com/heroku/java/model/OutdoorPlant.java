@@ -19,27 +19,27 @@ public class OutdoorPlant extends plant {
     }
 
     // Getters and setters
-    public String getSunE() {
+    public String getSune() {
         return sune;
     }
 
-    public void setSunE(String sune) {
+    public void setSune(String sune) {
         this.sune = sune;
     }
 
-    public String getWindR() {
+    public String getWindr() {
         return windr;
     }
 
-    public void setWindR(String windr) {
+    public void setWindr(String windr) {
         this.windr = windr;
     }
 
-    public String getSoilT() {
+    public String getSoilt() {
         return soilt;
     }
 
-    public void setSoilT(String soilt) {
+    public void setSoilt(String soilt) {
         this.soilt = soilt;
     }
 }

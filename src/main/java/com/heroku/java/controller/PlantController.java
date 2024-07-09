@@ -66,9 +66,9 @@ public class PlantController {
                 sql = "INSERT INTO indoor_plant(plantid, lightr, humidp, waterf) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
-                    statement.setString(2, indoorPlant.getLightR());
-                    statement.setString(3, indoorPlant.getHumidP());
-                    statement.setString(4, indoorPlant.getWaterF());
+                    statement.setString(2, indoorPlant.getLightr());
+                    statement.setString(3, indoorPlant.getHumidp());
+                    statement.setString(4, indoorPlant.getWaterf());
                     statement.executeUpdate();
                 }
             } else if ("Outdoor".equals(plant.getType())) {
@@ -76,9 +76,9 @@ public class PlantController {
                 sql = "INSERT INTO outdoor_plant(plantid, sune, windr, soilt) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plant.getPlantId());
-                    statement.setString(2, outdoorPlant.getSunE());
-                    statement.setString(3, outdoorPlant.getWindR());
-                    statement.setString(4, outdoorPlant.getSoilT());
+                    statement.setString(2, outdoorPlant.getSune());
+                    statement.setString(3, outdoorPlant.getWindr());
+                    statement.setString(4, outdoorPlant.getSoilt());
                     statement.executeUpdate();
                 }
             }
@@ -117,15 +117,15 @@ public class PlantController {
                 String type = resultSet.getString("type");
                 if ("Indoor".equals(type)) {
                     IndoorPlant indoorPlant = new IndoorPlant();
-                    indoorPlant.setLightR(resultSet.getString("lightr"));
-                    indoorPlant.setHumidP(resultSet.getString("humidp"));
-                    indoorPlant.setWaterF(resultSet.getString("waterf"));
+                    indoorPlant.setLightr(resultSet.getString("lightr"));
+                    indoorPlant.setHumidp(resultSet.getString("humidp"));
+                    indoorPlant.setWaterf(resultSet.getString("waterf"));
                     plant = indoorPlant;
                 } else if ("Outdoor".equals(type)) {
                     OutdoorPlant outdoorPlant = new OutdoorPlant();
-                    outdoorPlant.setSunE(resultSet.getString("sune"));
-                    outdoorPlant.setWindR(resultSet.getString("windr"));
-                    outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                    outdoorPlant.setSune(resultSet.getString("sune"));
+                    outdoorPlant.setWindr(resultSet.getString("windr"));
+                    outdoorPlant.setSoilt(resultSet.getString("soilt"));
                     plant = outdoorPlant;
                 } else {
                     plant = new plant();
@@ -168,15 +168,15 @@ public class PlantController {
 
                         if ("Indoor".equals(type)) {
                             IndoorPlant indoorPlant = new IndoorPlant();
-                            indoorPlant.setLightR(resultSet.getString("lightr"));
-                            indoorPlant.setHumidP(resultSet.getString("humidp"));
-                            indoorPlant.setWaterF(resultSet.getString("waterf"));
+                            indoorPlant.setLightr(resultSet.getString("lightr"));
+                            indoorPlant.setHumidp(resultSet.getString("humidp"));
+                            indoorPlant.setWaterf(resultSet.getString("waterf"));
                             plant = indoorPlant;
                         } else if ("Outdoor".equals(type)) {
                             OutdoorPlant outdoorPlant = new OutdoorPlant();
-                            outdoorPlant.setSunE(resultSet.getString("sune"));
-                            outdoorPlant.setWindR(resultSet.getString("windr"));
-                            outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                            outdoorPlant.setSune(resultSet.getString("sune"));
+                            outdoorPlant.setWindr(resultSet.getString("windr"));
+                            outdoorPlant.setSoilt(resultSet.getString("soilt"));
                             plant = outdoorPlant;
                         } else {
                             plant = new plant();
@@ -223,9 +223,9 @@ public class PlantController {
                     IndoorPlant indoorPlant = (IndoorPlant) plant;
                     sql = "UPDATE indoor_plant SET lightr = ?, humidp = ?, waterf = ? WHERE plantid = ?";
                     try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                        statement.setString(1, indoorPlant.getLightR());
-                        statement.setString(2, indoorPlant.getHumidP());
-                        statement.setString(3, indoorPlant.getWaterF());
+                        statement.setString(1, indoorPlant.getLightr());
+                        statement.setString(2, indoorPlant.getHumidp());
+                        statement.setString(3, indoorPlant.getWaterf());
                         statement.setInt(4, plant.getPlantId());
                         statement.executeUpdate();
                     }
@@ -233,9 +233,9 @@ public class PlantController {
                     OutdoorPlant outdoorPlant = (OutdoorPlant) plant;
                     sql = "UPDATE outdoor_plant SET sune = ?, windr = ?, soilt = ? WHERE plantid = ?";
                     try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                        statement.setString(1, outdoorPlant.getSunE());
-                        statement.setString(2, outdoorPlant.getWindR());
-                        statement.setString(3, outdoorPlant.getSoilT());
+                        statement.setString(1, outdoorPlant.getSune());
+                        statement.setString(2, outdoorPlant.getWindr());
+                        statement.setString(3, outdoorPlant.getSoilt());
                         statement.setInt(4, plant.getPlantId());
                         statement.executeUpdate();
                     }

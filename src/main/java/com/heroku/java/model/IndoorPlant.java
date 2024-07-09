@@ -19,27 +19,27 @@ public class IndoorPlant extends plant {
     }
 
     // Getters and setters
-    public String getLightR() {
+    public String getLightr() {
         return lightr;
     }
 
-    public void setLightR(String lightr) {
+    public void setLightr(String lightr) {
         this.lightr = lightr;
     }
 
-    public String getHumidP() {
+    public String getHumidp() {
         return humidp;
     }
 
-    public void setHumidP(String humidp) {
+    public void setHumidp(String humidp) {
         this.humidp = humidp;
     }
 
-    public String getWaterF() {
+    public String getWaterf() {
         return waterf;
     }
 
-    public void setWaterF(String waterf) {
+    public void setWaterf(String waterf) {
         this.waterf = waterf;
     }
 }
