@@ -9,9 +9,9 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "plantId")
 public class IndoorPlant extends plant {
 
-    private String lightr;
-    private String humidp;
-    private String waterf;
+    private String lightR;
+    private String humidP;
+    private String waterF;
 
     // Default constructor
     public IndoorPlant() {
@@ -19,27 +19,27 @@ public class IndoorPlant extends plant {
     }
 
     // Getters and setters
-    public String getLightr() {
-        return lightr;
+    public String getLightR() {
+        return lightR;
     }
 
-    public void setLightr(String lightr) {
-        this.lightr = lightr;
+    public void setLightR(String lightR) {
+        this.lightR = lightR;
     }
 
-    public String getHumidp() {
-        return humidp;
+    public String getHumidP() {
+        return humidP;
     }
 
-    public void setHumidp(String humidp) {
-        this.humidp = humidp;
+    public void setHumidP(String humidP) {
+        this.humidP = humidP;
     }
 
-    public String getWaterf() {
-        return waterf;
+    public String getWaterF() {
+        return waterF;
     }
 
-    public void setWaterf(String waterf) {
-        this.waterf = waterf;
+    public void setWaterF(String waterF) {
+        this.waterF = waterF;
     }
 }

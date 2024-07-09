@@ -1,314 +1,307 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Staff Plant List</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f0f2e6; /* Light sage green background */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
 
-      header {
-        background-color: #a8bfa5; /* Sage green header */
-        color: #333;
-        padding: 1rem;
-        text-align: center;
-        width: 100%;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        margin-bottom: 1rem;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Plant List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2e6;
+      /* Light sage green background */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-      #welcome-message {
-        margin-top: 0.25rem;
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
-      }
+    header {
+      background-color: #a8bfa5;
+      /* Sage green header */
+      color: #333;
+      padding: 1rem;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
 
-      nav ul {
-        list-style-type: none;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-      }
+    #welcome-message {
+      margin-top: 0.25rem;
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
 
-      nav ul li {
-        display: inline;
-      }
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
 
-      nav ul li a {
-        color: #333;
-        text-decoration: none;
-        background-color: #dfe2c2; /* Light sage green */
-        padding: 0.5rem 1rem;
-        border-radius: 10px;
-        box-shadow: 4px 4px 10px #dfe2c2, -4px -4px 10px #dfe2c2;
-        transition: all 0.3s ease;
-      }
+    nav ul li {
+      display: inline;
+    }
 
-      nav ul li a:hover {
-        background-color: #c3c6a5; /* Darker sage green on hover */
-      }
+    nav ul li a {
+      color: #333;
+      text-decoration: none;
+      background-color: #dfe2c2;
+      /* Light sage green */
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      box-shadow: 4px 4px 10px #dfe2c2, -4px -4px 10px #dfe2c2;
+      transition: all 0.3s ease;
+    }
 
-      main {
-        width: 90%;
-        max-width: 1200px;
-        padding: 1rem;
-        background-color: #fff; /* White content background */
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
+    nav ul li a:hover {
+      background-color: #c3c6a5;
+      /* Darker sage green on hover */
+    }
 
-      .container {
-        width: 100%;
-        margin: 0 auto;
-      }
+    main {
+      width: 90%;
+      max-width: 1200px;
+      padding: 1rem;
+      background-color: #fff;
+      /* White content background */
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-      .search-container {
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-      }
+    .container {
+      width: 100%;
+      margin: 0 auto;
+    }
 
-      #searchInput {
-        width: 60%;
-        padding: 12px 20px;
-        margin: 15px 0;
-        box-sizing: border-box;
-        border-radius: 5px;
-        background-color: #dfe2c2; /* Light sage green for input background */
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        border: none;
-        outline: none;
-      }
+    .search-container {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
+    #searchInput {
+      width: 60%;
+      padding: 12px 20px;
+      margin: 15px 0;
+      box-sizing: border-box;
+      border-radius: 5px;
+      background-color: #dfe2c2;
+      /* Light sage green for input background */
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      border: none;
+      outline: none;
+    }
 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border: 1px solid #c3c6a5;
+      /* Sage green border */
+      text-align: center;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #546a41;
+      /* Forest green header for table */
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #e9ecef;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      background-color: #546a41;
+      /* Forest green button */
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #455a34;
+      /* Darker forest green on hover */
+    }
+
+    .details {
+      display: none;
+    }
+
+    @media screen and (max-width: 600px) {
+
+      table,
+      thead,
+      tbody,
       th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      tr {
+        margin-bottom: 10px;
+      }
+
       td {
-        padding: 12px;
-        border: 1px solid #c3c6a5; /* Sage green border */
-        text-align: center;
-        font-size: 14px;
-        vertical-align: middle;
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
       }
 
-      th {
-        background-color: #546a41; /* Forest green header for table */
-        color: #fff;
-      }
-
-      tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
-
-      tr:hover {
-        background-color: #e9ecef;
+      td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        content: attr(data-label);
+        font-weight: bold;
       }
 
       .btn {
-        padding: 8px 16px;
-        background-color: #546a41; /* Forest green button */
-        color: #fff;
-        text-decoration: none;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+        display: block;
+        margin-bottom: 5px;
+        width: 100%;
       }
+    }
+  </style>
+</head>
 
-      .btn:hover {
-        background-color: #455a34; /* Darker forest green on hover */
-      }
+<body>
+  <header>
+    <h1>Staff Plant List</h1>
+    <nav>
+      <ul>
+        <li><a th:href="@{/dashboard}">Home</a></li>
+        <li><a th:href="@{/plantlist}">Plants</a></li>
+        <li><a th:href="@{/listSchedule}">Schedule</a></li>
+        <li><a th:href="@{/viewFeedback}">Feedback</a></li>
+      </ul>
+    </nav>
+  </header>
 
-      .details {
-        display: none;
-      }
-
-      @media screen and (max-width: 600px) {
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-          display: block;
-        }
-
-        thead tr {
-          position: absolute;
-          top: -9999px;
-          left: -9999px;
-        }
-
-        tr {
-          margin-bottom: 10px;
-        }
-
-        td {
-          border: none;
-          position: relative;
-          padding-left: 50%;
-          text-align: left;
-        }
-
-        td:before {
-          position: absolute;
-          top: 6px;
-          left: 6px;
-          width: 45%;
-          padding-right: 10px;
-          white-space: nowrap;
-          content: attr(data-label);
-          font-weight: bold;
-        }
-
-        .btn {
-          display: block;
-          margin-bottom: 5px;
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>Staff Plant List</h1>
-      <nav>
-        <ul>
-          <li><a th:href="@{/dashboard}">Home</a></li>
-          <li><a th:href="@{/plantlist}">Plants</a></li>
-          <li><a th:href="@{/listSchedule}">Schedule</a></li>
-          <li><a th:href="@{/viewFeedback}">Feedback</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <main>
-      <div class="container">
-        <div class="search-container">
-          <input
-            type="text"
-            id="searchInput"
-            onkeyup="searchTable()"
-            placeholder="Search for plants..."
-          />
-        </div>
-        <table id="plantTable">
-          <thead>
-            <tr>
-              <th>Scientific Name</th>
-              <th>Common Name</th>
-              <th>Type</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="plant : ${plants}">
-              <td th:text="${plant.sciName}"></td>
-              <td th:text="${plant.comName}"></td>
-              <td th:text="${plant.type}"></td>
-              <td class="action-buttons">
-                <button
-                  class="btn"
-                  th:onclick="'toggleDetails(\'' + ${plant.plantId} + '\', \'' + ${plant.type} + '\')'"
-                >
-                  View
-                </button>
-                <a
-                  class="btn"
-                  th:href="@{/updatePlant(plantid=${plant.plantId})}"
-                  >Update</a
-                >
-                <a
-                  class="btn"
-                  th:href="@{/deletePlant(plantid=${plant.plantId})}"
-                  onclick="return confirm('Are you sure you want to delete this plant?')"
-                  >Delete</a
-                >
-              </td>
-            </tr>
-            <tr
-              class="details"
-              th:id="'details_' + ${plant.plantId}"
-              th:each="plant : ${plants}"
-              style="display: none;"
-            >
-              <td colspan="4">
-                <div class="indoor-details" th:if="${plant.type == 'Indoor'}">
-                  <strong>Light Requirements:</strong>
-                  <span th:text="${plant.lightR}"></span><br />
-                  <strong>Humidity Preferences:</strong>
-                  <span th:text="${plant.humidP}"></span><br />
-                  <strong>Watering Frequency:</strong>
-                  <span th:text="${plant.waterF}"></span><br />
-                </div>
-                <div class="outdoor-details" th:if="${plant.type == 'Outdoor'}">
-                  <strong>Sunlight Exposure:</strong>
-                  <span th:text="${plant.sunE}"></span><br />
-                  <strong>Wind Resistance:</strong>
-                  <span th:text="${plant.windR}"></span><br />
-                  <strong>Soil Type:</strong>
-                  <span th:text="${plant.soilT}"></span><br />
-                </div>
-                <strong>Habitat:</strong>
-                <span th:text="${plant.habitat}"></span><br />
-                <strong>Species:</strong>
-                <span th:text="${plant.species}"></span><br />
-                <strong>Description:</strong>
-                <span th:text="${plant.description}"></span><br />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <main>
+    <div class="container">
+      <div class="search-container">
+        <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for plants..." />
       </div>
-    </main>
-    
-    <script>
-      function searchTable() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("searchInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("plantTable");
-        tr = table.getElementsByTagName("tr");
-    
-        for (i = 0; i < tr.length; i++) {
-          td = tr[i].getElementsByTagName("td");
-          for (var j = 0; j < td.length; j++) {
-            if (td[j]) {
-              txtValue = td[j].textContent || td[j].innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-                break;
-              } else {
-                tr[i].style.display = "none";
-              }
+      <table id="plantTable">
+        <thead>
+          <tr>
+            <th>Scientific Name</th>
+            <th>Common Name</th>
+            <th>Type</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="plant : ${plants}">
+            <td th:text="${plant.sciName}"></td>
+            <td th:text="${plant.comName}"></td>
+            <td th:text="${plant.type}"></td>
+            <td class="action-buttons">
+              <button class="btn" th:onclick="'toggleDetails(\'' + ${plant.plantId} + '\', \'' + ${plant.type} + '\')'">
+                View
+              </button>
+              <a class="btn" th:href="@{/updatePlant(plantid=${plant.plantId})}">Update</a>
+              <a class="btn" th:href="@{/deletePlant(plantid=${plant.plantId})}"
+                onclick="return confirm('Are you sure you want to delete this plant?')">Delete</a>
+            </td>
+          </tr>
+          <tr class="details" th:id="'details_' + ${plant.plantId}" th:each="plant : ${plants}" style="display: none">
+            <td colspan="4">
+              <div class="indoor-details" th:if="${plant.type == 'Indoor'}">
+                <strong>Light Requirements:</strong>
+                <span th:text="${IndoorPlant.lightR}"></span><br />
+                <strong>Humidity Preferences:</strong>
+                <span th:text="${IndoorPlant.humidP}"></span><br />
+                <strong>Watering Frequency:</strong>
+                <span th:text="${IndoorPlant.waterF}"></span><br />
+              </div>
+              <div class="outdoor-details" th:if="${plant.type == 'Outdoor'}">
+                <strong>Sunlight Exposure:</strong>
+                <span th:text="${OutdoorPlant.sunE}"></span><br />
+                <strong>Wind Resistance:</strong>
+                <span th:text="${OutdoorPlant.windR}"></span><br />
+                <strong>Soil Type:</strong>
+                <span th:text="${OutdoorPlant.soilT}"></span><br />
+              </div>
+              <strong>Habitat:</strong>
+              <span th:text="${plant.habitat}"></span><br />
+              <strong>Species:</strong>
+              <span th:text="${plant.species}"></span><br />
+              <strong>Description:</strong>
+              <span th:text="${plant.description}"></span><br />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    function searchTable() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("searchInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("plantTable");
+      tr = table.getElementsByTagName("tr");
+
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        for (var j = 0; j < td.length; j++) {
+          if (td[j]) {
+            txtValue = td[j].textContent || td[j].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+              break;
+            } else {
+              tr[i].style.display = "none";
             }
           }
         }
       }
-    
-      function toggleDetails(plantId, type) {
-        var details = document.getElementById("details_" + plantId);
-        if (details.style.display === "table-row") {
-          details.style.display = "none";
-        } else {
-          details.style.display = "table-row";
-        }
+    }
+
+    function toggleDetails(plantId, type) {
+      var details = document.getElementById("details_" + plantId);
+      if (details.style.display === "table-row") {
+        details.style.display = "none";
+      } else {
+        details.style.display = "table-row";
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>

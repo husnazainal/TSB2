@@ -9,9 +9,9 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "plantId")
 public class OutdoorPlant extends plant {
 
-    private String sune;
-    private String windr;
-    private String soilt;
+    private String sunE;
+    private String windR;
+    private String soilT;
 
     // Default constructor
     public OutdoorPlant() {
@@ -19,27 +19,27 @@ public class OutdoorPlant extends plant {
     }
 
     // Getters and setters
-    public String getSune() {
-        return sune;
+    public String getSunE() {
+        return sunE;
     }
 
-    public void setSune(String sune) {
-        this.sune = sune;
+    public void setSunE(String sunE) {
+        this.sunE = sunE;
     }
 
-    public String getWindr() {
-        return windr;
+    public String getWindR() {
+        return windR;
     }
 
-    public void setWindr(String windr) {
-        this.windr = windr;
+    public void setWindR(String windR) {
+        this.windR = windR;
     }
 
-    public String getSoilt() {
-        return soilt;
+    public String getSoilT() {
+        return soilT;
     }
 
-    public void setSoilt(String soilt) {
-        this.soilt = soilt;
+    public void setSoilT(String soilT) {
+        this.soilT = soilT;
     }
 }
