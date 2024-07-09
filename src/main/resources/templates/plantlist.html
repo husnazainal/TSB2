@@ -241,14 +241,14 @@
                         <tr class="details" th:id="'details_' + ${plant.plantId}" th:each="plant : ${plants}">
                             <td colspan="4">
                                 <div th:if="${plant.type == 'Indoor'}">
-                                    <strong>Light Requirements:</strong> <span th:text="${plant.lightR}"></span><br />
-                                    <strong>Humidity Preferences:</strong> <span th:text="${plant.humidP}"></span><br />
-                                    <strong>Watering Frequency:</strong> <span th:text="${plant.waterF}"></span><br />
+                                    <strong>Light Requirements:</strong> <span th:text="${plant.lightr}"></span><br />
+                                    <strong>Humidity Preferences:</strong> <span th:text="${plant.humidp}"></span><br />
+                                    <strong>Watering Frequency:</strong> <span th:text="${plant.waterf}"></span><br />
                                 </div>
                                 <div th:if="${plant.type == 'Outdoor'}">
-                                    <strong>Sunlight Exposure:</strong> <span th:text="${plant.sunE}"></span><br />
-                                    <strong>Wind Resistance:</strong> <span th:text="${plant.windR}"></span><br />
-                                    <strong>Soil Type:</strong> <span th:text="${plant.soilT}"></span><br />
+                                    <strong>Sunlight Exposure:</strong> <span th:text="${plant.sune}"></span><br />
+                                    <strong>Wind Resistance:</strong> <span th:text="${plant.windr}"></span><br />
+                                    <strong>Soil Type:</strong> <span th:text="${plant.soilt}"></span><br />
                                 </div>
                                 <strong>Habitat:</strong> <span th:text="${plant.habitat}"></span><br />
                                 <strong>Species:</strong> <span th:text="${plant.species}"></span><br />
