@@ -1,15 +1,12 @@
 package com.heroku.java.controller;
 
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.heroku.java.model.Staff;
 
@@ -23,7 +20,6 @@ public class staffloginController {
     public static final String SESSION_STAFF_ID = "staffid";
     public static final String SESSION_STAFF_EMAIL = "loggedInStaff";
 
-    @Autowired
     public staffloginController(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -38,27 +34,25 @@ public class staffloginController {
     }
 
     @PostMapping("/loginStaff")
-    public String login(HttpSession session, @RequestParam("staffemail") String staffemail,
-            @RequestParam("staffpassword") String staffpassword, Model model) {
+    public String login(HttpSession session, @ModelAttribute Staff staff, Model model) {
         try {
-            StaffDAO staffDAO = new StaffDAO(dataSource);
-            Staff staff = staffDAO.getStaffByStaffemail(staffemail);
+            Staff loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staff.getStaffEmail());
             model.addAttribute("staff", new Staff());
 
-            if (staff == null) {
-                model.addAttribute("error", "Email does not exist. Please register.");
+            if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staff.getStaffPassword())) {
+                model.addAttribute("error", "Invalid email or password. Please try again.");
                 return "loginStaff";
             }
 
-            session.setAttribute(SESSION_STAFF_ID, staff.getId());
-            session.setAttribute(SESSION_STAFF_EMAIL, staffemail);
+            session.setAttribute(SESSION_STAFF_ID, loggedInStaff.getId());
+            session.setAttribute(SESSION_STAFF_EMAIL, loggedInStaff.getStaffEmail());
 
-            System.out.println("Staff ID set in session during login: " + staff.getId());
+            System.out.println("Staff ID set in session during login: " + loggedInStaff.getId());
             System.out
                     .println("Staff ID retrieved immediately after setting: " + session.getAttribute(SESSION_STAFF_ID));
 
             return "redirect:/admindashboard";
-        } catch (SQLException e) {
+        } catch (Exception e) {
             model.addAttribute("error", "An error occurred. Please try again.");
             return "loginStaff";
         }
@@ -75,5 +69,4 @@ public class staffloginController {
 
         return "redirect:/";
     }
-
 }
