@@ -168,9 +168,10 @@
                     <input type="radio" th:field="*{type}" value="Outdoor" onclick="showOutdoorFields()" />Outdoor
                 </div>
 
-                <div id="indoorFields" class="form-group" th:if="${plant.type == 'Indoor'}">
+                <div id="indoorFields" class="hidden-fields" th:object="${IndoorPlant}">
+                    <!-- th:if="${plant.type == 'Indoor'}" -->
                     <h3>Light Requirements:</h3>
-                    <select th:field="*{IndoorPlant.lightR}">
+                    <select th:field="${IndoorPlant.lightR}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -178,7 +179,7 @@
                     </select>
 
                     <h3>Humidity Preferences:</h3>
-                    <select th:field="*{IndoorPlant.humidP}">
+                    <select th:field="${IndoorPlant.humidP}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -186,7 +187,7 @@
                     </select>
 
                     <h3>Watering Frequency:</h3>
-                    <select th:field="*{IndoorPlant.waterF}">
+                    <select th:field="${IndoorPlant.waterF}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -194,9 +195,10 @@
                     </select>
                 </div>
 
-                <div id="outdoorFields" class="form-group" th:if="${plant.type == 'Outdoor'}">
+                <div id="outdoorFields" class="hidden-fields" th:object="${OutdoorPlant}">
+                    <!-- th:if="${plant.type == 'Outdoor'}" -->
                     <h3>Sunlight Exposure:</h3>
-                    <select th:field="*{OutdoorPlant.sunE}">
+                    <select th:field="${OutdoorPlant.sunE}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -204,7 +206,7 @@
                     </select>
 
                     <h3>Wind Resistance:</h3>
-                    <select th:field="*{OutdoorPlant.windR}">
+                    <select th:field="${OutdoorPlant.windR}">
                         <option value="Select">Select</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -212,7 +214,7 @@
                     </select>
 
                     <h3>Soil Type:</h3>
-                    <select th:field="*{OutdoorPlant.soilT}">
+                    <select th:field="${OutdoorPlant.soilT}">
                         <option value="Select">Select</option>
                         <option value="1">1</option>
                         <option value="2">2</option>

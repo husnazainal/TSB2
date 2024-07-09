@@ -221,6 +221,7 @@ public class PlantController {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {
+                // Update plant table
                 String sql = "UPDATE plant SET sciname = ?, comname = ?, type = ?, habitat = ?, species = ?, description = ? WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setString(1, plant.getSciName());
@@ -233,6 +234,7 @@ public class PlantController {
                     statement.executeUpdate();
                 }
 
+                // Update indoor_plant or outdoor_plant table
                 if ("Indoor".equals(plant.getType())) {
                     sql = "UPDATE indoor_plant SET lightr = ?, humidp = ?, waterf = ? WHERE plantid = ?";
                     try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -242,6 +244,12 @@ public class PlantController {
                         statement.setInt(4, plant.getPlantId());
                         statement.executeUpdate();
                     }
+                    // Delete any existing outdoor plant data for this plant
+                    sql = "DELETE FROM outdoor_plant WHERE plantid = ?";
+                    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                        statement.setInt(1, plant.getPlantId());
+                        statement.executeUpdate();
+                    }
                 } else if ("Outdoor".equals(plant.getType())) {
                     sql = "UPDATE outdoor_plant SET sune = ?, windr = ?, soilt = ? WHERE plantid = ?";
                     try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -249,6 +257,12 @@ public class PlantController {
                         statement.setString(2, outdoorPlant.getWindR());
                         statement.setString(3, outdoorPlant.getSoilT());
                         statement.setInt(4, plant.getPlantId());
+                        statement.executeUpdate();
+                    }
+                    // Delete any existing indoor plant data for this plant
+                    sql = "DELETE FROM indoor_plant WHERE plantid = ?";
+                    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                        statement.setInt(1, plant.getPlantId());
                         statement.executeUpdate();
                     }
                 }
