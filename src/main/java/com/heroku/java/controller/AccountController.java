@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.heroku.java.model.StaffModel;
 import com.heroku.java.repository.StaffRepository;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @SessionAttributes("loggedInUser")
 public class AccountController {
@@ -61,9 +63,13 @@ public class AccountController {
         }
     }
 
-    // @GetMapping("/dashboard")
-    // public String showDashboard(@ModelAttribute("loggedInUser") StaffModel loggedInUser, Model model) {
-    //     model.addAttribute("staffEmail", loggedInUser.getStaffEmail());
-    //     return "dashboard"; // Ensure this matches the name of your HTML file without the .html extension
-    // }
+    @GetMapping("/dashboard")
+    public String dashboard(HttpSession session, Model model) {
+        // Check if user is logged in
+        if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
+            return "redirect:/loginStaff";
+        }
+        // Add any necessary attributes to the model
+        return "dashboard";
+    }
 }

@@ -34,29 +34,21 @@ public class staffloginController {
     }
 
     @PostMapping("/loginStaff")
-    public String login(HttpSession session, @ModelAttribute Staff staff, Model model) {
-        try {
-            Staff loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staff.getStaffEmail());
-            model.addAttribute("staff", new Staff());
-
-            if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staff.getStaffPassword())) {
-                model.addAttribute("error", "Invalid email or password. Please try again.");
-                return "loginStaff";
-            }
-
-            session.setAttribute(SESSION_STAFF_ID, loggedInStaff.getId());
-            session.setAttribute(SESSION_STAFF_EMAIL, loggedInStaff.getStaffEmail());
-
-            System.out.println("Staff ID set in session during login: " + loggedInStaff.getId());
-            System.out
-                    .println("Staff ID retrieved immediately after setting: " + session.getAttribute(SESSION_STAFF_ID));
-
-            return "redirect:/dashboard";
-        } catch (Exception e) {
-            model.addAttribute("error", "An error occurred. Please try again.");
+public String login(HttpSession session, @ModelAttribute Staff staff, Model model) {
+    try {
+        Staff loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staff.getStaffEmail());
+        if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staff.getStaffPassword())) {
+            model.addAttribute("error", "Invalid email or password. Please try again.");
             return "loginStaff";
         }
+        session.setAttribute(SESSION_STAFF_ID, loggedInStaff.getId());
+        session.setAttribute(SESSION_STAFF_EMAIL, loggedInStaff.getStaffEmail());
+        return "redirect:/dashboard";
+    } catch (Exception e) {
+        model.addAttribute("error", "An unexpected error occurred. Please try again.");
+        return "loginStaff";
     }
+}
 
     @GetMapping("/logoutStaff")
     public String logoutStaff(HttpSession session) {
