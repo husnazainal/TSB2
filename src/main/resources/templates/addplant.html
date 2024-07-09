@@ -165,7 +165,7 @@ h1 {
     <div class="container">
         <div class="form-container">
             <h1>Create Plant Information</h1>
-            <form th:action="@{/addPlant}" th:object="${plant}" method="post" id="plantForm">
+            <form th:action="@{/addplant}" th:object="${plant}" method="post" id="plantForm">
                 <div class="form-group">
                     <h3>Plant Scientific Name:</h3>
                     <input type="text" th:field="*{sciName}" size="40"/>

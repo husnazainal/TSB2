@@ -87,7 +87,7 @@ public class PlantController {
             return "redirect:/error";
         }
 
-        return "redirect:/plantList";
+        return "redirect:/plantlist";
     }
 
     private int generatePlantID(Connection connection) throws Exception {
