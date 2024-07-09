@@ -111,8 +111,8 @@ public class PlantController {
                 + "LEFT JOIN indoor_plant i ON p.plantid = i.plantid "
                 + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
                 + "ORDER BY p.plantid";
-        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
@@ -139,13 +139,16 @@ public class PlantController {
                 plant.setSpecies(resultSet.getString("species"));
                 plant.setDescription(resultSet.getString("description"));
                 plants.add(plant);
+                System.out.println("Added plant: " + plant.getSciName());
             }
         } catch (SQLException e) {
             e.printStackTrace();
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
+
         model.addAttribute("plants", plants);
+        System.out.println("Number of plants: " + plants.size());
         return "plantlist";
     }
 
