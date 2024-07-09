@@ -229,16 +229,17 @@
             <button class="btn" th:if="${plant != null}"
               th:attr="data-plant-id=${plant.plantId}, data-plant-type=${plant.type}"
               onclick="toggleDetails(this)">View</button>
-            <a class="btn" th:if="${plant != null}" th:href="@{/updatePlant(plantid=${plant.plantId})}"
+            <a class="btn" th:if="${plant != null}" th:href="@{/updatePlant/{plantid}(plantid=${plant.plantId})}"
               th:disabled="${plant == null}">Update</a>
-            <a class="btn" th:if="${plant != null}" th:href="@{/deletePlant(plantid=${plant.plantId})}"
+            <a class="btn" th:if="${plant != null}" th:href="@{/deletePlant/{plantid}(plantid=${plant.plantId})}"
               onclick="return confirm('Are you sure you want to delete this plant?')"
               th:disabled="${plant == null}">Delete</a>
           </td>
         </tr>
         <tr class="details" th:id="'details_' + ${plant?.plantId}" style="display: none">
           <td colspan="4">
-            <div class="indoor-details" th:if="${plant != null && plant instanceof T(com.heroku.java.model.IndoorPlant)}">
+            <div class="indoor-details"
+              th:if="${plant != null && plant instanceof T(com.heroku.java.model.IndoorPlant)}">
               <strong>Light Requirements:</strong>
               <span th:text="${plant?.lightR}"></span><br />
               <strong>Humidity Preferences:</strong>
@@ -246,7 +247,8 @@
               <strong>Watering Frequency:</strong>
               <span th:text="${plant?.waterF}"></span><br />
             </div>
-            <div class="outdoor-details" th:if="${plant != null && plant instanceof T(com.heroku.java.model.OutdoorPlant)}">
+            <div class="outdoor-details"
+              th:if="${plant != null && plant instanceof T(com.heroku.java.model.OutdoorPlant)}">
               <strong>Sunlight Exposure:</strong>
               <span th:text="${plant?.sunE}"></span><br />
               <strong>Wind Resistance:</strong>
