@@ -156,6 +156,7 @@
 <body>
     <div class="container">
         <div class="login-box">
+<<<<<<< HEAD
             <h2>Welcome!</h2>
             <p>Staff Management</p>
             <div th:if="${errorMessage}" id="errorMessage" class="error-message" th:text="${errorMessage}"></div>
@@ -167,15 +168,39 @@
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
                     <input type="password" name="staffpassword" placeholder="Password" required>
+=======
+            <div class="logo">
+                <img src="image/logo.png" alt="TYT Logo">
+            </div>
+            <h2>Welcome Back!</h2>
+            <p>TSB Staff Management</p>
+            <form th:action="@{/loginStaff}" th:object="${staffModel}" method="post">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" th:field="*{staffEmail}" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" th:field="*{staffPassword}" placeholder="Password" required>
+>>>>>>> 89cc7a0ca0202ffb0183bb0f25c5baa9684965e7
                 </div>
                 <div class="options">
                     <label>
                         <input type="checkbox" name="remember"> Remember me
                     </label>
+<<<<<<< HEAD
                 </div>
                 <button class="login-button" type="submit">Login</button>
             </form>
             <p>Don't have an account? <a th:href="@{/register}">Create account</a></p>
+=======
+                    <a th:href="@{/forgot-password}" class="forgot-password">Forgot password?</a>
+                </div>
+                <button type="submit" class="login-button">Log In</button>
+                <p class="register-link">Don't have an account? <a th:href="@{/register}">Register</a> here.</p>
+            </form>
+            <div th:if="${error}" class="error-message" th:text="${error}"></div>
+>>>>>>> 89cc7a0ca0202ffb0183bb0f25c5baa9684965e7
         </div>
     </div>
 </body>

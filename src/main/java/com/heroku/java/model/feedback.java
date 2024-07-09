@@ -1,95 +1,126 @@
-/*package com.heroku.java.model;
-
-
-public class feedback {
-	private int feedbackId;
-	private String name;
-	private String email;
-	private String phone;
-	private String star;
-	private String comments;
-	    	
-	    	public feedback() {
-	    	}
-			public void setFeedbackId(int feedbackId) {
-				this.feedbackId = feedbackId;
-			}
-			public int getFeedbackId() {
-				return feedbackId;
-			}
-	    	public String getName() {
-	    		return name;
-	    	}
-	    	public void setName(String name) {
-	    		this.name = name;
-	    	}
-	    	public String getEmail() {
-	    		return email;
-	    	}
-	    	public void setEmail(String email) {
-	    		this.email = email;
-	    	}
-	    	public String getPhone() {
-	    		return phone;
-	    	}
-	    	public void setPhone(String phone) {
-	    		this.phone = phone;
-	    	}
-	    	public String getStar() {
-	    		return star;
-	    	}
-	    	public void setStar(String star) {
-	    		this.star = star;
-	    	}
-	    	public String getComments() {
-	    		return comments;
-	    	}
-	    	public void setComments(String comments) {
-	    		this.comments = comments;
-	    	}
-          
-	    	
-} */
-
-
 package com.heroku.java.model;
 
+import java.sql.Date;
+import java.util.Objects;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class feedback {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long feedbackId;
-    private String name;
-    private String email;
+    private int feedbackId;
 
-    // Getters and setters
-    public Long getFeedbackId() {
-        return feedbackId;
-    }
+    @Column(nullable = false)
+    private int plantId;
 
-    public void setFeedbackId(Long feedbackId) {
+    @Column(nullable = false)
+    private String message;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dateCreated")
+    private Date dateCreated;
+
+    @Column(name = "visitorName")
+    private String visitorName;
+
+    @Column(name = "visitorId")
+    private int visitorId;
+
+    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, int visitorId) {
         this.feedbackId = feedbackId;
+        this.plantId = plantId;
+        this.message = message;
+        this.dateCreated = dateCreated;
+        this.visitorName = visitorName;
+        this.visitorId = visitorId;
     }
 
-    public String getName() {
-        return name;
+    public feedback() {}
+
+	public int getFeedbackId() {
+    	return feedbackId;
+    }
+    
+    public int getPlantId() {
+    	return plantId;
+    }
+    
+    public String getMessage() {
+    	return message;
+    }
+    
+    public Date getDateCreated() {
+    	return dateCreated;
+    }
+    
+    public String getVisitorName() {
+    	return visitorName;
+    }
+    
+    public int getVisitorId() {
+    	return visitorId;
+    }
+    
+    public void setFeedbackId(int feedbackId) {
+    	this.feedbackId = feedbackId;
+    }
+    
+    public void setPlantId(int plantId) {
+    	this.plantId = plantId;
+    }
+    
+    public void setMessage(String message) {
+    	this.message = message;
+    }
+    
+    public void setDateCreated(Date dateCreated) {
+    	this.dateCreated = dateCreated;
+    }
+    
+    public void setVisitorName(String visitorName) {
+    	this.visitorName = visitorName;
+    }
+    
+    public void setVisitorId(int visitorId) {
+    	this.visitorId = visitorId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public String toString() {
+        return "Feedback{" +
+               "feedbackId=" + feedbackId +
+               ", plantId=" + plantId +
+               ", message='" + message + '\'' +
+               ", dateCreated=" + dateCreated +
+               ", visitorName='" + visitorName + '\'' +
+               ", visitorId=" + visitorId +
+               '}';
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        feedback feedback = (feedback) o;
+        return feedbackId == feedback.feedbackId &&
+               plantId == feedback.plantId &&
+               visitorId == feedback.visitorId &&
+               Objects.equals(message, feedback.message) &&
+               Objects.equals(dateCreated, feedback.dateCreated) &&
+               Objects.equals(visitorName, feedback.visitorName);
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public int hashCode() {
+        return Objects.hash(feedbackId, plantId, message, dateCreated, visitorName, visitorId);
     }
+
 }
-

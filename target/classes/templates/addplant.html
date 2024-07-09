@@ -159,13 +159,13 @@ h1 {
             <a th:href="@{/dashboard}">Home</a>
             <a th:href="@{/plantlist}">Plant</a>
             <a th:href="@{/listScheduleController}">Schedule</a>
-            <a th:href="@{/viewFeedback}">Feedback</a>
+            <a th:href="@{/ViewFeedback}">Feedback</a>
         </nav>
     </header>
     <div class="container">
         <div class="form-container">
             <h1>Create Plant Information</h1>
-            <form th:action="@{/addPlant}" th:object="${plant}" method="post" id="plantForm">
+            <form th:action="@{/addplant}" th:object="${plant}" method="post" id="plantForm">
                 <div class="form-group">
                     <h3>Plant Scientific Name:</h3>
                     <input type="text" th:field="*{sciName}" size="40"/>
@@ -179,7 +179,7 @@ h1 {
                     <input type="radio" th:field="*{type}" value="Indoor" onclick="showIndoorFields()" /> Indoor
                     <input type="radio" th:field="*{type}" value="Outdoor" onclick="showOutdoorFields()" /> Outdoor
                 </div>
-                <div id="indoorFields" class="hidden-fields" th:object="${indoorPlant}">
+                <div id="indoorFields" class="hidden-fields" th:object="${IndoorPlant}">
                     <h3>Light Requirements:</h3>
                     <select th:field="*{lightR}">
                         <option value="Select">Select</option>
@@ -202,7 +202,7 @@ h1 {
                         <option value="High">High</option>
                     </select>
                 </div>
-                <div id="outdoorFields" class="hidden-fields" th:object="${outdoorPlant}">
+                <div id="outdoorFields" class="hidden-fields" th:object="${OutdoorPlant}">
                     <h3>Sunlight Exposure:</h3>
                     <select th:field="*{sunE}">
                         <option value="Select">Select</option>

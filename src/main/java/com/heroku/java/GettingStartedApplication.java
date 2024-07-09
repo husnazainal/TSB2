@@ -1,15 +1,16 @@
 package com.heroku.java;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Map;
 
 @SpringBootApplication
 @Controller
@@ -26,11 +27,16 @@ public class GettingStartedApplication {
         return "index";
     }
 
-    @GetMapping("/plantlist")
-    public String plantlist() {
-        return "plantlist";
-    }
+    // @GetMapping("/dashboard")
+    // public String dashboard() {
+    //     return "dashboard";
+    // }
 
+    // @GetMapping("/plantlist")
+    // public String plantlist() {
+    //     return "plantlist";
+    // }
+    
     // @GetMapping("/register")
     // public String register() {
     //     return "register";
@@ -50,7 +56,7 @@ public class GettingStartedApplication {
             statement.executeUpdate("INSERT INTO ticks VALUES (now())");
 
             final var resultSet = statement.executeQuery("SELECT tick FROM ticks");
-            final var output = new ArrayList<>();
+            final ArrayList<Object> output = new ArrayList<>();
             while (resultSet.next()) {
                 output.add("Read from DB: " + resultSet.getTimestamp("tick"));
             }
@@ -63,6 +69,7 @@ public class GettingStartedApplication {
             return "error";
         }
     }
+
 
     public static void main(String[] args) {
         SpringApplication.run(GettingStartedApplication.class, args);

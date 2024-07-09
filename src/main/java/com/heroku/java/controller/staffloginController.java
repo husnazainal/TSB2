@@ -1,15 +1,18 @@
 package com.heroku.java.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import com.heroku.java.model.Staff;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.ui.Model;
-import jakarta.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import java.sql.SQLException;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.heroku.java.model.Staff;
+import com.heroku.java.model.StaffModel;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class staffloginController {
@@ -19,44 +22,34 @@ public class staffloginController {
     public static final String SESSION_STAFF_ID = "staffid";
     public static final String SESSION_STAFF_EMAIL = "loggedInStaff";
 
-    @Autowired
     public staffloginController(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @GetMapping("/loginStaff")
     public String loginForm(Model model) {
-        System.out.println("Login form requested");
-        if (!model.containsAttribute("staff")) {
-            model.addAttribute("staff", new Staff());
+        if (!model.containsAttribute("staffModel")) {
+            model.addAttribute("staffModel", new StaffModel());
         }
         return "loginStaff";
     }
 
     @PostMapping("/loginStaff")
-    public String login(HttpSession session, @RequestParam("staffemail") String staffemail,
-            @RequestParam("staffpassword") String staffpassword, Model model) {
+    public String login(@ModelAttribute("staffModel") StaffModel staffModel, 
+                        HttpSession session,
+                        RedirectAttributes redirectAttributes,
+                        Model model) {
         try {
-            StaffDAO staffDAO = new StaffDAO(dataSource);
-            Staff staff = staffDAO.getStaffByStaffemail(staffemail);
-            model.addAttribute("staff", new Staff());
-
-            if (staff == null) {
-                model.addAttribute("error", "Email does not exist. Please register.");
+            StaffModel loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staffModel.getStaffEmail());
+            if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staffModel.getStaffPassword())) {
+                model.addAttribute("error", "Invalid email or password. Please try again.");
                 return "loginStaff";
             }
-
-            session.setAttribute(SESSION_STAFF_ID, staff.getId());
-            session.setAttribute(SESSION_STAFF_EMAIL, staffemail);
-
-            System.out.println("Staff ID set in session during login: " + staff.getId());
-            System.out
-                    .println("Staff ID retrieved immediately after setting: " + session.getAttribute(SESSION_STAFF_ID));
-
-            return "redirect:/admindashboard";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            model.addAttribute("error", "An error occurred. Please try again.");
+            session.setAttribute(SESSION_STAFF_ID, loggedInStaff.getStaffId());
+            session.setAttribute(SESSION_STAFF_EMAIL, loggedInStaff.getStaffEmail());
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", "An unexpected error occurred. Please try again.");
             return "loginStaff";
         }
     }
@@ -72,5 +65,4 @@ public class staffloginController {
 
         return "redirect:/";
     }
-
 }

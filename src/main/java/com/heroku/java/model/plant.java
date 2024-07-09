@@ -1,6 +1,12 @@
 package com.heroku.java.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "plant")
@@ -17,6 +23,9 @@ public class plant {
     private String habitat;
     private String species;
     private String description;
+
+    private IndoorPlant IndoorPlant;
+    private OutdoorPlant OutdoorPlant;
 
     // Default constructor
     public plant() {}
@@ -76,5 +85,21 @@ public class plant {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public IndoorPlant getIndoorPlant() {
+        return IndoorPlant;
+    }
+
+    public void setIndoorPlant(IndoorPlant IndoorPlant) {
+        this.IndoorPlant = IndoorPlant;
+    }
+
+    public OutdoorPlant getOutdoorPlant() {
+        return OutdoorPlant;
+    }
+
+    public void setOutdoorPlant(OutdoorPlant OutdoorPlant) {
+        this.OutdoorPlant = OutdoorPlant;
     }
 }

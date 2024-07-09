@@ -1,223 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | TSB</title>
+    <title>Staff Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5faf6; /* Very soft mint green background */
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #b5e7c5; /* Soft mint green */
+            color: #444; /* Darker text for contrast */
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        #welcome-message {
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: #444; /* Darker text for contrast */
+            text-decoration: none;
+            background-color: #d1f0db; /* Very light mint green */
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #a9d7b9; /* Light mint green on hover */
+        }
+
+        main {
+            width: 90%;
+            max-width: 1200px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        section {
+            background-color: #ffffff; /* White background for sections */
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            margin-top: 0;
+            color: #444;
+            font-weight: 700;
+            border-bottom: 2px solid #b5e7c5; /* Soft mint green border */
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin: 1rem 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .form-group button {
+            background-color: #b5e7c5; /* Soft mint green */
+            color: #444; /* Darker text for contrast */
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #9ed1b1; /* Light mint green on hover */
+        }
+
+        .link-button {
+            background-color: #d1f0db; /* Very light mint green */
+            color: #444; /* Darker text for contrast */
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .link-button:hover {
+            background-color: #b5e7c5; /* Soft mint green on hover */
+        }
+
+        footer {
+            background-color: #b5e7c5; /* Soft mint green */
+            color: #444; /* Darker text for contrast */
+            text-align: center;
+            padding: 0.5rem;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-    }
-
-    .container {
-        display: flex;
-        width: 100%;
-    }
-
-    .sidebar {
-        width: 250px;
-        background-color: #f8f9fa;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-        background: url('https://images.unsplash.com/photo-1483401757487-2ced3fa77952?q=80&w=2946&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
-    }
-
-    .sidebar-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .sidebar-header img {
-        width: 80px;
-        height: 80px;
-    }
-
-    .input-group i {
-        position: absolute;
-        top: 50%;
-        left: 10px;
-        transform: translateY(-50%);
-        color: white;
-    }
-
-    .team {
-        color: #6c757d;
-    }
-
-    .menu {
-        list-style: none;
-        padding: 0;
-    }
-
-    .menu li {
-        margin: 15px 0;
-    }
-
-    .menu li a {
-        text-decoration: none;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-    }
-
-    .menu li a:hover {
-        background-color: #2b547e;
-    }
-
-    .badge, .new-badge {
-        background-color: #e0e0e0;
-        border-radius: 12px;
-        padding: 2px 8px;
-        font-size: 12px;
-    }
-
-    .new-badge {
-        background-color: green;
-        color: #fff;
-    }
-
-    .create-contract-btn {
-        width: 100%;
-        padding: 10px;
-        background-color: #dc3545;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 9.5cm;
-    }
-
-    .main-content {
-        flex-grow: 1;
-        padding: 20px;
-        overflow-y: auto;
-    }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .header input[type="search"] {
-        width: 300px;
-        padding: 10px;
-        border: 1px solid #ced4da;
-        border-radius: 5px;
-    }
-
-    .header-icons {
-        display: flex;
-        align-items: center;
-    }
-
-    .header-icons div {
-        width: 30px;
-        height: 30px;
-        background-color: #e0e0e0;
-        border-radius: 50%;
-        margin-left: 10px;
-    }
-
-    .account-settings {
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    .tabs {
-        display: flex;
-        border-bottom: 1px solid #e0e0e0;
-        margin-bottom: 20px;
-    }
-
-    .tab-button {
-        padding: 10px 20px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        outline: none;
-    }
-
-    .tab-button.active {
-        border-bottom: 2px solid #007bff;
-        font-weight: bold;
-        color: #007bff;
-    }
-
-    .profile-section {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .profile-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .profile-header img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-    }
-
-    .profile-info {
-        flex-grow: 1;
-        margin-left: 20px;
-    }
-
-    .edit-btn, .delete-account-btn {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .profile-details h3 {
-        margin: 10px 0;
-    }
-
-    .profile-details p {
-        margin: 5px 0;
-    }
-</style>
-
 <body>
-    <div class="container">
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <img src="image/logo.png" alt="TYT Logo">
-            </div>
-            <ul class="menu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Plant Information</a></li>
-                <li><a href="#">Feedback <span class="new-badge">New</span></a></li>
-                <li><a href="#">Account</a></li>
+    <header>
+        <h1>Staff Dashboard</h1>
+        <div class="user-details">
+            <h2>Welcome, <span th:text="${loggedInUser.staffName}">Staff Name</span></h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/listStaffController}">Staff</a></li>
+                <li><a th:href="@{/plantlist}">Plant</a></li>
+                <li><a th:href="@{/ViewFeedback}">Feedback</a></li>
+                <li><a th:href="@{/listScheduleController}">Schedule</a></li>
             </ul>
-            <button class="create-contract-btn">Log Out</button>
         </nav>
-        <main class="main-content">
-            <section class="account-settings">
-                <h1>Dashboard</h1>
-                <div class="tab-content">
-            
-                </div>
-            </section>
-        </main>
-    </div>
+    </header>
+    <main>
+        <section id="staff">
+            <h2>Staff Account Page</h2>
+            <p>Create your staff account here</p>
+            <a th:href="@{/register.html}" class="link-button">Create Account</a>
+        </section>
+        <section id="plants">
+            <h2>Plant Page</h2>
+            <p>Create your plant here</p>
+            <a th:href="@{/addplant}" class="link-button">Create Plant</a>
+        </section>
+        <section id="schedule">
+            <h2>Schedule Page</h2>
+            <p>Create your schedule here</p>
+            <a th:href="@{/addSchedule.jsp}" class="link-button">Create Schedule</a>
+        </section>
+        <section id="feedback">
+            <h2>Feedback Page</h2>
+            <p>View feedback from visitors here</p>
+            <a th:href="@{/ViewFeedback.jsp}" class="link-button">Feedback</a>
+        </section>
+    </main>
+    <footer>
+        &copy; 2024 Staff Dashboard. All rights reserved.
+    </footer>
 </body>
 </html>
