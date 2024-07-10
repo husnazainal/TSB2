@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Staff List</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5faf6;
+            /* Very soft mint green background */
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #b5e7c5;
+            /* Soft mint green */
+            color: #444;
+            /* Darker text for contrast */
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            color: #444;
+            /* Darker text for contrast */
+            text-decoration: none;
+            background-color: #d1f0db;
+            /* Very light mint green */
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #a9d7b9;
+            /* Light mint green on hover */
+        }
+
+        main {
+            width: 90%;
+            max-width: 1200px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        section {
+            background-color: #ffffff;
+            /* White background for sections */
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            margin-top: 0;
+            color: #444;
+            font-weight: 700;
+            border-bottom: 2px solid #b5e7c5;
+            /* Soft mint green border */
+            padding-bottom: 0.5rem;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #444;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        @media screen and (max-width: 600px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                margin-bottom: 10px;
+            }
+
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Staff List</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/dashboard}">Home</a></li>
+                <li><a th:href="@{/logout}" onclick="return logout()">Log out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="staff-list">
+            <h2>Staff List</h2>
+
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th colspan="3">Action</th>
+                </tr>
+                <tr th:each="staffModel : ${staffList}">
+                    <td th:text="${staffModel.staffId}"></td>
+                    <td th:text="${staffModel.staffName}"></td>
+                    <td th:text="${staffModel.staffEmail}"></td>
+                    <td><a class="btn btn-info" th:href="@{/viewStaff(staffid=${staffModel.staffId})}">View</a></td>
+                    <td><a class="btn btn-info" th:href="@{/updateStaff(staffid=${staffModel.staffId})}">Update</a></td>
+                    <td>
+                        <form th:action="@{/deleteStaff}" method="post" style="display: inline;">
+                            <input type="hidden" name="staffid" th:value="${staffModel.staffId}" />
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this staff member?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <script th:inline="javascript">
+                function confirmation(staffid) {
+                    return confirm("Are you sure you want to delete staff member with ID " + staffid + "?");
+                }
+
+                // Check for message in session and display alert
+                window.onload = function () {
+                    var message = /*[[${session.message}]]*/ null;
+                    if (message) {
+                        alert(message);
+                        /*[[ ${session.remove('message')} ]]*/
+                    }
+                }
+
+                function logout() {
+                    if (confirm("Are you sure you want to log out?")) {
+                        window.location.href = /*[[@{/homepage}]]*/ "/homepage";
+                        return true;
+                    }
+                    return false;
+                }
+            </script>
+        </section>
+    </main>
+</body>
+
+</html>

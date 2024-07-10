@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback Form | TSB</title>
+    <style>
+        /* Include all styles from the original HTML here */
+        header {
+            background-color: #a8bfa5;
+            color: #333;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            font-size: 25px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-items a {
+            font-family: sans-serif;
+            text-decoration: none;
+            color: #333;
+            background-color: #dfe2c2;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 4px 4px 10px #dfe2c2, -4px -4px 10px #dfe2c2;
+        }
+
+        .nav-items a:hover {
+            background-color: #c3c6a5;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #a8bfa5;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo">TSB</a>
+        <nav class="nav-items">
+            <a th:href="@{/dashboard}">Home</a>
+            <a th:href="@{/plantlist}">Plant</a>
+            <a th:href="@{/listScheduleController}">Schedule</a>
+            <a th:href="@{/ViewFeedback}">Feedback</a>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="form-container">
+            <h1>Feedback Form</h1>
+            <p th:if="${message}" style="color: green;" th:text="${message}"></p>
+            <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+            <form th:action="@{/submitFeedback}" method="post" th:object="${feedback}">
+                <div class="form-group">
+                    <label for="plantId">Plant:</label>
+                    <select id="plantId" th:field="*{plantId}">
+                        <option th:each="plant : ${plants}" th:value="${plant.plantId}" th:text="${plant.comName}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="visitorName">Your Name:</label>
+                    <input type="text" id="visitorName" th:field="*{visitorName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="visitorEmail">Your Email:</label>
+                    <input type="email" id="visitorEmail" th:field="*{visitorEmail}" required>
+                    <span th:if="${#fields.hasErrors('visitorEmail')}" th:errors="*{visitorEmail}"
+                        class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="visitorPhoneno">Your Phone No:</label>
+                    <input type="tel" id="visitorPhoneno" th:field="*{visitorPhoneno}" required pattern="^01\d \d{7,8}$"
+                        oninput="this.value = this.value.replace(/[^0-9 ]/g, '').replace(/(\..*)\./g, '$1');">
+                    <span th:if="${#fields.hasErrors('visitorPhoneno')}" th:errors="*{visitorPhoneno}"
+                        class="error-message"></span>
+                    <span id="phoneError" class="error-message" style="display: none;">Phone number must be in the
+                        format 01x xxxxxxx or 01x xxxxxxxx</span>
+                </div>
+                <div class="form-group">
+                    <label for="message">Feedback:</label>
+                    <textarea id="message" th:field="*{message}" required></textarea>
+                </div>
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('visitorPhoneno').addEventListener('input', function (e) {
+            var phoneNo = e.target.value;
+            var phoneError = document.getElementById('phoneError');
+            var phoneRegex = /^01\d \d{7,8}$/;
+
+            if (phoneRegex.test(phoneNo)) {
+                phoneError.style.display = 'none';
+                e.target.setCustomValidity('');
+            } else {
+                phoneError.style.display = 'block';
+                e.target.setCustomValidity('Invalid phone number format');
+            }
+        });
+    </script>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</body>
+
+</html>
