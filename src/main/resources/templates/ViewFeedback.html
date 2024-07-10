@@ -94,6 +94,8 @@
                 <p><strong>ID:</strong> <span th:text="${feedback.feedbackId}"></span></p>
                 <p><strong>Plant:</strong> <span th:text="${feedback.plant.comName}"></span></p>
                 <p><strong>Visitor Name:</strong> <span th:text="${feedback.visitorName}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${feedback.visitorEmail}"></span></p>
+                <p><strong>Phone No:</strong> <span th:text="${feedback.visitorPhoneno}"></span></p>
                 <p><strong>Date:</strong> <span th:text="${#dates.format(feedback.dateCreated, 'yyyy-MM-dd')}"></span>
                 </p>
                 <p><strong>Message:</strong> <span th:text="${feedback.message}"></span></p>

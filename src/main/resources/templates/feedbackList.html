@@ -101,6 +101,8 @@
                     <th>Feedback ID</th>
                     <th>Plant Name</th>
                     <th>Visitor Name</th>
+                    <th>Email</th>
+                    <th>Phone No</th>
                     <th>Date Created</th>
                     <th>Action</th>
                 </tr>
@@ -110,6 +112,8 @@
                     <td th:text="${feedback.feedbackId}"></td>
                     <td th:text="${feedback.plant.comName}"></td>
                     <td th:text="${feedback.visitorName}"></td>
+                    <td th:text="${feedback.visitorEmail}"></td>
+                    <td th:text="${feedback.visitorPhoneno}"></td>
                     <td th:text="${#dates.format(feedback.dateCreated, 'yyyy-MM-dd')}"></td>
                     <td><a th:href="@{/ViewFeedback(feedbackId=${feedback.feedbackId})}">View</a></td>
                 </tr>
