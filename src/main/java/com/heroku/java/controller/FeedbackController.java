@@ -57,7 +57,7 @@ public class FeedbackController {
         } catch (SQLException e) {
             redirectAttributes.addFlashAttribute("error", "Error submitting feedback: " + e.getMessage());
         }
-        return "redirect:/index";
+        return "redirect:/submitFeedback";
     }
 
     @GetMapping("/feedbackList")
@@ -96,10 +96,9 @@ public class FeedbackController {
 
     @GetMapping("/ViewFeedback")
     public String viewFeedback(@RequestParam("feedbackId") int feedbackId, Model model, HttpSession session) {
-        if (session.getAttribute("staffId") == null) {
+        if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
-
         String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantid = p.plantid WHERE f.feedbackid = ?";
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
