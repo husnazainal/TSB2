@@ -43,27 +43,11 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-<<<<<<< HEAD
     public String registerStaff(@ModelAttribute StaffModel staffModel, RedirectAttributes redirectAttributes) {
         try {
             staffRepository.saveStaff(staffModel);
             redirectAttributes.addFlashAttribute("message", "Registration successful. Please log in.");
             return "redirect:/loginStaff";
-=======
-    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel, 
-                                @ModelAttribute("loggedInUser") StaffModel loggedInUser,
-                                RedirectAttributes redirectAttributes) {
-        logger.debug("Registering staff: {}", staffModel);
-        try {
-            staffRepository.saveStaff(staffModel);
-            logger.debug("Staff saved successfully");
-            // Update the session attribute
-            loggedInUser.setStaffId(staffModel.getStaffId());
-            loggedInUser.setStaffName(staffModel.getStaffName());
-            loggedInUser.setStaffEmail(staffModel.getStaffEmail());
-            // Don't set the password in the session
-            return "redirect:/dashboard"; // Ensure this matches your actual mapping
->>>>>>> parent of f296fef (test update view)
         } catch (Exception e) {
             logger.error("Error registering staff", e);
             redirectAttributes.addFlashAttribute("error", "Registration failed. Error: " + e.getMessage());

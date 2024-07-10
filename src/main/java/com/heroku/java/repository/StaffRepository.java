@@ -1,8 +1,12 @@
 package com.heroku.java.repository;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,14 +22,9 @@ public class StaffRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-<<<<<<< HEAD
     public StaffModel saveStaff(StaffModel staffModel) {
         String sql = "INSERT INTO staff (staffname, staffemail, staffpassword) VALUES (?, ?, ?)";
         String[] returnId = {"staffid"};
-=======
-    public void saveStaff(StaffModel staffModel) {
-        String sql = "INSERT INTO staff (staffName, staffEmail, staffPassword) VALUES (?, ?, ?)";
->>>>>>> parent of f296fef (test update view)
         try {
             logger.debug("Attempting to save staff: {}", staffModel);
             jdbcTemplate.update(sql,
@@ -37,8 +36,8 @@ public class StaffRepository {
             logger.error("Error saving staff to database", e);
             throw new RuntimeException("Failed to save staff: " + e.getMessage(), e);
         }
+        return staffModel;
     }
-<<<<<<< HEAD
 
     public void updateStaff(StaffModel staffModel) {
         String sql = "UPDATE staff SET staffname = ?, staffemail = ? WHERE staffid = ?";
@@ -90,6 +89,3 @@ public class StaffRepository {
         }
     }
 }
-=======
-}
->>>>>>> parent of f296fef (test update view)
