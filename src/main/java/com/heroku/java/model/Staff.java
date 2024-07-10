@@ -10,7 +10,7 @@ public class Staff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String staffName;
     private String staffEmail;
@@ -26,11 +26,11 @@ public class Staff {
         this.staffPassword = staffPassword;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
