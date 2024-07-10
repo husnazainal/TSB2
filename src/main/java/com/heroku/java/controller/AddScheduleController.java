@@ -34,7 +34,6 @@ public class AddScheduleController {
 
             statement.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
             return "error";
         }
         return "redirect:/homepage";

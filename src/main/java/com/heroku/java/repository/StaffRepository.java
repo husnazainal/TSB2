@@ -24,7 +24,6 @@ public class StaffRepository {
 
     public StaffModel saveStaff(StaffModel staffModel) {
         String sql = "INSERT INTO staff (staffname, staffemail, staffpassword) VALUES (?, ?, ?)";
-        String[] returnId = {"staffid"};
         try {
             logger.debug("Attempting to save staff: {}", staffModel);
             jdbcTemplate.update(sql,

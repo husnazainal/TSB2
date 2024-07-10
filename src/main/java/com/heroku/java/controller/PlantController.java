@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.heroku.java.model.IndoorPlant;
 import com.heroku.java.model.OutdoorPlant;
@@ -84,7 +83,6 @@ public class PlantController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return "redirect:/error";
         }
 
@@ -194,7 +192,6 @@ public class PlantController {
                 System.out.println("Added plant: " + plant.getSciName());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
@@ -256,7 +253,6 @@ public class PlantController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             // Handle exception appropriately, maybe redirect to an error page
             return "redirect:/error";
         }
@@ -324,7 +320,7 @@ public class PlantController {
                 throw e;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            
             return "redirect:/error";
         }
         return "redirect:/plantlist";
@@ -363,7 +359,6 @@ public class PlantController {
                 throw e;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return "redirect:/error";
         }
         return "redirect:/plantlist";

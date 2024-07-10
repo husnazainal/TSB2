@@ -44,7 +44,6 @@ public class staffloginController {
             RedirectAttributes redirectAttributes,
             Model model) {
         try {
-            StaffDAO staffDAO = new StaffDAO(dataSource);
             StaffModel loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staffModel.getStaffEmail());
             if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staffModel.getStaffPassword())) {
                 model.addAttribute("error", "Invalid email or password. Please try again.");
@@ -59,7 +58,6 @@ public class staffloginController {
 
             return "redirect:/dashboard";
         } catch (SQLException e) {
-            e.printStackTrace();
             model.addAttribute("error", "An error occurred. Please try again.");
             return "loginStaff";
         } catch (Exception e) {

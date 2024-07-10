@@ -10,10 +10,8 @@ import javax.sql.DataSource;
 import com.heroku.java.model.StaffModel;
 
 public class StaffDAO {
-    private final DataSource dataSource;
 
     public StaffDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
     }
 
     public static StaffModel getStaffByStaffemail(DataSource dataSource, String staffemail) throws SQLException {
