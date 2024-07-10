@@ -190,7 +190,7 @@
             <form class="register-form" th:action="@{/updateStaff}" th:object="${staffModel}" method="post">
                 <h2>Update Staff List</h2>
                 <input type="text" name="staffId" th:field="*{staffId}" readonly />
-                <input type="text" placeholder="Username" name="staffUsername" th:field="*{staffUsername}" />
+                <input type="text" placeholder="Username" name="staffName" th:field="*{staffName}" />
                 <input type="email" placeholder="Email" name="staffEmail" th:field="*{staffEmail}" />
                 <input type="password" placeholder="Password" name="staffPassword" th:field="*{staffPassword}" />
                 <br>
