@@ -34,6 +34,8 @@ public class feedback {
     @Column(name = "visitorId")
     private int visitorId;
 
+    private plant plant;
+
     public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, int visitorId) {
         this.feedbackId = feedbackId;
         this.plantId = plantId;
@@ -121,6 +123,14 @@ public class feedback {
     @Override
     public int hashCode() {
         return Objects.hash(feedbackId, plantId, message, dateCreated, visitorName, visitorId);
+    }
+
+    public plant getPlant() {
+        return plant;
+    }
+
+    public void setPlant(plant plant) {
+        this.plant = plant;
     }
 
 }

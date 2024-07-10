@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.sql.DataSource;
 
@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.heroku.java.model.feedback;
+import com.heroku.java.model.plant;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -36,33 +38,31 @@ public class FeedbackController {
     @GetMapping("/submitFeedback")
     public String showFeedbackForm(Model model) {
         model.addAttribute("feedback", new feedback());
+        model.addAttribute("plants", getPlants()); // Add method to fetch plants
         return "submitFeedback";
     }
 
     @PostMapping("/submitFeedback")
     @Transactional
-    public String submitFeedback(@ModelAttribute("feedback") feedback feedback) {
+    public String submitFeedback(@ModelAttribute("feedback") feedback feedback, RedirectAttributes redirectAttributes) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "INSERT INTO feedback(plantId, message, dateCreated, visitorName, visitorId) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO feedback(plantId, message, dateCreated, visitorName) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, feedback.getPlantId());
                 statement.setString(2, feedback.getMessage());
-                statement.setDate(3, new Date(System.currentTimeMillis())); // Set current date
+                statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
                 statement.setString(4, feedback.getVisitorName());
-                statement.setInt(5, feedback.getVisitorId());
                 statement.executeUpdate();
             }
+            redirectAttributes.addFlashAttribute("message", "feedback submitted successfully");
         } catch (SQLException e) {
-            // Log the error
-            return "redirect:/error";
+            redirectAttributes.addFlashAttribute("error", "Error submitting feedback: " + e.getMessage());
         }
-
         return "redirect:/index";
     }
 
     @GetMapping("/feedbackList")
     public String feedbackList(Model model, HttpSession session) {
-        // Check if staff is logged in
         if (session.getAttribute("staffId") == null) {
             return "redirect:/loginStaff";
         }
@@ -70,9 +70,7 @@ public class FeedbackController {
         List<feedback> feedbacks = new ArrayList<>();
         String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantId = p.plantid ORDER BY f.dateCreated DESC";
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 feedback feedback = new feedback();
@@ -81,12 +79,14 @@ public class FeedbackController {
                 feedback.setMessage(resultSet.getString("message"));
                 feedback.setDateCreated(resultSet.getDate("dateCreated"));
                 feedback.setVisitorName(resultSet.getString("visitorName"));
-                feedback.setVisitorId(resultSet.getInt("visitorId"));
-                // Add plant name to the model if needed
+
+                plant plant = new plant();
+                plant.setComName(resultSet.getString("comname"));
+                feedback.setPlant(plant);
+
                 feedbacks.add(feedback);
             }
         } catch (SQLException e) {
-            // Log the error
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
@@ -96,16 +96,14 @@ public class FeedbackController {
     }
 
     @GetMapping("/ViewFeedback")
-    public String ViewFeedback(@RequestParam("feedbackId") int feedbackId, Model model, HttpSession session) {
-        // Check if staff is logged in
+    public String viewFeedback(@RequestParam("feedbackId") int feedbackId, Model model, HttpSession session) {
         if (session.getAttribute("staffId") == null) {
             return "redirect:/loginStaff";
         }
 
         String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantId = p.plantid WHERE f.feedbackId = ?";
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, feedbackId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -116,20 +114,41 @@ public class FeedbackController {
                     feedback.setMessage(resultSet.getString("message"));
                     feedback.setDateCreated(resultSet.getDate("dateCreated"));
                     feedback.setVisitorName(resultSet.getString("visitorName"));
-                    feedback.setVisitorId(resultSet.getInt("visitorId"));
-                    // Add plant name to the model if needed
+
+                    plant plant = new plant();
+                    plant.setComName(resultSet.getString("comname"));
+                    feedback.setPlant(plant);
+
                     model.addAttribute("feedback", feedback);
-                    model.addAttribute("plantName", resultSet.getString("comname"));
                 } else {
-                    model.addAttribute("error", "Feedback not found");
+                    model.addAttribute("error", "feedback not found");
                     return "error";
                 }
             }
         } catch (SQLException e) {
-            // Log the error
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
         return "ViewFeedback";
+    }
+
+    private List<plant> getPlants() {
+        List<plant> plants = new ArrayList<>();
+        String sql = "SELECT plantid, comname FROM plant ORDER BY comname";
+
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                plant plant = new plant();
+                plant.setPlantId(resultSet.getInt("plantid"));
+                plant.setComName(resultSet.getString("comname"));
+                plants.add(plant);
+            }
+        } catch (SQLException e) {
+            // Log the error
+            System.err.println("Error fetching plants: " + e.getMessage());
+        }
+
+        return plants;
     }
 }
