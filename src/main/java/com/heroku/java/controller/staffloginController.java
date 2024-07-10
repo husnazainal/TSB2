@@ -57,7 +57,7 @@ public class staffloginController {
             System.out.println("Staff ID set in session during login: " + loggedInStaff.getStaffId());
             System.out.println("Staff ID retrieved immediately after setting: " + session.getAttribute(SESSION_STAFF_ID));
 
-            return "redirect:/admindashboard";
+            return "redirect:/dashboard";
         } catch (SQLException e) {
             e.printStackTrace();
             model.addAttribute("error", "An error occurred. Please try again.");
