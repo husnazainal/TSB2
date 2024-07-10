@@ -177,7 +177,7 @@ public class AccountController {
     }
 
     @PostMapping("/updateStaff")
-    public String updateStaff(@ModelAttribute("staff") StaffModel updatedStaff,
+    public String updateStaff(@ModelAttribute("staffModel") StaffModel updatedStaff,
             RedirectAttributes redirectAttributes,
             HttpSession session) {
         // Check if user is logged in
