@@ -201,7 +201,7 @@ public class PlantController {
 
         model.addAttribute("plants", plants);
         System.out.println("Number of plants: " + plants.size());
-        return "plantlist";
+        return "visitorplantlist";
     }
 
     @GetMapping("/updatePlant/{plantId}")
