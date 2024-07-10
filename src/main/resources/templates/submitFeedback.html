@@ -128,8 +128,8 @@
                     <input type="email" id="visitorEmail" th:field="*{visitorEmail}" required>
                     <span th:if="${#fields.hasErrors('visitorEmail')}" th:errors="*{visitorEmail}"
                         class="error-message"></span>
-                    <span id="emailError" class="error-message" style="display: none;">Please enter a valid email
-                        address</span>
+                    <!-- <span id="emailError" class="error-message" style="display: none;">Please enter a valid email
+                        address</span> -->
                 </div>
                 <div class="form-group">
                     <label for="visitorPhoneno">Your Phone No:</label>
@@ -137,8 +137,8 @@
                         oninput="this.value = this.value.replace(/[^0-9 ]/g, '');">
                     <span th:if="${#fields.hasErrors('visitorPhoneno')}" th:errors="*{visitorPhoneno}"
                         class="error-message"></span>
-                    <span id="phoneError" class="error-message" style="display: none;">Phone number must be in the
-                        format 0123456789 or 01112345678</span>
+                    <!-- <span id="phoneError" class="error-message" style="display: none;">Phone number must be in the
+                        format 0123456789 or 01112345678</span> -->
                 </div>
                 <div class="form-group">
                     <label for="message">Feedback:</label>
@@ -163,7 +163,7 @@
 
                         if (email && !validateEmail(email)) {
                             emailError.style.display = 'block';
-                            e.target.setCustomValidity('Invalid email format');
+                            e.target.setCustomValidity('Invalid email format (abcd@gmail.com)');
                         } else {
                             emailError.style.display = 'none';
                             e.target.setCustomValidity('');
@@ -176,7 +176,7 @@
 
                         if (phoneNo && !validatePhone(phoneNo)) {
                             phoneError.style.display = 'block';
-                            e.target.setCustomValidity('Invalid phone number format');
+                            e.target.setCustomValidity('Invalid phone number format (0123456789)');
                         } else {
                             phoneError.style.display = 'none';
                             e.target.setCustomValidity('');
