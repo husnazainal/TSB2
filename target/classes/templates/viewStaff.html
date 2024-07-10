@@ -183,6 +183,7 @@
                         <td th:text="${staffModel.staffName}"></td>
                         <td th:text="${staffModel.staffEmail}"></td>
                         <td>******</td>
+                        <td><a class="btn btn-info" th:href="@{/updateStaff(staffid=${staffModel.staffId})}">Update</a></td>
                     </tr>
                 </table>
             </section>
