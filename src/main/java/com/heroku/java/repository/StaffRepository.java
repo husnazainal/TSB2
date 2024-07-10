@@ -27,8 +27,8 @@ public class StaffRepository {
     }
 
     public StaffModel saveStaff(StaffModel staffModel) {
-        String sql = "INSERT INTO staff (staffName, staffEmail, staffPassword) VALUES (?, ?, ?)";
-        String[] returnId = {"staffId"};
+        String sql = "INSERT INTO staff (staffname, staffemail, staffpassword) VALUES (?, ?, ?)";
+        String[] returnId = {"staffid"};
         try {
             logger.debug("Attempting to save staff: {}", staffModel);
             KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -52,7 +52,7 @@ public class StaffRepository {
     }
 
     public void updateStaff(StaffModel staffModel) {
-        String sql = "UPDATE staff SET staffName = ?, staffEmail = ? WHERE staffId = ?";
+        String sql = "UPDATE staff SET staffname = ?, staffemail = ? WHERE staffid = ?";
         try {
             logger.debug("Attempting to update staff: {}", staffModel);
             int rowsAffected = jdbcTemplate.update(sql,
@@ -77,7 +77,7 @@ public class StaffRepository {
     }
 
     public StaffModel getStaffById(int staffId) {
-        String sql = "SELECT * FROM staff WHERE staffId = ?";
+        String sql = "SELECT * FROM staff WHERE staffid = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(StaffModel.class), staffId);
         } catch (EmptyResultDataAccessException e) {
@@ -87,12 +87,12 @@ public class StaffRepository {
     }
 
     public void deleteStaff(int staffId) {
-        String sql = "DELETE FROM staff WHERE staffId = ?";
+        String sql = "DELETE FROM staff WHERE staffid = ?";
         jdbcTemplate.update(sql, staffId);
     }
 
     public StaffModel authenticateStaff(String email, String password) {
-        String sql = "SELECT * FROM staff WHERE staffEmail = ? AND staffPassword = ?";
+        String sql = "SELECT * FROM staff WHERE staffemail = ? AND staffpassword = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(StaffModel.class), email, password);
         } catch (EmptyResultDataAccessException e) {
