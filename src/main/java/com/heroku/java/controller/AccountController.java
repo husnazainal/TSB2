@@ -33,6 +33,46 @@ public class AccountController {
         return new StaffModel();
     }
 
+    @GetMapping("/account")
+    public String viewAccount(@ModelAttribute("loggedInUser") StaffModel loggedInUser, Model model) {
+        if (loggedInUser.getStaffId() == null) {
+            return "redirect:/loginStaff";
+        }
+        model.addAttribute("staffModel", loggedInUser);
+        return "account";
+    }
+    @GetMapping("/account/edit")
+    public String showEditForm(@ModelAttribute("loggedInUser") StaffModel loggedInUser, Model model) {
+        if (loggedInUser.getStaffId() == null) {
+            return "redirect:/loginStaff";
+        }
+        model.addAttribute("staffModel", loggedInUser);
+        return "editAccount";
+    }
+    @PostMapping("/account/update")
+    public String updateAccount(@ModelAttribute("staffModel") StaffModel updatedStaff,
+                                @ModelAttribute("loggedInUser") StaffModel loggedInUser,
+                                RedirectAttributes redirectAttributes) {
+        if (loggedInUser.getStaffId() == null) {
+            return "redirect:/loginStaff";
+        }
+
+        try {
+            // Update only allowed fields
+            loggedInUser.setStaffName(updatedStaff.getStaffName());
+            loggedInUser.setStaffEmail(updatedStaff.getStaffEmail());
+            // Add more fields as needed, but be cautious with sensitive data
+
+            staffRepository.updateStaff(loggedInUser);
+            redirectAttributes.addFlashAttribute("message", "Account updated successfully");
+            return "redirect:/account";
+        } catch (Exception e) {
+            logger.error("Error updating account", e);
+            redirectAttributes.addFlashAttribute("error", "Update failed. Error: " + e.getMessage());
+            return "redirect:/account/edit";
+        }
+    }
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         logger.debug("Showing registration form");
@@ -43,11 +83,19 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String registerStaff(@ModelAttribute StaffModel staffModel, RedirectAttributes redirectAttributes) {
+    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel,
+            @ModelAttribute("loggedInUser") StaffModel loggedInUser,
+            RedirectAttributes redirectAttributes) {
+        logger.debug("Registering staff: {}", staffModel);
         try {
             staffRepository.saveStaff(staffModel);
-            redirectAttributes.addFlashAttribute("message", "Registration successful. Please log in.");
-            return "redirect:/loginStaff";
+            logger.debug("Staff saved successfully");
+            // Update the session attribute
+            loggedInUser.setStaffId(staffModel.getStaffId());
+            loggedInUser.setStaffName(staffModel.getStaffName());
+            loggedInUser.setStaffEmail(staffModel.getStaffEmail());
+            // Don't set the password in the session
+            return "redirect:/dashboard"; // Ensure this matches your actual mapping
         } catch (Exception e) {
             logger.error("Error registering staff", e);
             redirectAttributes.addFlashAttribute("error", "Registration failed. Error: " + e.getMessage());
