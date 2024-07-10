@@ -33,15 +33,15 @@ public class FeedbackController {
         this.dataSource = dataSource;
     }
 
-    @GetMapping("/feedbackForm")
+    @GetMapping("/submitFeedback")
     public String showFeedbackForm(Model model) {
         model.addAttribute("feedback", new feedback());
-        return "feedbackForm";
+        return "submitFeedback";
     }
 
-    @PostMapping("/feedbackForm")
+    @PostMapping("/submitFeedback")
     @Transactional
-    public String feedbackForm(@ModelAttribute("feedback") feedback feedback) {
+    public String submitFeedback(@ModelAttribute("feedback") feedback feedback) {
         try (Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO feedback(plantId, message, dateCreated, visitorName, visitorId) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {

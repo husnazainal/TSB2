@@ -99,7 +99,7 @@
             <h1>Feedback Form</h1>
             <p th:if="${message}" style="color: green;" th:text="${message}"></p>
             <p th:if="${error}" style="color: red;" th:text="${error}"></p>
-            <form th:action="@{/feedbackForm}" method="post" th:object="${feedback}">
+            <form th:action="@{/submitFeedback}" method="post" th:object="${feedback}">
                 <div class="form-group">
                     <label for="visitorName">Name:</label>
                     <input type="text" id="visitorName" th:field="*{visitorName}" required>
