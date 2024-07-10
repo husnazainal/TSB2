@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Plant List</title>
-    <style>
+    <style th:inline="css">
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -21,7 +22,7 @@
             border-collapse: collapse;
             margin-top: 20px;
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         table th,
@@ -54,6 +55,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Plant List</h1>
     <table>
@@ -69,27 +71,17 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Example data, replace with your actual data using Thymeleaf -->
-            <tr>
-                <td>Scientific Name 1</td>
-                <td>Common Name 1</td>
-                <td>Type 1</td>
-                <td>Habitat 1</td>
-                <td>Species 1</td>
-                <td>Description 1</td>
-                <td><a href="/plantDetail/1">View Details</a></td>
+            <tr th:each="plant : ${plants}">
+                <td th:text="${plant.scientificName}">Scientific Name</td>
+                <td th:text="${plant.commonName}">Common Name</td>
+                <td th:text="${plant.type}">Type</td>
+                <td th:text="${plant.habitat}">Habitat</td>
+                <td th:text="${plant.species}">Species</td>
+                <td th:text="${plant.description}">Description</td>
+                <td><a th:href="@{/plantDetail/{id}(id=${plant.id})}">View Details</a></td>
             </tr>
-            <tr>
-                <td>Scientific Name 2</td>
-                <td>Common Name 2</td>
-                <td>Type 2</td>
-                <td>Habitat 2</td>
-                <td>Species 2</td>
-                <td>Description 2</td>
-                <td><a href="/plantDetail/2">View Details</a></td>
-            </tr>
-            <!-- Repeat rows for each plant using Thymeleaf -->
         </tbody>
     </table>
 </body>
+
 </html>

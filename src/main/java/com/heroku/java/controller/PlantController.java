@@ -153,6 +153,57 @@ public class PlantController {
         return "plantlist";
     }
 
+    @GetMapping("/visitorplantlist")
+    public String VisitorplantList(Model model) {
+        List<plant> plants = new ArrayList<>();
+        String sql = "SELECT p.plantid, p.sciname, p.comname, p.type, p.habitat, p.species, p.description, "
+                + "i.lightr, i.humidp, i.waterf, "
+                + "o.sune, o.windr, o.soilt "
+                + "FROM plant p "
+                + "LEFT JOIN indoor_plant i ON p.plantid = i.plantid "
+                + "LEFT JOIN outdoor_plant o ON p.plantid = o.plantid "
+                + "ORDER BY p.plantid";
+
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                plant plant;
+                String type = resultSet.getString("type");
+                if ("Indoor".equals(type)) {
+                    IndoorPlant indoorPlant = new IndoorPlant();
+                    indoorPlant.setLightR(resultSet.getString("lightr"));
+                    indoorPlant.setHumidP(resultSet.getString("humidp"));
+                    indoorPlant.setWaterF(resultSet.getString("waterf"));
+                    plant = indoorPlant;
+                } else if ("Outdoor".equals(type)) {
+                    OutdoorPlant outdoorPlant = new OutdoorPlant();
+                    outdoorPlant.setSunE(resultSet.getString("sune"));
+                    outdoorPlant.setWindR(resultSet.getString("windr"));
+                    outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                    plant = outdoorPlant;
+                } else {
+                    plant = new plant();
+                }
+                plant.setPlantId(resultSet.getInt("plantid"));
+                plant.setSciName(resultSet.getString("sciname"));
+                plant.setComName(resultSet.getString("comname"));
+                plant.setType(type);
+                plant.setHabitat(resultSet.getString("habitat"));
+                plant.setSpecies(resultSet.getString("species"));
+                plant.setDescription(resultSet.getString("description"));
+                plants.add(plant);
+                System.out.println("Added plant: " + plant.getSciName());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Database error: " + e.getMessage());
+            return "error";
+        }
+
+        model.addAttribute("plants", plants);
+        System.out.println("Number of plants: " + plants.size());
+        return "plantlist";
+    }
+
     @GetMapping("/updatePlant/{plantId}")
     public String getUpdatePlantForm(@PathVariable("plantId") int plantId, Model model) {
         try (Connection connection = dataSource.getConnection()) {
