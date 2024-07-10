@@ -1,172 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant List</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        integrity="sha512-d44N5Bfu26cUbk+orWS34JPLfP5ZEK4Vg5DoJKF4B5mIp9CTQyT4J2uE5tdw3b5z7asuppl9SCNfNvoMy8B2kw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style th:inline="css">
-        @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap");
-
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: #e0e4d7;
-            /* Light sage green */
-            background-image: url("https://images.unsplash.com/photo-1520302630591-fd1c66edc19d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-            background-size: cover;
-            background-position: center;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
             margin: 0;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
-            padding-top: 100px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            color: #3b4b3b;
-            border: 1px solid #8da399;
         }
 
         h1 {
             text-align: center;
-            margin: 20px auto;
-            max-width: 200px;
-            padding: 20px;
-            background-color: #8da399;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            color: #e0e4d7;
-
+            color: #333;
         }
 
-        .plant-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
-        }
-
-        .plant-card {
-            background-color: #f5f5f5;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            transition: transform 0.3s ease;
-            text-align: left;
-        }
-
-        .plant-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .plant-card h2 {
-            color: #4b6b4b;
-            margin-top: 0;
-            font-size: 20px;
-            text-transform: uppercase;
-        }
-
-        .plant-card p {
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .plant-card span {
-            font-weight: bold;
-            color: #2e8b57;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: #8da399;
-            /* Clay color */
-            top: 0;
-            z-index: 1000;
+        table {
             width: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 0 0 10px 10px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        header .logo {
-            font-size: 25px;
-            color: #e0e4d7;
+        table th,
+        table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        table tbody td {
+            vertical-align: middle;
+        }
+
+        table tbody td a {
             text-decoration: none;
-            font-weight: 700;
+            color: #007bff;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        nav a {
-            margin-left: 20px;
-            text-decoration: none;
-            color: #e0e4d7;
-            font-weight: 700;
-        }
-
-        @media (max-width: 600px) {
-            .plant-grid {
-                grid-template-columns: 1fr;
-            }
+        table tbody td a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <a href="#" class="logo">Taman Seribu Bunga</a>
-        <nav class="nav-items">
-            <a href="#">Home</a>
-            <a th:href="@{/visitorplantlist}">Plant</a>
-            <a th:href="@{/feedback}">Feedback</a>
-            <a th:href="@{/loginstaff}">Login</a>
-        </nav>
-    </header>
-
-    <div class="container">
-        <h1>Plant List</h1>
-        <div class="plant-grid">
-            <div th:each="plant : ${plants}" class="plant-card">
-                <h2>Scientific Name: <span th:text="${plant.sciName}"></span></h2>
-                <p>Common Name: <span th:text="${plant.comName}"></span></p>
-                <p>Type: <span th:text="${plant.type}"></span></p>
-                <div th:if="${plant.type.equalsIgnoreCase('Indoor')}">
-                    <p>Light Requirements: <span th:text="${plant.lightR}"></span></p>
-                    <p>Humidity Preferences: <span th:text="${plant.humidP}"></span></p>
-                    <p>Watering Frequency: <span th:text="${plant.waterF}"></span></p>
-                </div>
-                <div th:if="${plant.type.equalsIgnoreCase('Outdoor')}">
-                    <p>Sunlight Exposure: <span th:text="${plant.sunE}"></span></p>
-                    <p>Wind Resistance: <span th:text="${plant.windR}"></span></p>
-                    <p>Soil Type: <span th:text="${plant.soilT}"></span></p>
-                </div>
-                <p>Habitat: <span th:text="${plant.habitat}"></span></p>
-                <p>Species: <span th:text="${plant.species}"></span></p>
-                <p>Description: <span th:text="${plant.description}"></span></p>
-            </div>
-        </div>
-    </div>
+    <h1>Plant List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Scientific Name</th>
+                <th>Common Name</th>
+                <th>Type</th>
+                <th>Habitat</th>
+                <th>Species</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="plant : ${plants}">
+                <td th:text="${plant.scientificName}">Scientific Name</td>
+                <td th:text="${plant.commonName}">Common Name</td>
+                <td th:text="${plant.type}">Type</td>
+                <td th:text="${plant.habitat}">Habitat</td>
+                <td th:text="${plant.species}">Species</td>
+                <td th:text="${plant.description}">Description</td>
+                <td><a th:href="@{/plantDetail/{id}(id=${plant.id})}">View Details</a></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 
 </html>
