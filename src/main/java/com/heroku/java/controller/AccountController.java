@@ -105,12 +105,15 @@ public class AccountController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        // Check if user is logged in
-        if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
+    public String dashboard(Model model, HttpSession session) {
+        Long staffId = (Long) session.getAttribute(staffloginController.SESSION_STAFF_ID);
+        if (staffId == null) {
             return "redirect:/loginStaff";
         }
-        // Add any necessary attributes to the model
+
+        StaffModel loggedInUser = staffRepository.getStaffById(staffId);
+        model.addAttribute("loggedInUser", loggedInUser);
+
         return "dashboard";
     }
 
