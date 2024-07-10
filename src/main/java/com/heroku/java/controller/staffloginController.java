@@ -15,7 +15,9 @@ import com.heroku.java.model.StaffModel;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+
 public class staffloginController {
+
     private final DataSource dataSource;
 
     // Constants for session attribute names
@@ -35,18 +37,23 @@ public class staffloginController {
     }
 
     @PostMapping("/loginStaff")
-    public String login(@ModelAttribute("staffModel") StaffModel staffModel, 
-                        HttpSession session,
-                        RedirectAttributes redirectAttributes,
-                        Model model) {
+    public String login(@ModelAttribute("staffModel") StaffModel staffModel,
+            @ModelAttribute("loggedInUser") StaffModel loggedInUser,
+            HttpSession session,
+            RedirectAttributes redirectAttributes,
+            Model model) {
         try {
-            StaffModel loggedInStaff = StaffDAO.getStaffByStaffemail(dataSource, staffModel.getStaffEmail());
-            if (loggedInStaff == null || !loggedInStaff.getStaffPassword().equals(staffModel.getStaffPassword())) {
+            StaffModel authenticatedStaff = StaffDAO.getStaffByStaffemail(dataSource, staffModel.getStaffEmail());
+            if (authenticatedStaff == null || !authenticatedStaff.getStaffPassword().equals(staffModel.getStaffPassword())) {
                 model.addAttribute("error", "Invalid email or password. Please try again.");
                 return "loginStaff";
             }
-            session.setAttribute(SESSION_STAFF_ID, loggedInStaff.getStaffId());
-            session.setAttribute(SESSION_STAFF_EMAIL, loggedInStaff.getStaffEmail());
+            // Update loggedInUser
+            loggedInUser.setStaffId(authenticatedStaff.getStaffId());
+            loggedInUser.setStaffEmail(authenticatedStaff.getStaffEmail());
+            loggedInUser.setStaffName(authenticatedStaff.getStaffName());
+            // ... set other necessary fields
+
             return "redirect:/dashboard";
         } catch (Exception e) {
             model.addAttribute("error", "An unexpected error occurred. Please try again.");
