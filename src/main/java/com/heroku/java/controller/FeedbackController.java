@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,14 +45,16 @@ public class FeedbackController {
 
     @PostMapping("/submitFeedback")
     @Transactional
-    public String submitFeedback(@ModelAttribute("feedback") feedback feedback, RedirectAttributes redirectAttributes) {
+    public String submitFeedback(@Validated @ModelAttribute("feedback") feedback feedback, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "INSERT INTO feedback(plantid, message, datecreated, visitorname) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO feedback(plantid, message, datecreated, visitorname, visitoremail, visitorphoneno) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, feedback.getPlantId());
                 statement.setString(2, feedback.getMessage());
                 statement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
                 statement.setString(4, feedback.getVisitorName());
+                statement.setString(5, feedback.getVisitorEmail());
+                statement.setString(6, feedback.getVisitorPhoneno());
                 statement.executeUpdate();
             }
             redirectAttributes.addFlashAttribute("message", "Feedback submitted successfully");
@@ -78,6 +82,8 @@ public class FeedbackController {
                 feedback.setMessage(resultSet.getString("message"));
                 feedback.setDateCreated(resultSet.getDate("dateCreated"));
                 feedback.setVisitorName(resultSet.getString("visitorName"));
+                feedback.setVisitorEmail(resultSet.getString("visitorEmail"));
+                feedback.setVisitorPhoneno(resultSet.getString("visitorPhoneno"));
 
                 plant plant = new plant();
                 plant.setComName(resultSet.getString("comname"));
@@ -112,6 +118,8 @@ public class FeedbackController {
                     feedback.setMessage(resultSet.getString("message"));
                     feedback.setDateCreated(resultSet.getDate("dateCreated"));
                     feedback.setVisitorName(resultSet.getString("visitorName"));
+                    feedback.setVisitorEmail(resultSet.getString("visitorEmail"));
+                    feedback.setVisitorPhoneno(resultSet.getString("visitorPhoneno"));
 
                     plant plant = new plant();
                     plant.setComName(resultSet.getString("comname"));
