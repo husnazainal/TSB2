@@ -9,10 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "feedback")
@@ -35,16 +35,24 @@ public class feedback {
     @Column(name = "visitorname", nullable = false)
     private String visitorName;
 
+    @Column(name = "visitoremail", nullable = false)
+    private String visitorEmail;
+
+    @Column(name = "visitorphoneno", nullable = false)
+    private String visitorPhoneno;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plantid", insertable = false, updatable = false)
     private plant plant;
 
-    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName) {
+    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, String visitorEmail, String visitorPhoneno) {
         this.feedbackId = feedbackId;
         this.plantId = plantId;
         this.message = message;
         this.dateCreated = dateCreated;
         this.visitorName = visitorName;
+        this.visitorEmail = visitorEmail;
+        this.visitorPhoneno = visitorPhoneno;
     }
 
     public feedback() {
@@ -98,6 +106,8 @@ public class feedback {
                 + ", message='" + message + '\''
                 + ", dateCreated=" + dateCreated
                 + ", visitorName='" + visitorName + '\''
+                + ", visitorEmail='" + visitorEmail + '\''
+                + ", visitorPhoneno='" + visitorPhoneno + '\''
                 + '}';
     }
 
@@ -128,6 +138,22 @@ public class feedback {
 
     public void setPlant(plant plant) {
         this.plant = plant;
+    }
+
+    public String getVisitorEmail() {
+        return visitorEmail;
+    }
+
+    public void setVisitorEmail(String visitorEmail) {
+        this.visitorEmail = visitorEmail;
+    }
+
+    public String getVisitorPhoneno() {
+        return visitorPhoneno;
+    }
+
+    public void setVisitorPhoneno(String visitorPhoneno) {
+        this.visitorPhoneno = visitorPhoneno;
     }
 
 }
