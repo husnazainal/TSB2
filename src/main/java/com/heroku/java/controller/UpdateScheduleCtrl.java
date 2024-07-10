@@ -124,7 +124,6 @@ public class UpdateScheduleCtrl {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return "error";
         }
 
@@ -145,7 +144,6 @@ public class UpdateScheduleCtrl {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return "error";
         }
         return "redirect:/viewSchedules";

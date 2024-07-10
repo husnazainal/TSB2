@@ -33,15 +33,15 @@ public class FeedbackController {
         this.dataSource = dataSource;
     }
 
-    @GetMapping("/submitFeedback")
+    @GetMapping("/feedbackForm")
     public String showFeedbackForm(Model model) {
         model.addAttribute("feedback", new feedback());
-        return "submitFeedback";
+        return "feedbackForm";
     }
 
-    @PostMapping("/submitFeedback")
+    @PostMapping("/feedbackForm")
     @Transactional
-    public String submitFeedback(@ModelAttribute("feedback") feedback feedback) {
+    public String feedbackForm(@ModelAttribute("feedback") feedback feedback) {
         try (Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO feedback(plantId, message, dateCreated, visitorName, visitorId) VALUES (?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -54,11 +54,10 @@ public class FeedbackController {
             }
         } catch (SQLException e) {
             // Log the error
-            e.printStackTrace();
             return "redirect:/error";
         }
 
-        return "redirect:/feedbackSuccess";
+        return "redirect:/index";
     }
 
     @GetMapping("/feedbackList")
@@ -88,7 +87,6 @@ public class FeedbackController {
             }
         } catch (SQLException e) {
             // Log the error
-            e.printStackTrace();
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
@@ -97,8 +95,8 @@ public class FeedbackController {
         return "feedbackList";
     }
 
-    @GetMapping("/viewFeedback")
-    public String viewFeedback(@RequestParam("feedbackId") int feedbackId, Model model, HttpSession session) {
+    @GetMapping("/ViewFeedback")
+    public String ViewFeedback(@RequestParam("feedbackId") int feedbackId, Model model, HttpSession session) {
         // Check if staff is logged in
         if (session.getAttribute("staffId") == null) {
             return "redirect:/loginStaff";
@@ -129,11 +127,9 @@ public class FeedbackController {
             }
         } catch (SQLException e) {
             // Log the error
-            e.printStackTrace();
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
-
-        return "viewFeedback";
+        return "ViewFeedback";
     }
 }

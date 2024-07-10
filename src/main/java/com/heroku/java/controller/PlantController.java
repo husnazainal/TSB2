@@ -115,20 +115,24 @@ public class PlantController {
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
-                if ("Indoor".equals(type)) {
-                    IndoorPlant indoorPlant = new IndoorPlant();
-                    indoorPlant.setLightR(resultSet.getString("lightr"));
-                    indoorPlant.setHumidP(resultSet.getString("humidp"));
-                    indoorPlant.setWaterF(resultSet.getString("waterf"));
-                    plant = indoorPlant;
-                } else if ("Outdoor".equals(type)) {
-                    OutdoorPlant outdoorPlant = new OutdoorPlant();
-                    outdoorPlant.setSunE(resultSet.getString("sune"));
-                    outdoorPlant.setWindR(resultSet.getString("windr"));
-                    outdoorPlant.setSoilT(resultSet.getString("soilt"));
-                    plant = outdoorPlant;
-                } else {
+                if (null == type) {
                     plant = new plant();
+                } else switch (type) {
+                    case "Indoor" -> {
+                        IndoorPlant indoorPlant = new IndoorPlant();
+                        indoorPlant.setLightR(resultSet.getString("lightr"));
+                        indoorPlant.setHumidP(resultSet.getString("humidp"));
+                        indoorPlant.setWaterF(resultSet.getString("waterf"));
+                        plant = indoorPlant;
+                    }
+                    case "Outdoor" -> {
+                        OutdoorPlant outdoorPlant = new OutdoorPlant();
+                        outdoorPlant.setSunE(resultSet.getString("sune"));
+                        outdoorPlant.setWindR(resultSet.getString("windr"));
+                        outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                        plant = outdoorPlant;
+                    }
+                    default -> plant = new plant();
                 }
                 plant.setPlantId(resultSet.getInt("plantid"));
                 plant.setSciName(resultSet.getString("sciname"));
@@ -141,7 +145,6 @@ public class PlantController {
                 System.out.println("Added plant: " + plant.getSciName());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
@@ -166,20 +169,24 @@ public class PlantController {
             while (resultSet.next()) {
                 plant plant;
                 String type = resultSet.getString("type");
-                if ("Indoor".equals(type)) {
-                    IndoorPlant indoorPlant = new IndoorPlant();
-                    indoorPlant.setLightR(resultSet.getString("lightr"));
-                    indoorPlant.setHumidP(resultSet.getString("humidp"));
-                    indoorPlant.setWaterF(resultSet.getString("waterf"));
-                    plant = indoorPlant;
-                } else if ("Outdoor".equals(type)) {
-                    OutdoorPlant outdoorPlant = new OutdoorPlant();
-                    outdoorPlant.setSunE(resultSet.getString("sune"));
-                    outdoorPlant.setWindR(resultSet.getString("windr"));
-                    outdoorPlant.setSoilT(resultSet.getString("soilt"));
-                    plant = outdoorPlant;
-                } else {
+                if (null == type) {
                     plant = new plant();
+                } else switch (type) {
+                    case "Indoor" -> {
+                        IndoorPlant indoorPlant = new IndoorPlant();
+                        indoorPlant.setLightR(resultSet.getString("lightr"));
+                        indoorPlant.setHumidP(resultSet.getString("humidp"));
+                        indoorPlant.setWaterF(resultSet.getString("waterf"));
+                        plant = indoorPlant;
+                    }
+                    case "Outdoor" -> {
+                        OutdoorPlant outdoorPlant = new OutdoorPlant();
+                        outdoorPlant.setSunE(resultSet.getString("sune"));
+                        outdoorPlant.setWindR(resultSet.getString("windr"));
+                        outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                        plant = outdoorPlant;
+                    }
+                    default -> plant = new plant();
                 }
                 plant.setPlantId(resultSet.getInt("plantid"));
                 plant.setSciName(resultSet.getString("sciname"));
