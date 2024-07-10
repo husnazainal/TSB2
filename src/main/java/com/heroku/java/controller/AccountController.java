@@ -189,7 +189,7 @@ public class AccountController {
             StaffModel existingStaff = staffRepository.getStaffById(updatedStaff.getStaffId());
             if (existingStaff == null) {
                 redirectAttributes.addFlashAttribute("error", "Staff not found");
-                return "redirect:/stafflist";
+                return "redirect:/viewStaff";
             }
 
             existingStaff.setStaffName(updatedStaff.getStaffName());
@@ -201,7 +201,7 @@ public class AccountController {
 
             staffRepository.updateStaff(existingStaff);
             redirectAttributes.addFlashAttribute("message", "Staff updated successfully");
-            return "redirect:/stafflist";
+            return "redirect:/viewStaff";
         } catch (Exception e) {
             logger.error("Error updating staff", e);
             redirectAttributes.addFlashAttribute("error", "Update failed. Error: " + e.getMessage());
