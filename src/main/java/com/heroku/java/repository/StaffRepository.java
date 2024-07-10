@@ -1,23 +1,15 @@
 package com.heroku.java.repository;
 
-import java.sql.PreparedStatement;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.heroku.java.model.StaffModel;
 
 @Repository
 public class StaffRepository {
-
     private static final Logger logger = LoggerFactory.getLogger(StaffRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
@@ -26,30 +18,27 @@ public class StaffRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+<<<<<<< HEAD
     public StaffModel saveStaff(StaffModel staffModel) {
         String sql = "INSERT INTO staff (staffname, staffemail, staffpassword) VALUES (?, ?, ?)";
         String[] returnId = {"staffid"};
+=======
+    public void saveStaff(StaffModel staffModel) {
+        String sql = "INSERT INTO staff (staffName, staffEmail, staffPassword) VALUES (?, ?, ?)";
+>>>>>>> parent of f296fef (test update view)
         try {
             logger.debug("Attempting to save staff: {}", staffModel);
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(sql, returnId);
-                ps.setString(1, staffModel.getStaffName());
-                ps.setString(2, staffModel.getStaffEmail());
-                ps.setString(3, staffModel.getStaffPassword());
-                return ps;
-            }, keyHolder);
-
-            @SuppressWarnings("null")
-            int staffId = keyHolder.getKey().intValue();
-            staffModel.setStaffId(staffId);
-            logger.debug("Staff saved successfully with ID: {}", staffId);
-            return staffModel;
+            jdbcTemplate.update(sql,
+                staffModel.getStaffName(),
+                staffModel.getStaffEmail(),
+                staffModel.getStaffPassword());
+            logger.debug("Staff saved successfully");
         } catch (DataAccessException e) {
             logger.error("Error saving staff to database", e);
             throw new RuntimeException("Failed to save staff: " + e.getMessage(), e);
         }
     }
+<<<<<<< HEAD
 
     public void updateStaff(StaffModel staffModel) {
         String sql = "UPDATE staff SET staffname = ?, staffemail = ? WHERE staffid = ?";
@@ -101,3 +90,6 @@ public class StaffRepository {
         }
     }
 }
+=======
+}
+>>>>>>> parent of f296fef (test update view)

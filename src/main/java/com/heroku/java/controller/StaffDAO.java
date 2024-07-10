@@ -24,7 +24,7 @@ public class StaffDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     StaffModel staffModel = new StaffModel();
-                    staffModel.setStaffId(rs.getInt("staffid"));
+                    staffModel.setStaffId(rs.getLong("staffid"));
                     staffModel.setStaffName(rs.getString("staffname"));
                     staffModel.setStaffEmail(rs.getString("staffemail"));
                     staffModel.setStaffPassword(rs.getString("staffpassword"));

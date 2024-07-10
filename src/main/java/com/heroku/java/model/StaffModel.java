@@ -1,20 +1,21 @@
 package com.heroku.java.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "staff")
 public class StaffModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staffid")
-    private Integer staffId;
-
+    private Long staffId;
+    
     @Column(name = "staffname")
     private String staffName;
 
@@ -29,7 +30,7 @@ public class StaffModel {
     }
 
     // Parameterized constructor
-    public StaffModel(int staffId, String staffName, String staffEmail, String staffPassword) {
+    public StaffModel(Long staffId, String staffName, String staffEmail, String staffPassword) {
         this.staffId = staffId;
         this.staffName = staffName;
         this.staffEmail = staffEmail;
@@ -37,11 +38,11 @@ public class StaffModel {
     }
 
     // Getters and setters
-    public Integer getStaffId() {
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(Integer staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 
@@ -71,11 +72,11 @@ public class StaffModel {
 
     @Override
     public String toString() {
-        return "StaffModel{"
-                + "staffId=" + staffId
-                + ", staffName='" + staffName + '\''
-                + ", staffEmail='" + staffEmail + '\''
-                + ", staffPassword='" + staffPassword + '\''
-                + '}';
+        return "StaffModel{" +
+                "staffId=" + staffId +
+                ", staffName='" + staffName + '\'' +
+                ", staffEmail='" + staffEmail + '\'' +
+                ", staffPassword='" + staffPassword + '\'' +
+                '}';
     }
 }
