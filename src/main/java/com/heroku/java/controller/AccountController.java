@@ -105,12 +105,9 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String registerStaff(@ModelAttribute("staffModel") StaffModel staffModel,
-            RedirectAttributes redirectAttributes) {
-        logger.debug("Registering staff: {}", staffModel);
+    public String registerStaff(@ModelAttribute StaffModel staffModel, RedirectAttributes redirectAttributes) {
         try {
             staffRepository.saveStaff(staffModel);
-            logger.debug("Staff saved successfully");
             redirectAttributes.addFlashAttribute("message", "Registration successful. Please log in.");
             return "redirect:/loginStaff";
         } catch (Exception e) {
