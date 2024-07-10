@@ -63,12 +63,12 @@ public class StaffRepository {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(StaffModel.class));
     }
 
-    public StaffModel getStaffById(int staffId) {
+    public StaffModel getStaffById(Long id) {
         String sql = "SELECT * FROM staff WHERE staffid = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(StaffModel.class), staffId);
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(StaffModel.class), id);
         } catch (EmptyResultDataAccessException e) {
-            logger.warn("No staff found with ID: {}", staffId);
+            logger.warn("No staff found with ID: {}", id);
             return null;
         }
     }
