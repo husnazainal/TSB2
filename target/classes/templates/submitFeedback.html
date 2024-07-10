@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Feedback Form | TSB</title>
@@ -15,17 +16,20 @@
             border-radius: 10px;
             margin-bottom: 1rem;
         }
+
         .logo {
             font-size: 25px;
             color: #000;
             text-decoration: none;
         }
+
         .nav-items {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin-top: 0.5rem;
         }
+
         .nav-items a {
             font-family: sans-serif;
             text-decoration: none;
@@ -36,19 +40,23 @@
             transition: all 0.3s ease;
             box-shadow: 4px 4px 10px #dfe2c2, -4px -4px 10px #dfe2c2;
         }
+
         .nav-items a:hover {
             background-color: #c3c6a5;
         }
+
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
         }
+
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
+
         .form-container {
             max-width: 600px;
             margin: 0 auto;
@@ -56,13 +64,16 @@
             background-color: #f9f9f9;
             border-radius: 10px;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="tel"],
@@ -73,6 +84,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         button {
             background-color: #a8bfa5;
             color: #333;
@@ -83,6 +95,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <a href="#" class="logo">TSB</a>
@@ -100,24 +113,25 @@
             <p th:if="${error}" style="color: red;" th:text="${error}"></p>
             <form th:action="@{/submitFeedback}" method="post" th:object="${feedback}">
                 <div class="form-group">
-                    <label for="visitorName">Name:</label>
-                    <input type="text" id="visitorName" th:field="*{visitorName}" required>
-                </div>
-                <div class="form-group">
-                    <label for="plantId">Plant Name:</label>
-                    <select id="plantId" th:field="*{plantId}" required>
-                        <option value="">Select a plant</option>
-                        <option th:each="plant : ${plants}" th:value="${plant.plantId}" th:text="${plant.plantName}">
+                    <label for="plantId">Plant:</label>
+                    <select id="plantId" th:field="*{plantId}">
+                        <option th:each="plant : ${plants}" th:value="${plant.plantId}" th:text="${plant.comName}">
                         </option>
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="visitorName">Your Name:</label>
+                    <input type="text" id="visitorName" th:field="*{visitorName}" required>
+
+                </div>
+                <div class="form-group">
                     <label for="message">Feedback:</label>
-                    <textarea id="message" th:field="*{message}" rows="4" required></textarea>
+                    <textarea id="message" th:field="*{message}" required></textarea>
                 </div>
                 <button type="submit">Submit Feedback</button>
             </form>
         </div>
     </div>
 </body>
+
 </html>

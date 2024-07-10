@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Timestamp;
 
 import javax.sql.DataSource;
 
@@ -46,19 +45,19 @@ public class FeedbackController {
     @Transactional
     public String submitFeedback(@ModelAttribute("feedback") feedback feedback, RedirectAttributes redirectAttributes) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "INSERT INTO feedback(plantId, message, dateCreated, visitorName) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO feedback(plantid, message, datecreated, visitorname) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, feedback.getPlantId());
                 statement.setString(2, feedback.getMessage());
-                statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                statement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
                 statement.setString(4, feedback.getVisitorName());
                 statement.executeUpdate();
             }
-            redirectAttributes.addFlashAttribute("message", "feedback submitted successfully");
+            redirectAttributes.addFlashAttribute("message", "Feedback submitted successfully");
         } catch (SQLException e) {
             redirectAttributes.addFlashAttribute("error", "Error submitting feedback: " + e.getMessage());
         }
-        return "redirect:/index";
+        return "redirect:/submitFeedback";
     }
 
     @GetMapping("/feedbackList")
@@ -68,7 +67,7 @@ public class FeedbackController {
         }
 
         List<feedback> feedbacks = new ArrayList<>();
-        String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantId = p.plantid ORDER BY f.dateCreated DESC";
+        String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantid = p.plantid ORDER BY f.datecreated DESC";
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 
@@ -101,7 +100,7 @@ public class FeedbackController {
             return "redirect:/loginStaff";
         }
 
-        String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantId = p.plantid WHERE f.feedbackId = ?";
+        String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantid = p.plantid WHERE f.feedbackid = ?";
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 

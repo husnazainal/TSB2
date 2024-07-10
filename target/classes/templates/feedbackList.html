@@ -108,12 +108,10 @@
             <tbody>
                 <tr th:each="feedback : ${feedbacks}">
                     <td th:text="${feedback.feedbackId}"></td>
-                    <td th:text="${feedback.plant.plantName}"></td>
+                    <td th:text="${feedback.plant.comName}"></td>
                     <td th:text="${feedback.visitorName}"></td>
-                    <td th:text="${#dates.format(feedback.dateCreated, 'yyyy-MM-dd HH:mm')}"></td>
-                    <td>
-                        <a class="view-button" th:href="@{/feedback/view/{id}(id=${feedback.feedbackId})}">View</a>
-                    </td>
+                    <td th:text="${#dates.format(feedback.dateCreated, 'yyyy-MM-dd')}"></td>
+                    <td><a th:href="@{/ViewFeedback(feedbackId=${feedback.feedbackId})}">View</a></td>
                 </tr>
             </tbody>
         </table>

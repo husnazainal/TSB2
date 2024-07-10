@@ -8,121 +8,118 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+
+import jakarta.persistence.*;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
+@Table(name = "feedback")
 public class feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "feedbackid")
     private int feedbackId;
 
-    @Column(nullable = false)
+    @Column(name = "plantid", nullable = false)
     private int plantId;
 
     @Column(nullable = false)
     private String message;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dateCreated")
+    @Column(name = "datecreated")
     private Date dateCreated;
 
-    @Column(name = "visitorName")
+    @Column(name = "visitorname", nullable = false)
     private String visitorName;
 
-    @Column(name = "visitorId")
-    private int visitorId;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plantid", insertable = false, updatable = false)
     private plant plant;
 
-    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, int visitorId) {
+    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName) {
         this.feedbackId = feedbackId;
         this.plantId = plantId;
         this.message = message;
         this.dateCreated = dateCreated;
         this.visitorName = visitorName;
-        this.visitorId = visitorId;
     }
 
-    public feedback() {}
-
-	public int getFeedbackId() {
-    	return feedbackId;
+    public feedback() {
     }
-    
+
+    public int getFeedbackId() {
+        return feedbackId;
+    }
+
     public int getPlantId() {
-    	return plantId;
+        return plantId;
     }
-    
+
     public String getMessage() {
-    	return message;
+        return message;
     }
-    
+
     public Date getDateCreated() {
-    	return dateCreated;
+        return dateCreated;
     }
-    
+
     public String getVisitorName() {
-    	return visitorName;
+        return visitorName;
     }
-    
-    public int getVisitorId() {
-    	return visitorId;
-    }
-    
+
     public void setFeedbackId(int feedbackId) {
-    	this.feedbackId = feedbackId;
+        this.feedbackId = feedbackId;
     }
-    
+
     public void setPlantId(int plantId) {
-    	this.plantId = plantId;
+        this.plantId = plantId;
     }
-    
+
     public void setMessage(String message) {
-    	this.message = message;
+        this.message = message;
     }
-    
+
     public void setDateCreated(Date dateCreated) {
-    	this.dateCreated = dateCreated;
+        this.dateCreated = dateCreated;
     }
-    
+
     public void setVisitorName(String visitorName) {
-    	this.visitorName = visitorName;
-    }
-    
-    public void setVisitorId(int visitorId) {
-    	this.visitorId = visitorId;
+        this.visitorName = visitorName;
     }
 
     @Override
     public String toString() {
-        return "Feedback{" +
-               "feedbackId=" + feedbackId +
-               ", plantId=" + plantId +
-               ", message='" + message + '\'' +
-               ", dateCreated=" + dateCreated +
-               ", visitorName='" + visitorName + '\'' +
-               ", visitorId=" + visitorId +
-               '}';
+        return "Feedback{"
+                + "feedbackId=" + feedbackId
+                + ", plantId=" + plantId
+                + ", message='" + message + '\''
+                + ", dateCreated=" + dateCreated
+                + ", visitorName='" + visitorName + '\''
+                + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         feedback feedback = (feedback) o;
-        return feedbackId == feedback.feedbackId &&
-               plantId == feedback.plantId &&
-               visitorId == feedback.visitorId &&
-               Objects.equals(message, feedback.message) &&
-               Objects.equals(dateCreated, feedback.dateCreated) &&
-               Objects.equals(visitorName, feedback.visitorName);
+        return feedbackId == feedback.feedbackId
+                && plantId == feedback.plantId
+                && Objects.equals(message, feedback.message)
+                && Objects.equals(dateCreated, feedback.dateCreated)
+                && Objects.equals(visitorName, feedback.visitorName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(feedbackId, plantId, message, dateCreated, visitorName, visitorId);
+        return Objects.hash(feedbackId, plantId, message, dateCreated, visitorName);
     }
 
     public plant getPlant() {
