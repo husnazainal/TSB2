@@ -145,46 +145,59 @@
                     <textarea id="message" th:field="*{message}" required></textarea>
                 </div>
                 <button type="submit">Submit Feedback</button>
-            </form>
-        </div>
-    </div>
-    <script>
-        document.getElementById('visitorEmail').addEventListener('input', function (e) {
-            var email = e.target.value;
-            var emailError = document.getElementById('emailError');
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (emailRegex.test(email)) {
-                emailError.style.display = 'none';
-                e.target.setCustomValidity('');
-            } else {
-                emailError.style.display = 'block';
-                e.target.setCustomValidity('Invalid email format');
-            }
-        });
-        
-        document.getElementById('visitorPhoneno').addEventListener('input', function (e) {
-            var phoneNo = e.target.value;
-            var phoneError = document.getElementById('phoneError');
-            var phoneRegex = /^01\d{8,9}$/;
+                <script>
+                    function validateEmail(email) {
+                        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        return emailRegex.test(email);
+                    }
 
-            if (phoneRegex.test(phoneNo)) {
-                phoneError.style.display = 'none';
-                e.target.setCustomValidity('');
-            } else {
-                phoneError.style.display = 'block';
-                e.target.setCustomValidity('Invalid phone number format');
-            }
-        });
-    </script>
-    <style>
-        .error-message {
-            color: red;
-            font-size: 0.8em;
-            display: block;
-            margin-top: 5px;
-        }
-    </style>
+                    function validatePhone(phoneNo) {
+                        var phoneRegex = /^01\d{8,9}$/;
+                        return phoneRegex.test(phoneNo);
+                    }
+
+                    document.getElementById('visitorEmail').addEventListener('blur', function (e) {
+                        var email = e.target.value;
+                        var emailError = document.getElementById('emailError');
+
+                        if (email && !validateEmail(email)) {
+                            emailError.style.display = 'block';
+                            e.target.setCustomValidity('Invalid email format');
+                        } else {
+                            emailError.style.display = 'none';
+                            e.target.setCustomValidity('');
+                        }
+                    });
+
+                    document.getElementById('visitorPhoneno').addEventListener('blur', function (e) {
+                        var phoneNo = e.target.value;
+                        var phoneError = document.getElementById('phoneError');
+
+                        if (phoneNo && !validatePhone(phoneNo)) {
+                            phoneError.style.display = 'block';
+                            e.target.setCustomValidity('Invalid phone number format');
+                        } else {
+                            phoneError.style.display = 'none';
+                            e.target.setCustomValidity('');
+                        }
+                    });
+
+                    document.querySelector('form').addEventListener('submit', function (e) {
+                        var email = document.getElementById('visitorEmail').value;
+                        var phoneNo = document.getElementById('visitorPhoneno').value;
+
+                        if (!validateEmail(email) || !validatePhone(phoneNo)) {
+                            e.preventDefault();
+                            if (!validateEmail(email)) {
+                                document.getElementById('emailError').style.display = 'block';
+                            }
+                            if (!validatePhone(phoneNo)) {
+                                document.getElementById('phoneError').style.display = 'block';
+                            }
+                        }
+                    });
+                </script>
 </body>
 
 </html>
