@@ -57,12 +57,12 @@ public class FeedbackController {
         } catch (SQLException e) {
             redirectAttributes.addFlashAttribute("error", "Error submitting feedback: " + e.getMessage());
         }
-        return "redirect:/submitFeedback";
+        return "redirect:/index";
     }
 
     @GetMapping("/feedbackList")
     public String feedbackList(Model model, HttpSession session) {
-        if (session.getAttribute("staffId") == null) {
+        if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
 
