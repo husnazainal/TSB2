@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Feedback | TSB</title>
     <style>
         header {
-            background-color: #a8bfa5; /* Sage green header */
+            background-color: #a8bfa5;
+            /* Sage green header */
             color: #333;
             padding: 1rem;
             text-align: center;
@@ -32,7 +34,8 @@
             font-family: sans-serif;
             text-decoration: none;
             color: #333;
-            background-color: #dfe2c2; /* Light sage green */
+            background-color: #dfe2c2;
+            /* Light sage green */
             padding: 0.5rem 1rem;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -40,23 +43,44 @@
         }
 
         .nav-items a:hover {
-            background-color: #c3c6a5; /* Darker sage green on hover */
+            background-color: #c3c6a5;
+            /* Darker sage green on hover */
         }
-        
+
         table {
             border-collapse: collapse;
             width: 100%;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
+        .feedback-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .feedback-item {
+            margin-bottom: 15px;
+        }
+
+        .feedback-label {
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <a href="#" class="logo">TSB</a>
@@ -69,28 +93,42 @@
     </header>
 
     <div class="container">
-        <h1>Feedback List</h1>
-
-        <p th:if="${error}" style="color: red;" th:text="'Error: ' + ${error}"></p>
-
-        <table th:unless="${error}">
-            <tr>
-                <th>Feedback ID</th>
-                <th>Plant ID</th>
-                <th>Visitor ID</th>
-                <th>Visitor Name</th>
-                <th>Message</th>
-                <th>Date Created</th>
-            </tr>
-            <tr th:each="feedback : ${feedbacks}">
-                <td th:text="${feedback.feedbackId}"></td>
-                <td th:text="${feedback.plantId}"></td>
-                <td th:text="${feedback.visitorId}"></td>
-                <td th:text="${feedback.visitorName}"></td>
-                <td th:text="${feedback.message}"></td>
-                <td th:text="${feedback.dateCreated}"></td>
-            </tr>
-        </table>
+        <div class="feedback-container">
+            <h1>View Feedback</h1>
+            <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+            <div th:unless="${error}">
+                <div class="feedback-item">
+                    <span class="feedback-label">Feedback ID:</span>
+                    <span th:text="${feedback.feedbackId}"></span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-label">Plant Name:</span>
+                    <span th:text="${feedback.plant.plantName}"></span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-label">Visitor Name:</span>
+                    <span th:text="${feedback.visitorName}"></span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-label">Visitor Email:</span>
+                    <span th:text="${feedback.visitorEmail}"></span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-label">Visitor Phone:</span>
+                    <span th:text="${feedback.visitorPhoneNum}"></span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-label">Date Created:</span>
+                    <span th:text="${#dates.format(feedback.dateCreated, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+                <div class="feedback-item">
+                    <span class="feedback-label">Message:</span>
+                    <p th:text="${feedback.message}"></p>
+                </div>
+            </div>
+            <a th:href="@{/feedbackList}" class="view-button">Back to List</a>
+        </div>
     </div>
 </body>
+
 </html>

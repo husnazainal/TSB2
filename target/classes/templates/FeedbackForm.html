@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Feedback Form | TSB</title>
@@ -11,19 +12,23 @@
             margin: 0;
             padding: 20px;
         }
+
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
+
         form {
             background: #f4f4f4;
             padding: 20px;
             border-radius: 5px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="tel"],
@@ -35,6 +40,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         button {
             background: #333;
             color: #fff;
@@ -43,43 +49,84 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         button:hover {
             background: #444;
         }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #a8bfa5;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>Feedback Form</h1>
-
-        <p th:if="${error}" style="color: red;" th:text="'Error: ' + ${error}"></p>
-
-        <form action="submitFeedback" method="post">
-            <div id="step1">
-                <label for="visitorName">Name:</label>
-                <input type="text" id="visitorName" name="visitorName" required>
-
-                <label for="visitorEmail">Email:</label>
-                <input type="email" id="visitorEmail" name="visitorEmail" required>
-
-                <label for="visitorPhoneNum">Phone Number:</label>
-                <input type="tel" id="visitorPhoneNum" name="visitorPhoneNum" required>
-
-                <button type="button" onclick="showStep2()">Next</button>
-            </div>
-
-            <div id="step2" style="display: none;">
-                <label for="plantId">Plant Name:</label>
-                <select id="plantId" name="plantId" required>
-                    <option th:each="plant : ${plants}" th:value="${plant.plantId}" th:text="${plant.plantName}"></option>
-                </select>
-
-                <label for="message">Feedback:</label>
-                <textarea id="message" name="message" rows="4" required></textarea>
-
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+        <div class="form-container">
+            <h1>Feedback Form</h1>
+            <p th:if="${message}" style="color: green;" th:text="${message}"></p>
+            <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+            <form th:action="@{/submitFeedback}" method="post" th:object="${feedback}">
+                <div class="form-group">
+                    <label for="visitorName">Name:</label>
+                    <input type="text" id="visitorName" th:field="*{visitorName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="visitorEmail">Email:</label>
+                    <input type="email" id="visitorEmail" th:field="*{visitorEmail}" required>
+                </div>
+                <div class="form-group">
+                    <label for="visitorPhoneNum">Phone Number:</label>
+                    <input type="tel" id="visitorPhoneNum" th:field="*{visitorPhoneNum}" required>
+                </div>
+                <div class="form-group">
+                    <label for="plantId">Plant Name:</label>
+                    <select id="plantId" th:field="*{plantId}" required>
+                        <option value="">Select a plant</option>
+                        <option th:each="plant : ${plants}" th:value="${plant.plantId}" th:text="${plant.plantName}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Feedback:</label>
+                    <textarea id="message" th:field="*{message}" rows="4" required></textarea>
+                </div>
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
     </div>
     <script>
         function showStep2() {
@@ -88,4 +135,5 @@
         }
     </script>
 </body>
+
 </html>

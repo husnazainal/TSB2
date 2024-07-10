@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback List | TSB</title>
+    <style>
+        /* Include the styles from your original HTML here */
+        /* ... */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #a8bfa5;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .view-button {
+            background-color: #dfe2c2;
+            border: none;
+            color: #333;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Include your header content here -->
+    </header>
+
+    <div class="container">
+        <h1>Feedback List</h1>
+
+        <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+
+        <table th:unless="${error}">
+            <tr>
+                <th>Feedback ID</th>
+                <th>Plant Name</th>
+                <th>Visitor Name</th>
+                <th>Date Created</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="feedback : ${feedbackList}">
+                <td th:text="${feedback.feedbackId}"></td>
+                <td th:text="${feedback.plant.plantName}"></td>
+                <td th:text="${feedback.visitorName}"></td>
+                <td th:text="${#dates.format(feedback.dateCreated, 'yyyy-MM-dd')}"></td>
+                <td>
+                    <a th:href="@{/viewFeedback(feedbackId=${feedback.feedbackId})}" class="view-button">View</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
