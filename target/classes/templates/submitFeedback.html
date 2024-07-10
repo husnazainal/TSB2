@@ -131,12 +131,12 @@
                 </div>
                 <div class="form-group">
                     <label for="visitorPhoneno">Your Phone No:</label>
-                    <input type="tel" id="visitorPhoneno" th:field="*{visitorPhoneno}" required pattern="^01\d \d{7,8}$"
-                        oninput="this.value = this.value.replace(/[^0-9 ]/g, '').replace(/(\..*)\./g, '$1');">
+                    <input type="tel" id="visitorPhoneno" th:field="*{visitorPhoneno}" required pattern="^01\d{8,9}$"
+                        oninput="this.value = this.value.replace(/[^0-9 ]/g, '');">
                     <span th:if="${#fields.hasErrors('visitorPhoneno')}" th:errors="*{visitorPhoneno}"
                         class="error-message"></span>
                     <span id="phoneError" class="error-message" style="display: none;">Phone number must be in the
-                        format 01x xxxxxxx or 01x xxxxxxxx</span>
+                        format 0123456789 or 01112345678</span>
                 </div>
                 <div class="form-group">
                     <label for="message">Feedback:</label>
@@ -150,7 +150,7 @@
         document.getElementById('visitorPhoneno').addEventListener('input', function (e) {
             var phoneNo = e.target.value;
             var phoneError = document.getElementById('phoneError');
-            var phoneRegex = /^01\d \d{7,8}$/;
+            var phoneRegex = /^01\d{8,9}$/;
 
             if (phoneRegex.test(phoneNo)) {
                 phoneError.style.display = 'none';
