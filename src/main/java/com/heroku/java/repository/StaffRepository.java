@@ -14,6 +14,7 @@ import com.heroku.java.model.StaffModel;
 
 @Repository
 public class StaffRepository {
+
     private static final Logger logger = LoggerFactory.getLogger(StaffRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
@@ -27,9 +28,9 @@ public class StaffRepository {
         try {
             logger.debug("Attempting to save staff: {}", staffModel);
             jdbcTemplate.update(sql,
-                staffModel.getStaffName(),
-                staffModel.getStaffEmail(),
-                staffModel.getStaffPassword());
+                    staffModel.getStaffName(),
+                    staffModel.getStaffEmail(),
+                    staffModel.getStaffPassword());
             logger.debug("Staff saved successfully");
         } catch (DataAccessException e) {
             logger.error("Error saving staff to database", e);
@@ -73,7 +74,7 @@ public class StaffRepository {
         }
     }
 
-    public void deleteStaff(int staffId) {
+    public void deleteStaff(Long staffId) {
         String sql = "DELETE FROM staff WHERE staffid = ?";
         jdbcTemplate.update(sql, staffId);
     }

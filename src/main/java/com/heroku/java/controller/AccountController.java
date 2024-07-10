@@ -133,19 +133,18 @@ public class AccountController {
     }
 
     @GetMapping("/viewStaff")
-    public String viewStaff(@RequestParam("staffid") Long id, Model model, HttpSession session) {
-        // Check if user is logged in
+    public String viewStaff(@RequestParam("staffid") Long staffId, Model model, HttpSession session) {
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
 
         try {
-            StaffModel staff = staffRepository.getStaffById(id);
+            StaffModel staff = staffRepository.getStaffById(staffId);
             if (staff == null) {
                 model.addAttribute("error", "Staff not found");
                 return "error";
             }
-            model.addAttribute("staff", staff);
+            model.addAttribute("staffModel", staff);
             return "viewStaff";
         } catch (Exception e) {
             logger.error("Error viewing staff", e);
@@ -155,19 +154,18 @@ public class AccountController {
     }
 
     @GetMapping("/updateStaff")
-    public String showUpdateStaffForm(@RequestParam("staffid") Long id, Model model, HttpSession session) {
-        // Check if user is logged in
+    public String showUpdateStaffForm(@RequestParam("staffid") Long staffId, Model model, HttpSession session) {
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
 
         try {
-            StaffModel staff = staffRepository.getStaffById(id);
+            StaffModel staff = staffRepository.getStaffById(staffId);
             if (staff == null) {
                 model.addAttribute("error", "Staff not found");
                 return "error";
             }
-            model.addAttribute("staff", staff);
+            model.addAttribute("staffModel", staff);
             return "updateStaff";
         } catch (Exception e) {
             logger.error("Error preparing update form", e);
@@ -180,19 +178,54 @@ public class AccountController {
     public String updateStaff(@ModelAttribute("staffModel") StaffModel updatedStaff,
             RedirectAttributes redirectAttributes,
             HttpSession session) {
-        // Check if user is logged in
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
 
         try {
-            staffRepository.updateStaff(updatedStaff);
+            StaffModel existingStaff = staffRepository.getStaffById(updatedStaff.getStaffId());
+            if (existingStaff == null) {
+                redirectAttributes.addFlashAttribute("error", "Staff not found");
+                return "redirect:/stafflist";
+            }
+
+            existingStaff.setStaffName(updatedStaff.getStaffName());
+            existingStaff.setStaffEmail(updatedStaff.getStaffEmail());
+            // Only update password if a new one is provided
+            if (updatedStaff.getStaffPassword() != null && !updatedStaff.getStaffPassword().isEmpty()) {
+                existingStaff.setStaffPassword(updatedStaff.getStaffPassword());
+            }
+
+            staffRepository.updateStaff(existingStaff);
             redirectAttributes.addFlashAttribute("message", "Staff updated successfully");
             return "redirect:/stafflist";
         } catch (Exception e) {
             logger.error("Error updating staff", e);
             redirectAttributes.addFlashAttribute("error", "Update failed. Error: " + e.getMessage());
             return "redirect:/updateStaff?staffid=" + updatedStaff.getStaffId();
+        }
+    }
+
+    @PostMapping("/deleteStaff")
+    public String deleteStaff(@RequestParam("staffid") Long staffId, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
+            return "redirect:/loginStaff";
+        }
+
+        try {
+            StaffModel staff = staffRepository.getStaffById(staffId);
+            if (staff == null) {
+                redirectAttributes.addFlashAttribute("error", "Staff not found");
+                return "redirect:/stafflist";
+            }
+
+            staffRepository.deleteStaff(staffId);
+            redirectAttributes.addFlashAttribute("message", "Staff deleted successfully");
+            return "redirect:/stafflist";
+        } catch (Exception e) {
+            logger.error("Error deleting staff", e);
+            redirectAttributes.addFlashAttribute("error", "Delete failed. Error: " + e.getMessage());
+            return "redirect:/stafflist";
         }
     }
 }
