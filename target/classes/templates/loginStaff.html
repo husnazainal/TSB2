@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -153,77 +154,40 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="login-box">
-<<<<<<< HEAD
             <div class="logo">
                 <img src="image/logo.png" alt="TYT Logo">
             </div>
             <h2>Welcome Back!</h2>
             <p>TSB Staff Management</p>
             <form th:action="@{/loginStaff}" th:object="${staffModel}" method="post">
-=======
-<<<<<<< HEAD
-            <h2>Welcome!</h2>
-            <p>Staff Management</p>
-            <div th:if="${errorMessage}" id="errorMessage" class="error-message" th:text="${errorMessage}"></div>
-            <form id="loginForm" action="#" th:action="@{/loginController}" method="post">
->>>>>>> parent of f296fef (test update view)
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" th:field="*{staffEmail}" placeholder="Email" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-<<<<<<< HEAD
-                    <input type="password" th:field="*{staffPassword}" placeholder="Password" required>
-=======
-                    <input type="password" name="staffpassword" placeholder="Password" required>
-=======
-            <div class="logo">
-                <img src="image/logo.png" alt="TYT Logo">
-            </div>
-            <h2>Welcome Back!</h2>
-            <p>TSB Staff Management</p>
-            <form th:action="@{/loginStaff}" th:object="${staffModel}" method="post">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" th:field="*{staffEmail}" placeholder="Email" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" th:field="*{staffPassword}" placeholder="Password" required>
->>>>>>> 89cc7a0ca0202ffb0183bb0f25c5baa9684965e7
->>>>>>> parent of f296fef (test update view)
-                </div>
-                <div class="options">
-                    <label>
-                        <input type="checkbox" name="remember"> Remember me
-                    </label>
-<<<<<<< HEAD
-                    <a th:href="@{/forgot-password}" class="forgot-password">Forgot password?</a>
-=======
-<<<<<<< HEAD
->>>>>>> parent of f296fef (test update view)
-                </div>
-                <button type="submit" class="login-button">Log In</button>
-                <p class="register-link">Don't have an account? <a th:href="@{/register}">Register</a> here.</p>
-            </form>
-<<<<<<< HEAD
-            <div th:if="${error}" class="error-message" th:text="${error}"></div>
-=======
-            <p>Don't have an account? <a th:href="@{/register}">Create account</a></p>
-=======
-                    <a th:href="@{/forgot-password}" class="forgot-password">Forgot password?</a>
-                </div>
-                <button type="submit" class="login-button">Log In</button>
-                <p class="register-link">Don't have an account? <a th:href="@{/register}">Register</a> here.</p>
-            </form>
-            <div th:if="${error}" class="error-message" th:text="${error}"></div>
->>>>>>> 89cc7a0ca0202ffb0183bb0f25c5baa9684965e7
->>>>>>> parent of f296fef (test update view)
+                <h2>Welcome!</h2>
+                <p>Staff Management</p>
+                <div th:if="${errorMessage}" id="errorMessage" class="error-message" th:text="${errorMessage}"></div>
+                <form id="loginForm" action="#" th:action="@{/loginController}" method="post">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" th:field="*{staffEmail}" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" th:field="*{staffPassword}" placeholder="Password" required>
+                    </div>
+                    <div class="options">
+                        <label>
+                            <input type="checkbox" name="remember"> Remember me
+                        </label>
+                        <a th:href="@{/forgot-password}" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="login-button">Log In</button>
+                    <p class="register-link">Don't have an account? <a th:href="@{/register}">Register</a> here.</p>
+                </form>
+                <div th:if="${error}" class="error-message" th:text="${error}"></div>
         </div>
     </div>
 </body>
+
 </html>
