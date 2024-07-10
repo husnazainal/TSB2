@@ -3,18 +3,16 @@ package com.heroku.java.model;
 import java.sql.Date;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.FetchType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+import jakarta.persistence.*;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "feedback")
@@ -34,32 +32,19 @@ public class feedback {
     @Column(name = "datecreated")
     private Date dateCreated;
 
+    @Column(name = "visitorname", nullable = false)
+    private String visitorName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plantid", insertable = false, updatable = false)
     private plant plant;
 
-    @NotBlank(message = "Visitor name is required")
-    @Column(name = "visitorname", nullable = false)
-    private String visitorName;
-
-    @NotBlank(message = "Email is required")
-    @Email(message = "Please provide a valid email address")
-    @Column(name = "visitoremail", nullable = false)
-    private String visitorEmail;
-
-    @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^01\\d \\d{7,8}$", message = "Phone number must be in the format 012 3456789 or 012 34567899")
-    @Column(name = "visitorphoneno", nullable = false)
-    private String visitorPhoneno;
-
-    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, String visitorEmail, String visitorPhoneno) {
+    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName) {
         this.feedbackId = feedbackId;
         this.plantId = plantId;
         this.message = message;
         this.dateCreated = dateCreated;
         this.visitorName = visitorName;
-        this.visitorEmail = visitorEmail;
-        this.visitorPhoneno = visitorPhoneno;
     }
 
     public feedback() {
@@ -113,8 +98,6 @@ public class feedback {
                 + ", message='" + message + '\''
                 + ", dateCreated=" + dateCreated
                 + ", visitorName='" + visitorName + '\''
-                + ", visitorEmail='" + visitorEmail + '\''
-                + ", visitorPhoneno='" + visitorPhoneno + '\''
                 + '}';
     }
 
@@ -131,9 +114,7 @@ public class feedback {
                 && plantId == feedback.plantId
                 && Objects.equals(message, feedback.message)
                 && Objects.equals(dateCreated, feedback.dateCreated)
-                && Objects.equals(visitorName, feedback.visitorName)
-                && Objects.equals(visitorEmail, feedback.visitorEmail)
-                && Objects.equals(visitorPhoneno, feedback.visitorPhoneno);
+                && Objects.equals(visitorName, feedback.visitorName);
     }
 
     @Override
@@ -147,22 +128,6 @@ public class feedback {
 
     public void setPlant(plant plant) {
         this.plant = plant;
-    }
-
-    public String getVisitorEmail() {
-        return visitorEmail;
-    }
-
-    public void setVisitorEmail(String visitorEmail) {
-        this.visitorEmail = visitorEmail;
-    }
-
-    public String getVisitorPhoneno() {
-        return visitorPhoneno;
-    }
-
-    public void setVisitorPhoneno(String visitorPhoneno) {
-        this.visitorPhoneno = visitorPhoneno;
     }
 
 }
