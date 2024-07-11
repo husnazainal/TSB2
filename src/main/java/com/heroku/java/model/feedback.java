@@ -62,7 +62,7 @@ public class feedback {
         return feedbackId;
     }
 
-    public int getPlantId() {
+    public Integer getPlantId() {
         return plantId;
     }
 

@@ -47,7 +47,11 @@ public class FeedbackController {
         try (Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO feedback(plantid, message, datecreated, visitorname, visitoremail, visitorphoneno) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setObject(1, feedback.getPlantId());
+                if (feedback.getPlantId() == null) {
+                    statement.setNull(1, java.sql.Types.INTEGER);
+                } else {
+                    statement.setInt(1, feedback.getPlantId());
+                }
                 statement.setString(2, feedback.getMessage());
                 statement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
                 statement.setString(4, feedback.getVisitorName());
@@ -107,7 +111,7 @@ public class FeedbackController {
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
-        String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantid = p.plantid WHERE f.feedbackid = ?";
+        String sql = "SELECT f.*, COALESCE(p.comname, 'N/A') as comname FROM feedback f LEFT JOIN plant p ON f.plantid = p.plantid WHERE f.feedbackid = ?";
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -142,11 +146,18 @@ public class FeedbackController {
 
     private List<plant> getPlants() {
         List<plant> plants = new ArrayList<>();
+
+        // Add an option for no plant selection
+        plant noPlant = new plant();
+        noPlant.setPlantId(null);
+        noPlant.setComName("No Plant Selected");
+        plants.add(noPlant);
+
         String sql = "SELECT plantid, comname FROM plant WHERE plantid IS NOT NULL ORDER BY comname";
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 plant plant = new plant();
-                plant.setPlantId((Integer) resultSet.getObject("plantid"));
+                plant.setPlantId(resultSet.getInt("plantid"));
                 plant.setComName(resultSet.getString("comname"));
                 plants.add(plant);
             }
