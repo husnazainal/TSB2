@@ -115,7 +115,7 @@
                     <td th:text="${feedback.visitorEmail}"></td>
                     <td th:text="${feedback.visitorPhoneno}"></td>
                     <td th:text="${#dates.format(feedback.dateCreated, 'yyyy-MM-dd')}"></td>
-                    <td><a th:href="@{/ViewFeedback(feedbackId=${feedback.feedbackId})}">View</a></td>
+                    <!-- <td><a th:href="@{/ViewFeedback(feedbackId=${feedback.feedbackId})}">View</a></td> -->
                 </tr>
             </tbody>
         </table>
