@@ -15,7 +15,7 @@ public class plant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int plantId;
+    private Integer plantId;
 
     private String sciName;
     private String comName;
@@ -31,11 +31,11 @@ public class plant {
     public plant() {}
 
     // Getters and setters
-    public int getPlantId() {
+    public Integer getPlantId() {
         return plantId;
     }
 
-    public void setPlantId(int plantId) {
+    public void setPlantId(Integer plantId) {
         this.plantId = plantId;
     }
 

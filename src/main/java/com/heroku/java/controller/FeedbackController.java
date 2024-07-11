@@ -70,14 +70,17 @@ public class FeedbackController {
         }
 
         List<feedback> feedbacks = new ArrayList<>();
-        String sql = "SELECT f.*, p.comname FROM feedback f JOIN plant p ON f.plantid = p.plantid ORDER BY f.datecreated DESC";
+        String sql = "SELECT f.*, COALESCE(p.comname, 'DELETED') as comname FROM feedback f LEFT JOIN plant p ON f.plantid = p.plantid ORDER BY f.datecreated DESC";
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 feedback feedback = new feedback();
                 feedback.setFeedbackId(resultSet.getInt("feedbackId"));
-                feedback.setPlantId(resultSet.getInt("plantId"));
+
+                // Use getObject and cast to Integer, which can be null
+                feedback.setPlantId((Integer) resultSet.getObject("plantId"));
+
                 feedback.setMessage(resultSet.getString("message"));
                 feedback.setDateCreated(resultSet.getDate("dateCreated"));
                 feedback.setVisitorName(resultSet.getString("visitorName"));
@@ -140,20 +143,22 @@ public class FeedbackController {
     private List<plant> getPlants() {
         List<plant> plants = new ArrayList<>();
         String sql = "SELECT plantid, comname FROM plant ORDER BY comname";
-
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
-
             while (resultSet.next()) {
                 plant plant = new plant();
-                plant.setPlantId(resultSet.getInt("plantid"));
+                plant.setPlantId((Integer) resultSet.getObject("plantid"));  // Use getObject and cast to Integer
                 plant.setComName(resultSet.getString("comname"));
                 plants.add(plant);
             }
+            // Add a "DELETED" option
+            plant deletedPlant = new plant();
+            deletedPlant.setPlantId(null);
+            deletedPlant.setComName("DELETED");
+            plants.add(0, deletedPlant); // Add at the beginning of the list
         } catch (SQLException e) {
             // Log the error
             System.err.println("Error fetching plants: " + e.getMessage());
         }
-
         return plants;
     }
 }
