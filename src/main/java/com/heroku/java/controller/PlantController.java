@@ -346,13 +346,13 @@ public class PlantController {
             connection.setAutoCommit(false);
             System.out.println("Attempting to delete plant with ID: " + plantId);
             try {
-
-                // Delete from plant
-                String sql = "DELETE FROM plant WHERE plantid = ?";
+                // Nullify plantid in feedback
+                String sql = "UPDATE feedback SET plantid = NULL WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
                     statement.executeUpdate();
                 }
+
                 // Delete from indoor_plant
                 sql = "DELETE FROM indoor_plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -367,8 +367,8 @@ public class PlantController {
                     statement.executeUpdate();
                 }
 
-                // Nullify plantid in feedback
-                sql = "UPDATE feedback SET plantid = NULL WHERE plantid = ?";
+                // Delete from plant
+                sql = "DELETE FROM plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
                     statement.executeUpdate();
