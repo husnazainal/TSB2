@@ -47,7 +47,7 @@ public class FeedbackController {
         try (Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO feedback(plantid, message, datecreated, visitorname, visitoremail, visitorphoneno) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, feedback.getPlantId());
+                statement.setObject(1, feedback.getPlantId());
                 statement.setString(2, feedback.getMessage());
                 statement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
                 statement.setString(4, feedback.getVisitorName());
@@ -116,7 +116,7 @@ public class FeedbackController {
                 if (resultSet.next()) {
                     feedback feedback = new feedback();
                     feedback.setFeedbackId(resultSet.getInt("feedbackId"));
-                    feedback.setPlantId(resultSet.getInt("plantId"));
+                    feedback.setPlantId(resultSet.getObject("plantId", Integer.class));
                     feedback.setMessage(resultSet.getString("message"));
                     feedback.setDateCreated(resultSet.getDate("dateCreated"));
                     feedback.setVisitorName(resultSet.getString("visitorName"));
