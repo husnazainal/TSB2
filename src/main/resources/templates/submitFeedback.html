@@ -113,8 +113,7 @@
             <form th:action="@{/submitFeedback}" method="post" th:object="${feedback}">
                 <div class="form-group">
                     <label for="plantId">Plant:</label>
-                    <select id="plantId" th:field="*{plantId}" required>
-                        <option value="">Select a plant</option>
+                    <select id="plantId" th:field="*{plantId}">
                         <option th:each="plant : ${plants}" th:value="${plant.plantId}" th:text="${plant.comName}">
                         </option>
                     </select>
