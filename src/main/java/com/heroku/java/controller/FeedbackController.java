@@ -111,7 +111,8 @@ public class FeedbackController {
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
-        String sql = "SELECT * FROM feedback WHERE feedbackid = ?";
+        String sql = "SELECT f.*, COALESCE(p.comname, 'N/A') as comname FROM feedback f LEFT JOIN plant p ON f.plantid = p.plantid WHERE f.feedbackid = ?";
+
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, feedbackId);
@@ -131,14 +132,19 @@ public class FeedbackController {
                     feedback.setPlant(plant);
 
                     model.addAttribute("feedback", feedback);
+
+                    // Add this line for debugging
+                    System.out.println("Feedback object: " + feedback);
                 } else {
-                    model.addAttribute("error", "feedback not found");
+                    model.addAttribute("error", "Feedback not found");
                     return "error";
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // This will print the full stack trace
+            e.printStackTrace();
             model.addAttribute("error", "Database error: " + e.getMessage());
+            // Add this line for more detailed error information
+            model.addAttribute("stackTrace", e.getStackTrace());
             return "error";
         }
         return "ViewFeedback";
