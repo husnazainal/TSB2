@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,8 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5faf6; /* Very soft mint green background */
+            background-color: #f5faf6;
+            /* Very soft mint green background */
             color: #444;
             display: flex;
             flex-direction: column;
@@ -20,8 +22,10 @@
         }
 
         header {
-            background-color: #b5e7c5; /* Soft mint green */
-            color: #444; /* Darker text for contrast */
+            background-color: #b5e7c5;
+            /* Soft mint green */
+            color: #444;
+            /* Darker text for contrast */
             padding: 1rem;
             text-align: center;
             width: 100%;
@@ -48,16 +52,19 @@
         }
 
         nav ul li a {
-            color: #444; /* Darker text for contrast */
+            color: #444;
+            /* Darker text for contrast */
             text-decoration: none;
-            background-color: #d1f0db; /* Very light mint green */
+            background-color: #d1f0db;
+            /* Very light mint green */
             padding: 0.5rem 1rem;
             border-radius: 20px;
             transition: all 0.3s ease;
         }
 
         nav ul li a:hover {
-            background-color: #a9d7b9; /* Light mint green on hover */
+            background-color: #a9d7b9;
+            /* Light mint green on hover */
         }
 
         main {
@@ -68,7 +75,8 @@
         }
 
         section {
-            background-color: #ffffff; /* White background for sections */
+            background-color: #ffffff;
+            /* White background for sections */
             padding: 1.5rem;
             margin: 1rem 0;
             border-radius: 20px;
@@ -79,7 +87,8 @@
             margin-top: 0;
             color: #444;
             font-weight: 700;
-            border-bottom: 2px solid #b5e7c5; /* Soft mint green border */
+            border-bottom: 2px solid #b5e7c5;
+            /* Soft mint green border */
             padding-bottom: 0.5rem;
         }
 
@@ -101,8 +110,10 @@
         }
 
         .form-group button {
-            background-color: #b5e7c5; /* Soft mint green */
-            color: #444; /* Darker text for contrast */
+            background-color: #b5e7c5;
+            /* Soft mint green */
+            color: #444;
+            /* Darker text for contrast */
             padding: 0.5rem 1rem;
             border: none;
             border-radius: 20px;
@@ -111,12 +122,15 @@
         }
 
         .form-group button:hover {
-            background-color: #9ed1b1; /* Light mint green on hover */
+            background-color: #9ed1b1;
+            /* Light mint green on hover */
         }
 
         .link-button {
-            background-color: #d1f0db; /* Very light mint green */
-            color: #444; /* Darker text for contrast */
+            background-color: #d1f0db;
+            /* Very light mint green */
+            color: #444;
+            /* Darker text for contrast */
             padding: 0.5rem 1rem;
             text-decoration: none;
             border-radius: 20px;
@@ -126,12 +140,15 @@
         }
 
         .link-button:hover {
-            background-color: #b5e7c5; /* Soft mint green on hover */
+            background-color: #b5e7c5;
+            /* Soft mint green on hover */
         }
 
         footer {
-            background-color: #b5e7c5; /* Soft mint green */
-            color: #444; /* Darker text for contrast */
+            background-color: #b5e7c5;
+            /* Soft mint green */
+            color: #444;
+            /* Darker text for contrast */
             text-align: center;
             padding: 0.5rem;
             width: 100%;
@@ -139,6 +156,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Staff Dashboard</h1>
@@ -158,8 +176,8 @@
     <main>
         <section id="staff">
             <h2>Staff Account Page</h2>
-            <p>Create your staff account here</p>
-            <a th:href="@{/register.html}" class="link-button">Create Account</a>
+            <p>Create a staff account here</p>
+            <a th:href="@{/register}" class="link-button">Create Account</a>
         </section>
         <section id="plants">
             <h2>Plant Page</h2>
@@ -169,16 +187,17 @@
         <section id="schedule">
             <h2>Schedule Page</h2>
             <p>Create your schedule here</p>
-            <a th:href="@{/addSchedule.jsp}" class="link-button">Create Schedule</a>
+            <a th:href="@{/dashboard}" class="link-button">Create Schedule</a>
         </section>
         <section id="feedback">
             <h2>Feedback Page</h2>
-            <p>View feedback from visitors here</p>
-            <a th:href="@{/ViewFeedback.jsp}" class="link-button">Feedback</a>
+            <p>View feedbacks from visitors here</p>
+            <a th:href="@{/feedbackList}" class="link-button">Feedback</a>
         </section>
     </main>
     <footer>
         &copy; 2024 Staff Dashboard. All rights reserved.
     </footer>
 </body>
+
 </html>
