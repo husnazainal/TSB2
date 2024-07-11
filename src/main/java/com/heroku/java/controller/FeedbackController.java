@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class FeedbackController {
+
+    private static final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
 
     private final DataSource dataSource;
 
@@ -108,6 +112,7 @@ public class FeedbackController {
 
     @GetMapping("/ViewFeedback")
     public String viewFeedback(@RequestParam("feedbackId") int feedbackId, Model model, HttpSession session) {
+        logger.info("ViewFeedback method called with feedbackId: {}", feedbackId);
         System.out.println("ViewFeedback method called with feedbackId: " + feedbackId);
 
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
