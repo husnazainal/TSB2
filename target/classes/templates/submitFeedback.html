@@ -115,7 +115,9 @@
                 <div class="form-group">
                     <label for="plantId">Plant:</label>
                     <select id="plantId" th:field="*{plantId}">
-                        <option th:each="plant : ${plants}" th:value="${plant.plantId}" th:text="${plant.comName}">
+                        <option value="">Select a plant</option>
+                        <option th:each="plant : ${plants}" th:value="${plant.plantId != null ? plant.plantId : ''}"
+                            th:text="${plant.comName}">
                         </option>
                     </select>
                 </div>

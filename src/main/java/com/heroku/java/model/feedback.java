@@ -24,7 +24,7 @@ public class feedback {
     private int feedbackId;
 
     @Column(name = "plantid", nullable = false)
-    private int plantId;
+    private Integer plantId;
 
     @Column(nullable = false)
     private String message;
@@ -45,7 +45,7 @@ public class feedback {
     @JoinColumn(name = "plantid", insertable = false, updatable = false)
     private plant plant;
 
-    public feedback(int feedbackId, int plantId, String message, Date dateCreated, String visitorName, String visitorEmail, String visitorPhoneno) {
+    public feedback(int feedbackId, Integer plantId, String message, Date dateCreated, String visitorName, String visitorEmail, String visitorPhoneno) {
         this.feedbackId = feedbackId;
         this.plantId = plantId;
         this.message = message;
@@ -82,7 +82,7 @@ public class feedback {
         this.feedbackId = feedbackId;
     }
 
-    public void setPlantId(int plantId) {
+    public void setPlantId(Integer plantId) {
         this.plantId = plantId;
     }
 
