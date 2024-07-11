@@ -142,21 +142,15 @@ public class FeedbackController {
 
     private List<plant> getPlants() {
         List<plant> plants = new ArrayList<>();
-        String sql = "SELECT plantid, comname FROM plant ORDER BY comname";
+        String sql = "SELECT plantid, comname FROM plant WHERE plantid IS NOT NULL ORDER BY comname";
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 plant plant = new plant();
-                plant.setPlantId((Integer) resultSet.getObject("plantid"));  // Use getObject and cast to Integer
+                plant.setPlantId((Integer) resultSet.getObject("plantid"));
                 plant.setComName(resultSet.getString("comname"));
                 plants.add(plant);
             }
-            // Add a "DELETED" option
-            plant deletedPlant = new plant();
-            deletedPlant.setPlantId(null);
-            deletedPlant.setComName("DELETED");
-            plants.add(0, deletedPlant); // Add at the beginning of the list
         } catch (SQLException e) {
-            // Log the error
             System.err.println("Error fetching plants: " + e.getMessage());
         }
         return plants;
