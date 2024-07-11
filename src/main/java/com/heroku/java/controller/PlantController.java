@@ -367,6 +367,13 @@ public class PlantController {
                     statement.executeUpdate();
                 }
 
+                // Nullify plantid in feedback
+                sql = "UPDATE feedback SET plantid = NULL WHERE plantid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setInt(1, plantId);
+                    statement.executeUpdate();
+                }
+
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
