@@ -81,10 +81,11 @@
     <header>
         <a href="#" class="logo">TSB</a>
         <nav class="nav-items">
-            <a th:href="@{/dashboard}">Home</a>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/viewStaff(staffid=${loggedInUser.staffId})}">Staff</a>
             <a th:href="@{/plantlist}">Plant</a>
-            <a th:href="@{/listScheduleController}">Schedule</a>
             <a th:href="@{/feedbackList}">Feedback</a>
+            <a th:href="@{/listScheduleController}">Schedule</a>
         </nav>
     </header>
     <div class="container">
