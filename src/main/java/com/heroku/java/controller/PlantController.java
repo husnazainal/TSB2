@@ -117,22 +117,25 @@ public class PlantController {
                 String type = resultSet.getString("type");
                 if (null == type) {
                     plant = new plant();
-                } else switch (type) {
-                    case "Indoor" -> {
-                        IndoorPlant indoorPlant = new IndoorPlant();
-                        indoorPlant.setLightR(resultSet.getString("lightr"));
-                        indoorPlant.setHumidP(resultSet.getString("humidp"));
-                        indoorPlant.setWaterF(resultSet.getString("waterf"));
-                        plant = indoorPlant;
+                } else {
+                    switch (type) {
+                        case "Indoor" -> {
+                            IndoorPlant indoorPlant = new IndoorPlant();
+                            indoorPlant.setLightR(resultSet.getString("lightr"));
+                            indoorPlant.setHumidP(resultSet.getString("humidp"));
+                            indoorPlant.setWaterF(resultSet.getString("waterf"));
+                            plant = indoorPlant;
+                        }
+                        case "Outdoor" -> {
+                            OutdoorPlant outdoorPlant = new OutdoorPlant();
+                            outdoorPlant.setSunE(resultSet.getString("sune"));
+                            outdoorPlant.setWindR(resultSet.getString("windr"));
+                            outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                            plant = outdoorPlant;
+                        }
+                        default ->
+                            plant = new plant();
                     }
-                    case "Outdoor" -> {
-                        OutdoorPlant outdoorPlant = new OutdoorPlant();
-                        outdoorPlant.setSunE(resultSet.getString("sune"));
-                        outdoorPlant.setWindR(resultSet.getString("windr"));
-                        outdoorPlant.setSoilT(resultSet.getString("soilt"));
-                        plant = outdoorPlant;
-                    }
-                    default -> plant = new plant();
                 }
                 plant.setPlantId(resultSet.getInt("plantid"));
                 plant.setSciName(resultSet.getString("sciname"));
@@ -171,22 +174,25 @@ public class PlantController {
                 String type = resultSet.getString("type");
                 if (null == type) {
                     plant = new plant();
-                } else switch (type) {
-                    case "Indoor" -> {
-                        IndoorPlant indoorPlant = new IndoorPlant();
-                        indoorPlant.setLightR(resultSet.getString("lightr"));
-                        indoorPlant.setHumidP(resultSet.getString("humidp"));
-                        indoorPlant.setWaterF(resultSet.getString("waterf"));
-                        plant = indoorPlant;
+                } else {
+                    switch (type) {
+                        case "Indoor" -> {
+                            IndoorPlant indoorPlant = new IndoorPlant();
+                            indoorPlant.setLightR(resultSet.getString("lightr"));
+                            indoorPlant.setHumidP(resultSet.getString("humidp"));
+                            indoorPlant.setWaterF(resultSet.getString("waterf"));
+                            plant = indoorPlant;
+                        }
+                        case "Outdoor" -> {
+                            OutdoorPlant outdoorPlant = new OutdoorPlant();
+                            outdoorPlant.setSunE(resultSet.getString("sune"));
+                            outdoorPlant.setWindR(resultSet.getString("windr"));
+                            outdoorPlant.setSoilT(resultSet.getString("soilt"));
+                            plant = outdoorPlant;
+                        }
+                        default ->
+                            plant = new plant();
                     }
-                    case "Outdoor" -> {
-                        OutdoorPlant outdoorPlant = new OutdoorPlant();
-                        outdoorPlant.setSunE(resultSet.getString("sune"));
-                        outdoorPlant.setWindR(resultSet.getString("windr"));
-                        outdoorPlant.setSoilT(resultSet.getString("soilt"));
-                        plant = outdoorPlant;
-                    }
-                    default -> plant = new plant();
                 }
                 plant.setPlantId(resultSet.getInt("plantid"));
                 plant.setSciName(resultSet.getString("sciname"));
@@ -327,7 +333,7 @@ public class PlantController {
                 throw e;
             }
         } catch (SQLException e) {
-            
+
             return "redirect:/error";
         }
         return "redirect:/plantlist";
@@ -338,9 +344,17 @@ public class PlantController {
     public String deletePlant(@PathVariable("plantId") int plantId) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
+            System.out.println("Attempting to delete plant with ID: " + plantId);
             try {
+
+                // Delete from plant
+                String sql = "DELETE FROM plant WHERE plantid = ?";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setInt(1, plantId);
+                    statement.executeUpdate();
+                }
                 // Delete from indoor_plant
-                String sql = "DELETE FROM indoor_plant WHERE plantid = ?";
+                sql = "DELETE FROM indoor_plant WHERE plantid = ?";
                 try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setInt(1, plantId);
                     statement.executeUpdate();
@@ -353,20 +367,13 @@ public class PlantController {
                     statement.executeUpdate();
                 }
 
-                // Delete from plant
-                sql = "DELETE FROM plant WHERE plantid = ?";
-                try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                    statement.setInt(1, plantId);
-                    statement.executeUpdate();
-                }
-
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
             }
         } catch (SQLException e) {
-            return "redirect:/error";
+            return "redirect:/error?message=" + e.getMessage(); // This will pass the error message to your error page
         }
         return "redirect:/plantlist";
     }
