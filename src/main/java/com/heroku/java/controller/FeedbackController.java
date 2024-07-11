@@ -108,9 +108,13 @@ public class FeedbackController {
 
     @GetMapping("/ViewFeedback")
     public String viewFeedback(@RequestParam("feedbackId") int feedbackId, Model model, HttpSession session) {
+        System.out.println("ViewFeedback method called with feedbackId: " + feedbackId);
+
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
+            System.out.println("No staff session found, redirecting to login");
             return "redirect:/loginStaff";
         }
+        System.out.println("Viewing feedback with ID: " + feedbackId);
         String sql = "SELECT f.*, COALESCE(p.comname, 'N/A') as comname FROM feedback f LEFT JOIN plant p ON f.plantid = p.plantid WHERE f.feedbackid = ?";
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -131,21 +135,21 @@ public class FeedbackController {
                     feedback.setPlant(plant);
 
                     model.addAttribute("feedback", feedback);
-
-                    // Add this line for debugging
                     System.out.println("Feedback object: " + feedback);
                 } else {
+                    System.out.println("No feedback found with ID: " + feedbackId);
                     model.addAttribute("error", "Feedback not found");
                     return "error";
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            System.err.println("Unexpected error in ViewFeedback: " + e.getMessage());
             e.printStackTrace();
-            model.addAttribute("error", "Database error: " + e.getMessage());
-            // Add this line for more detailed error information
-            model.addAttribute("stackTrace", e.getStackTrace());
+            model.addAttribute("error", "An unexpected error occurred");
             return "error";
         }
+        System.out.println("Returning ViewFeedback template");
+
         return "ViewFeedback";
     }
 

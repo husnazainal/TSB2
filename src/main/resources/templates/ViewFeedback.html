@@ -91,7 +91,7 @@
     <div class="container">
         <div class="feedback-container">
             <h1>View Feedback</h1>
-            <div th:if="${feedback}">
+            <div th:if="${feedback != null}">
                 <p><strong>ID:</strong> <span th:text="${feedback.feedbackId}"></span></p>
                 <p><strong>Plant:</strong> <span
                         th:text="${feedback.plant != null ? feedback.plant.comName : 'N/A'}"></span></p>
@@ -106,6 +106,9 @@
                 </p>
                 <p><strong>Message:</strong> <span
                         th:text="${feedback.message != null ? feedback.message : 'N/A'}"></span></p>
+            </div>
+            <div th:if="${feedback == null}">
+                <p>Feedback object is null</p>
             </div>
             <div th:if="${error}">
                 <p th:text="${error}"></p>
