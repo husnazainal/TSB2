@@ -111,8 +111,7 @@ public class FeedbackController {
         if (session.getAttribute(staffloginController.SESSION_STAFF_ID) == null) {
             return "redirect:/loginStaff";
         }
-        String sql = "SELECT f.*, COALESCE(p.comname, 'N/A') as comname FROM feedback f LEFT JOIN plant p ON f.plantid = p.plantid WHERE f.feedbackid = ?";
-
+        String sql = "SELECT * FROM feedback WHERE feedbackid = ?";
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, feedbackId);
@@ -138,6 +137,7 @@ public class FeedbackController {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace(); // This will print the full stack trace
             model.addAttribute("error", "Database error: " + e.getMessage());
             return "error";
         }
