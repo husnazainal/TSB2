@@ -93,9 +93,8 @@
             <h1>View Feedback</h1>
             <div th:if="${feedback}">
                 <p><strong>ID:</strong> <span th:text="${feedback.feedbackId}"></span></p>
-                <p><strong>Plant:</strong> <span
-                        th:text="${feedback.plant != null and feedback.plant.comName != null ? feedback.plant.comName : 'N/A'}"></span>
-                </p>
+                <p><strong>Plant:</strong> <span th:text="${feedback.plant.comName}"></span></p>
+
                 <p><strong>Visitor Name:</strong> <span
                         th:text="${feedback.visitorName != null ? feedback.visitorName : 'N/A'}"></span></p>
                 <p><strong>Email:</strong> <span
