@@ -395,7 +395,7 @@
             <td th:text="${food.inventoryBrand}"></td>
             <td th:text="${food.inventoryPrice}"></td>
             <td>
-                <a th:href="@{https://arcane-bayou-40259-cef3a9e1cac6.herokuapp.com/viewPetFood?inventoryID=${food.inventoryID}}" class="view-button">View</a>
+                <a th:href="${'https://arcane-bayou-40259-cef3a9e1cac6.herokuapp.com/viewPetFood?inventoryID=' + food.inventoryID}" class="view-button">View</a>
               </td>
           </tr>
         </tbody>
